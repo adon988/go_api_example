@@ -5,7 +5,6 @@ import (
 	"sync"
 
 	"github.com/go-redis/redis"
-	"github.com/mitchellh/mapstructure"
 	viper "github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -16,20 +15,19 @@ var RedisClient *redis.Client
 var o sync.Once
 var db *gorm.DB
 
-type InfoDbHost struct {
-	Host     string
-	Port     any
-	Username string
-	Password string
-	Database string
+type InfoDb struct {
+	Mysql Mysql
 }
 
-func (infoDb InfoDbHost) InitDB() (*gorm.DB, error) {
+func (infoDb InfoDb) InitDB() (*gorm.DB, error) {
 	var err error
 	o.Do(func() {
-		err = mapstructure.Decode(viper.GetStringMap("mysql"), &infoDb)
-		dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", infoDb.Username, infoDb.Password, infoDb.Host, infoDb.Port, infoDb.Database)
-		fmt.Println("Init DB once")
+
+		if err := viper.Unmarshal(&infoDb); err != nil {
+			panic(fmt.Errorf("unable to decode into struct, %v", err))
+		}
+		dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", infoDb.Mysql.Username, infoDb.Mysql.Password, infoDb.Mysql.Host, infoDb.Mysql.Port, infoDb.Mysql.Database)
+		fmt.Println("Init DB once", dsn)
 		db, err = func() (*gorm.DB, error) {
 			db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 			if err != nil {
