@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	migrations "go_api_example/migrations"
-	model "go_api_example/models"
-	"go_api_example/utils"
 	"math/rand"
 	"strconv"
+
+	migrations "github.com/adon988/go_api_example/migrations"
+	model "github.com/adon988/go_api_example/models"
+	"github.com/adon988/go_api_example/utils"
 )
 
 func init() {
