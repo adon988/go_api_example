@@ -40,14 +40,17 @@ func InitConfig() error {
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath("config/")
 	// Set environment variables
-	os.Setenv("MYSQL_USERNAME", "root")
-	os.Setenv("MYSQL_PASSWORD", "root")
-	os.Setenv("MYSQL_DATABASE", "local_test")
-	os.Setenv("MYSQL_PORT", "3306")
-	os.Setenv("MYSQL_HOST", "localhost")
+	os.Setenv("MYE_MYSQL_USERNAME", "root")
+	os.Setenv("MYE_MYSQL_PASSWORD", "root")
+	os.Setenv("MYE_MYSQL_DATABASE", "local_test")
+	os.Setenv("MYE_MYSQL_PORT", "3306")
+	os.Setenv("MYE_MYSQL_HOST", "localhost")
 
 	// viper auto read all env variables, the key will auto uppercase
 	viper.AutomaticEnv()
+	//Set prefix of env variables
+	viper.SetEnvPrefix("MYE")
+	//Replace the environment variables _ to .
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 
 	err := viper.ReadInConfig()
