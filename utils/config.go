@@ -41,8 +41,9 @@ func InitConfig() error {
 
 	// viper auto read all env variables, the key will auto uppercase
 	viper.AutomaticEnv()
-	//Set prefix of env variables
-	viper.SetEnvPrefix("MYE")
+	//Set prefix of env variables, for example "MYE_" will be used `viper.SetEnvPrefix("MYE")`
+	viper.SetEnvPrefix("")
+
 	//Replace the environment variables _ to .
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 
