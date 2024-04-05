@@ -2,7 +2,6 @@ package utils
 
 import (
 	"fmt"
-	"os"
 	"strings"
 
 	viper "github.com/spf13/viper"
@@ -39,12 +38,6 @@ func InitConfig() error {
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath("config/")
-	// Set environment variables
-	os.Setenv("MYE_MYSQL_USERNAME", "root")
-	os.Setenv("MYE_MYSQL_PASSWORD", "root")
-	os.Setenv("MYE_MYSQL_DATABASE", "local_test")
-	os.Setenv("MYE_MYSQL_PORT", "3306")
-	os.Setenv("MYE_MYSQL_HOST", "localhost")
 
 	// viper auto read all env variables, the key will auto uppercase
 	viper.AutomaticEnv()
