@@ -1,0 +1,9 @@
+app:
+  name: golang_api_example
+  prefix: gae
+mysql:
+  host: 127.0.0.1
+  port: 3306
+  username: default
+  password: deafult
+  database: local_test
