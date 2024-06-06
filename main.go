@@ -5,9 +5,11 @@ import (
 	"math/rand"
 	"strconv"
 
+	router "github.com/adon988/go_api_example/api/route"
 	migrations "github.com/adon988/go_api_example/migrations"
 	model "github.com/adon988/go_api_example/models"
 	"github.com/adon988/go_api_example/utils"
+	"github.com/gin-gonic/gin"
 )
 
 func init() {
@@ -22,6 +24,10 @@ func init() {
 var InfoDb utils.InfoDb
 
 func main() {
+
+	r := gin.Default()
+	router.GetRouter(r)
+	r.Run(`:8080`)
 
 	//example for connect to db
 	Db, err := InfoDb.InitDB()

@@ -7,3 +7,8 @@ mysql:
   username: default
   password: deafult
   database: local_test
+jwt:
+  secret: "jwt_secret_sting"
+  expire_at: 7200
+  effect_at: -1000
+  issuer: adam

@@ -26,11 +26,20 @@ type Redis struct {
 	PolSize     int
 	MinIdleConn int
 }
+type Jwt struct {
+	Secret    string
+	Expire_At int64
+	Effect_At int64
+	Issuer    string
+}
 type Config struct {
 	App   App
 	Mysql Mysql
 	Redis Redis
+	Jwt   Jwt
 }
+
+var Configs Config
 
 func InitConfig() error {
 
@@ -52,11 +61,12 @@ func InitConfig() error {
 		panic(fmt.Errorf("fatal error config file: %w", err))
 	}
 
-	// var config Config
-	// if err := viper.Unmarshal(&config); err != nil {
-	// 	panic(fmt.Errorf("unable to decode into struct, %v", err))
-	// }
-	// fmt.Printf("MYSQL_USERNAME: %s\n", config.Mysql.Username)
-	// fmt.Printf("MYSQL_PASSWORD: %s\n", config.Mysql.Password)
+	if err := viper.Unmarshal(&Configs); err != nil {
+		panic(fmt.Errorf("unable to decode into struct, %v", err))
+	}
+	// fmt.Printf("MYSQL_USERNAME: %s\n", Configs.Mysql.Username)
+	// fmt.Printf("MYSQL_PASSWORD: %s\n", Configs.Mysql.Password)
+	// fmt.Printf("JWT: %s\n", Configs.Jwt.Secret)
+	// fmt.Printf("JWT: %d\n", Configs.Jwt.Expire_At)
 	return err
 }
