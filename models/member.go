@@ -7,7 +7,7 @@ import (
 )
 
 type Member struct {
-	ID        string         `gorm:"primaryKey;size:16"`
+	ID        string         `gorm:"primaryKey;size:24"`
 	Name      string         `gorm:"size:255"`
 	Age       int64          `gorm:"size:10"`
 	Email     *string        `gorm:"size:255"` // A pointer to a string, allowing for null values

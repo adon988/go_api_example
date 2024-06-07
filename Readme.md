@@ -28,7 +28,7 @@ export JWT_ISSUER=adam
 The environment variables will auto replace config value.
 
 
-### Initialize Table 
+### Initialize Table
 
 Run the project and auto migration to generate `members` table and execute CRUD 
 

@@ -6,6 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var memberController controllers.MemberController
+
 func GetRouter(r *gin.Engine) {
 
 	r.GET("/ping", func(ctx *gin.Context) {
@@ -25,8 +27,9 @@ func GetRouter(r *gin.Engine) {
 	memberGroup.Use(middleware.JWTAuthMiddleware())
 	memberGroup.Use(middleware.CORSMiddleware())
 	{
-		memberGroup.GET("/:id", new(controllers.MemberController).GetMmeber)
-		memberGroup.POST("/:id", new(controllers.MemberController).CreateMember)
-		memberGroup.DELETE("/:id", new(controllers.MemberController).DeleteMember)
+		memberGroup.GET("/:id", memberController.GetMmeberById)
+		memberGroup.PATCH("/", memberController.UpdateMember)
+		memberGroup.POST("/", memberController.CreateMember)
+		memberGroup.DELETE("/", memberController.DeleteMember)
 	}
 }

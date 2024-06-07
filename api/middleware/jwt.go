@@ -59,8 +59,6 @@ func ParseToken(tokenString string) (*MyClaims, error) {
 func JWTAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		fmt.Println("hello")
-
 		// Get token from Header.Authorization field.
 		authHeader := c.Request.Header.Get("Authorization")
 		fmt.Printf("JWT Header %s", authHeader)
