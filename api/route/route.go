@@ -23,6 +23,7 @@ func GetRouter(r *gin.Engine) {
 	})
 	memberGroup := r.Group("/member")
 	memberGroup.Use(middleware.JWTAuthMiddleware())
+	memberGroup.Use(middleware.CORSMiddleware())
 	{
 		memberGroup.GET("/:id", new(controllers.MemberController).GetMmeber)
 		memberGroup.POST("/:id", new(controllers.MemberController).CreateMember)
