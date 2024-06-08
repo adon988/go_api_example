@@ -1,18 +1,11 @@
 package migrations
 
 import (
-	"github.com/adon988/go_api_example/utils"
+	"gorm.io/gorm"
 
 	model "github.com/adon988/go_api_example/models"
 )
 
-var InfoDb utils.InfoDb
-
-func MembersTableUp() {
-
-	Db, err := InfoDb.InitDB()
-	if err != nil {
-		panic("init db err" + err.Error())
-	}
+func MembersTableUp(Db *gorm.DB) {
 	Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Member{})
 }

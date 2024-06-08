@@ -1,0 +1,145 @@
+definitions:
+  controllers.LoginVerify:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  controllers.MemberController:
+    type: object
+  controllers.MemberUpdateVerify:
+    properties:
+      address:
+        type: string
+      age:
+        type: integer
+      email:
+        type: string
+      name:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      parameters:
+      - description: req
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.LoginVerify'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: Login
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register
+      parameters:
+      - description: req
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.LoginVerify'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: Register
+      tags:
+      - auth
+  /member:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a member
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: failed to delete member
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a member
+      tags:
+      - member
+    get:
+      consumes:
+      - application/json
+      description: Get a member by ID
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.MemberController'
+        "400":
+          description: member not found
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get a member by ID
+      tags:
+      - member
+    patch:
+      consumes:
+      - application/json
+      description: Update a member
+      parameters:
+      - description: req
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.MemberUpdateVerify'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: failed to update member
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update a member
+      tags:
+      - member
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

@@ -17,10 +17,18 @@ func init() {
 	//Auto migrations
 	migrations.AutoMigrations()
 
+	//Init swagger
+	utils.InitSwagger()
+
 }
 
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
+// @BasePath /
 func main() {
 	r := gin.Default()
 	router.GetRouter(r)
+
 	r.Run(`:8080`)
 }

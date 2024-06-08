@@ -11,29 +11,40 @@ import (
 
 type MemberController struct {
 }
+
 type MemberUpdateVerify struct {
-	ID      string `json:"id" binding:"required"`
-	Name    string `json:"name" binding:"required"`
-	Age     int64  `json:"age" binding:"required, gt=0, lt=150"`
+	Name    string `json:"name" binding:""`
+	Age     int64  `json:"age" binding:""`
 	Email   string `json:"email" binding:"email"`
 	Address string `json:"address"`
 }
+
 type MemberCreateVerify struct {
-	Name    string `form:"name" json:"name" binding:"required"`
-	Age     int64  `form:"age" json:"age" binding:"required, gt=0, lt=15"`
+	Name    string `form:"name" json:"name" binding:""`
+	Age     int64  `form:"age" json:"age" binding:""`
 	Email   string `form:"email" json:"email" binding:"email"`
 	Address string `form:"address" json:"address"`
 }
 
 var InfoDb utils.InfoDb
 
-func (c MemberController) GetMmeberById(ctx *gin.Context) {
+// GetMmeberById retrieves a member by ID.
+// @Summary Get a member by ID
+// @Description Get a member by ID
+// @Tags member
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Success 200 {object} MemberController
+// @Failure 400 {string} string "member not found"
+// @Router /member [get]
+func (c MemberController) GetMmeberInfo(ctx *gin.Context) {
+
+	memberId, _ := ctx.Get("account")
 	Db, _ := InfoDb.InitDB()
 
-	memberID := ctx.Params.ByName("id")
-
 	var members model.Member
-	results := Db.First(&members, memberID)
+	results := Db.First(&members, memberId)
 
 	if results.Error != nil {
 		response.FailWithMessage("member not found", ctx)
@@ -41,7 +52,7 @@ func (c MemberController) GetMmeberById(ctx *gin.Context) {
 	}
 	data := gin.H{
 		"member": gin.H{
-			"ID":        members.ID,
+			"ID":        members.Id,
 			"Name":      members.Name,
 			"Age":       members.Age,
 			"Email":     members.Email,
@@ -52,25 +63,37 @@ func (c MemberController) GetMmeberById(ctx *gin.Context) {
 	response.OkWithData(data, ctx)
 }
 
+// UpdateMember updates a member.
+// @Summary Update a member
+// @Description Update a member
+// @Tags member
+// @Accept  json
+// @Produce  json
+// @Param req body MemberUpdateVerify true "req" default({"name":"test","age":18,"email":"","address":""})
+// @Security ApiKeyAuth
+// @Success 200 {string} string "ok"
+// @Failure 400 {string} string "failed to update member"
+// @Router /member [patch]
 func (c MemberController) UpdateMember(ctx *gin.Context) {
 
-	var json MemberUpdateVerify
-	if err := ctx.ShouldBindJSON(&json); err != nil {
+	memberId, _ := ctx.Get("account")
+
+	var req MemberUpdateVerify
+	if err := ctx.ShouldBindJSON(&req); err != nil {
 		response.Fail(ctx)
 		return
 	}
 
 	Db, _ := InfoDb.InitDB()
-
+	name := strings.TrimSpace(req.Name)
 	member := model.Member{
-		ID:      json.ID,
-		Name:    strings.TrimSpace(json.Name),
-		Age:     json.Age,
-		Email:   &json.Email,
-		Address: &json.Address,
+		Name:    &name,
+		Age:     &req.Age,
+		Email:   &req.Email,
+		Address: &req.Address,
 	}
 
-	result := Db.Where("id = ?", json.ID).Updates(&member)
+	result := Db.Where("id = ?", memberId).Updates(&member)
 
 	if result.Error != nil {
 		response.FailWithMessage("update member error", ctx)
@@ -80,42 +103,21 @@ func (c MemberController) UpdateMember(ctx *gin.Context) {
 	response.Ok(ctx)
 }
 
-func (c MemberController) CreateMember(ctx *gin.Context) {
-	var json MemberCreateVerify
-	if err := ctx.ShouldBindJSON(&json); err != nil {
-		response.FailWithMessage(err.Error(), ctx)
-		return
-	}
-
-	memberId, err := utils.GenId()
-	if err != nil {
-		response.FailWithMessage("failed to create member", ctx)
-		return
-	}
-
-	member := model.Member{
-		ID:      memberId,
-		Name:    strings.TrimSpace(json.Name),
-		Age:     json.Age,
-		Email:   &json.Email,
-		Address: &json.Address,
-	}
-
-	Db, _ := InfoDb.InitDB()
-	result := Db.Create(&member)
-
-	if result.Error != nil {
-		response.FailWithMessage("failed to create member", ctx)
-		return
-	}
-	response.Ok(ctx)
-}
-
+// DeleteMember deletes a member.
+// @Summary Delete a member
+// @Description Delete a member
+// @Tags member
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Success 200 {string} string "ok"
+// @Failure 400 {string} string "failed to delete member"
+// @Router /member [delete]
 func (c MemberController) DeleteMember(ctx *gin.Context) {
 	Db, _ := InfoDb.InitDB()
-	member_id := ctx.PostForm("id")
+	memberId, _ := ctx.Get("account")
 
-	result := Db.Where("id = ?", member_id).Delete(&model.Member{})
+	result := Db.Where("id = ?", memberId).Delete(&model.Member{})
 	if result.Error != nil {
 		response.FailWithMessage("failed to delete member", ctx)
 		return
