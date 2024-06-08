@@ -147,9 +147,9 @@ const docTemplate = `{
                 "summary": "Delete a member",
                 "responses": {
                     "200": {
-                        "description": "ok",
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.ResponseSuccess"
                         }
                     },
                     "400": {
@@ -190,9 +190,9 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "ok",
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.ResponseSuccess"
                         }
                     },
                     "400": {

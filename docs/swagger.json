@@ -136,9 +136,9 @@
                 "summary": "Delete a member",
                 "responses": {
                     "200": {
-                        "description": "ok",
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.ResponseSuccess"
                         }
                     },
                     "400": {
@@ -179,9 +179,9 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "ok",
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.ResponseSuccess"
                         }
                     },
                     "400": {

@@ -51,11 +51,12 @@ func (c MemberController) GetMmeberInfo(ctx *gin.Context) {
 		response.FailWithMessage("member not found", ctx)
 		return
 	}
+
 	data := MemberinfoResponse{
 		ID:        members.Id,
-		Name:      *members.Name,
-		Birthday:  members.Birthday.Format("2006-01-02"), // Convert members.Birthday time.Time to string
-		Email:     *members.Email,
+		Name:      response.NullableString(members.Name),
+		Birthday:  response.NullableDate(members.Birthday),
+		Email:     response.NullableString(members.Email),
 		CreatedAt: members.CreatedAt,
 		UpdatedAt: members.UpdatedAt,
 	}

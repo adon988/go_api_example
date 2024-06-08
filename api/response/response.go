@@ -2,6 +2,7 @@ package response
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -22,6 +23,19 @@ type ResponseFail struct {
 	Code int    `json:"code" example:"-1"`
 	Data string `json:"data" example:""`
 	Msg  string `json:"msg" example:"fail reason"`
+}
+
+func NullableString(s *string) string {
+	if s != nil {
+		return *s
+	}
+	return ""
+}
+func NullableDate(t *time.Time) string {
+	if t != nil {
+		return t.Format("2006-01-02")
+	}
+	return ""
 }
 
 const (
