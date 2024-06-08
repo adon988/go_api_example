@@ -1,25 +1,105 @@
 definitions:
+  controllers.GetMemberResonse:
+    properties:
+      code:
+        example: 0
+        type: integer
+      data:
+        $ref: '#/definitions/controllers.MemberinfoResponse'
+      msg:
+        example: success
+        type: string
+    type: object
+  controllers.LoginResonse:
+    properties:
+      code:
+        example: 0
+        type: integer
+      data:
+        $ref: '#/definitions/controllers.TokenResponse'
+      msg:
+        example: success
+        type: string
+    type: object
   controllers.LoginVerify:
     properties:
       password:
+        example: "123456"
         type: string
       username:
+        example: test
         type: string
     required:
     - password
     - username
     type: object
-  controllers.MemberController:
-    type: object
   controllers.MemberUpdateVerify:
     properties:
-      address:
-        type: string
       age:
+        example: 18
         type: integer
+      birthday:
+        example: "2021-01-01"
+        type: string
       email:
+        example: example@example.com
+        type: string
+      gender:
+        example: 1
+        type: integer
+      name:
+        example: test
+        type: string
+    type: object
+  controllers.MemberinfoResponse:
+    properties:
+      birthday:
+        example: "2021-01-01"
+        type: string
+      created_at:
+        example: "2021-01-01 00:00:00"
+        type: string
+      email:
+        example: example@example.com
+        type: string
+      id:
+        example: "123456"
         type: string
       name:
+        example: test
+        type: string
+      updated_at:
+        example: "2021-01-01 00:00:00"
+        type: string
+    type: object
+  controllers.TokenResponse:
+    properties:
+      token:
+        example: jwt token
+        type: string
+    type: object
+  response.ResponseFail:
+    properties:
+      code:
+        example: -1
+        type: integer
+      data:
+        example: ""
+        type: string
+      msg:
+        example: fail reason
+        type: string
+    type: object
+  response.ResponseSuccess:
+    properties:
+      code:
+        example: 0
+        type: integer
+      data:
+        example: '{}'
+        type: string
+      msg:
+        example: success
         type: string
     type: object
 info:
@@ -41,9 +121,13 @@ paths:
       - application/json
       responses:
         "200":
-          description: ok
+          description: '{"code":0,"data":{"token":"token"},msg":"success"}'
           schema:
-            type: string
+            $ref: '#/definitions/controllers.LoginResonse'
+        "400":
+          description: 'msg: account not exists'
+          schema:
+            $ref: '#/definitions/response.ResponseFail'
       summary: Login
       tags:
       - auth
@@ -63,9 +147,14 @@ paths:
       - application/json
       responses:
         "200":
-          description: ok
+          description: OK
           schema:
-            type: string
+            $ref: '#/definitions/response.ResponseSuccess'
+        "400":
+          description: 'msg: account already exists(:0) \n msg: failed to create account(:1,
+            :2)'
+          schema:
+            $ref: '#/definitions/response.ResponseFail'
       summary: Register
       tags:
       - auth
@@ -82,7 +171,7 @@ paths:
           schema:
             type: string
         "400":
-          description: failed to delete member
+          description: Bad Request
           schema:
             type: string
       security:
@@ -100,9 +189,9 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controllers.MemberController'
+            $ref: '#/definitions/controllers.GetMemberResonse'
         "400":
-          description: member not found
+          description: Bad Request
           schema:
             type: string
       security:
@@ -129,7 +218,7 @@ paths:
           schema:
             type: string
         "400":
-          description: failed to update member
+          description: Bad Request
           schema:
             type: string
       security:

@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"fmt"
-
 	"github.com/adon988/go_api_example/api/middleware"
 	"github.com/adon988/go_api_example/api/response"
 	"github.com/adon988/go_api_example/models"
@@ -14,9 +12,13 @@ import (
 type AuthController struct {
 }
 
-type LoginVerify struct {
-	Username string `json:"username" binding:"required" message:"username is required"`
-	Password string `json:"password" binding:"required" message:"password is required"`
+type TokenResponse struct {
+	Token string `json:"token" example:"jwt token"`
+}
+type LoginResonse struct {
+	Code int `json:"code" example:"0"`
+	Data TokenResponse
+	Msg  string `json:"msg" example:"success"`
 }
 
 // @Summary Login
@@ -25,34 +27,34 @@ type LoginVerify struct {
 // @Accept  json
 // @Produce  json
 // @param req body LoginVerify true "req"
-// @error 400 {string} string "username not exists"
-// @error 400 {string} string "username or password error"
-// @Success 200 {string} string "ok"
+// @Failure 400 {object} response.ResponseFail "msg: username or password error"
+// @Failure 400 {object} response.ResponseFail "msg: account not exists"
+// @success 200 {object} LoginResonse    "{"code":0,"data":{"token":"token"},msg":"success"}"
 // @Router /auth/login [post]
 func (AuthController) Login(ctx *gin.Context) {
 	var req LoginVerify
 	if err := ctx.ShouldBindJSON(&req); err != nil {
-		ctx.JSON(400, gin.H{"error": err.Error()})
+		response.FailWithMessage(err.Error(), ctx)
 	}
 
 	Db, _ := InfoDb.InitDB()
-	var user models.Member
-	result := Db.Where("username = ?", req.Username).First(&user)
+	var auth models.Authentication
+	result := Db.Where("username = ?", req.Username).First(&auth)
 
 	if result.RowsAffected == 0 {
-		ctx.JSON(400, gin.H{"error": "username not exists"})
+		response.FailWithMessage("account not exists", ctx)
 		return
 	}
-	err := bcrypt.CompareHashAndPassword(user.Password, []byte(req.Password))
+	err := bcrypt.CompareHashAndPassword(auth.Password, []byte(req.Password))
 	if err != nil {
-		ctx.JSON(400, gin.H{"error": "username or password error"})
+		response.FailWithMessage("username or password error", ctx)
 		return
 	}
 
-	token, _ := middleware.GenToken(user.Id)
+	token, _ := middleware.GenToken(auth.MemberId)
 
-	data := gin.H{
-		"token": token,
+	data := TokenResponse{
+		Token: token,
 	}
 	response.OkWithData(data, ctx)
 }
@@ -62,47 +64,59 @@ func (AuthController) Login(ctx *gin.Context) {
 // @Tags auth
 // @Accept  json
 // @Produce  json
-// @Success 200 {string} string "ok"
+// @success 200 {object} response.ResponseSuccess
 // @param req body LoginVerify true "req"
-// @error 400 {string} string "username already exists"
-// @error 400 {string} string "failed to create member"
+// @Failure 400 {object} response.ResponseFail "msg: account already exists(:0) \n msg: failed to create account(:1, :2)"
 // @Router /auth/register [post]
 func (AuthController) Register(ctx *gin.Context) {
 	var req LoginVerify
 	if err := ctx.ShouldBindJSON(&req); err != nil {
-		ctx.JSON(400, gin.H{"error": err.Error()})
+		response.FailWithMessage(err.Error(), ctx)
 		return
 	}
 
+	authId, _ := utils.GenId()
 	password, _ := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 
-	fmt.Printf("username: %s, password: %s, bcrypt: %s", req.Username, req.Password, password)
-
 	Db, _ := InfoDb.InitDB()
-	var user models.Member
-	result := Db.First(&user, "username = ?", req.Username)
+
+	tx := Db.Begin() // start a transaction
+
+	var auth models.Authentication
+	result := tx.First(&auth, "username = ?", req.Username)
 
 	if result.RowsAffected > 0 {
-		ctx.JSON(400, gin.H{"error": "username already exists"})
-		return
-	}
-	authId, err := utils.GenId()
-	if err != nil {
-		response.FailWithMessage("failed to create member", ctx)
+		tx.Rollback()
+		response.FailWithMessage("account already exists(:0)", ctx)
 		return
 	}
 
-	auth := models.Member{
-		Id:       authId,
+	// generate account
+	auth = models.Authentication{
+		MemberId: authId,
 		Username: req.Username,
 		Password: password,
 	}
 
-	result = Db.Create(&auth)
+	authCreateResult := tx.Create(&auth)
 
-	if result.Error != nil {
-		response.FailWithMessage("failed to create member", ctx)
+	if authCreateResult.Error != nil {
+		tx.Rollback()
+		response.FailWithMessage("failed to create account(:1)", ctx)
 		return
 	}
+
+	// create member after account generate successfully
+	member := models.Member{
+		Id: authId,
+	}
+	memberCreateResult := tx.Create(&member)
+	if memberCreateResult.Error != nil {
+		tx.Rollback()
+		response.FailWithMessage("failed to create account (:2)", ctx)
+		return
+	}
+
+	tx.Commit()
 	response.Ok(ctx)
 }

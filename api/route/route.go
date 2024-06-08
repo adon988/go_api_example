@@ -16,19 +16,12 @@ func GetRouter(r *gin.Engine) {
 	//swagger documentation
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
-	r.GET("/ping", func(ctx *gin.Context) {
+	r.GET("/health", func(ctx *gin.Context) {
 		ctx.JSON(200, gin.H{
 			"message": "pong",
 		})
 	})
 
-	r.GET("/jwt_token", func(ctx *gin.Context) {
-		token, _ := middleware.GenToken("account_id")
-		ctx.JSON(200, gin.H{
-			"message": "success",
-			"token":   token,
-		})
-	})
 	authGroup := r.Group("/auth").Use(middleware.CORSMiddleware())
 	{
 		authGroup.POST("/login", authController.Login)

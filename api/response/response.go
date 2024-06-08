@@ -12,14 +12,30 @@ type Response struct {
 	Msg  string      `json:"msg"`
 }
 
+type ResponseSuccess struct {
+	Code int    `json:"code" example:"0"`
+	Data string `json:"data" example:"{}"`
+	Msg  string `json:"msg" example:"success"`
+}
+
+type ResponseFail struct {
+	Code int    `json:"code" example:"-1"`
+	Data string `json:"data" example:""`
+	Msg  string `json:"msg" example:"fail reason"`
+}
+
 const (
-	ERROR   = 7
-	SUCCESS = 0
+	ERROR           = -1
+	SUCCESS         = 0
+	SUCCESS_MESSAGE = "success"
 )
 
 func Result(code int, data interface{}, msg string, c *gin.Context) {
-	// 開始時間
-	c.JSON(http.StatusOK, Response{
+	httpStatus := http.StatusOK
+	if code != 0 {
+		httpStatus = http.StatusBadRequest
+	}
+	c.JSON(httpStatus, Response{
 		code,
 		data,
 		msg,

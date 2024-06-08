@@ -41,9 +41,15 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "ok",
+                        "description": "{\"code\":0,\"data\":{\"token\":\"token\"},msg\":\"success\"}",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/controllers.LoginResonse"
+                        }
+                    },
+                    "400": {
+                        "description": "msg: account not exists",
+                        "schema": {
+                            "$ref": "#/definitions/response.ResponseFail"
                         }
                     }
                 }
@@ -75,9 +81,15 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "ok",
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.ResponseSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "msg: account already exists(:0) \\n msg: failed to create account(:1, :2)",
+                        "schema": {
+                            "$ref": "#/definitions/response.ResponseFail"
                         }
                     }
                 }
@@ -105,11 +117,11 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controllers.MemberController"
+                            "$ref": "#/definitions/controllers.GetMemberResonse"
                         }
                     },
                     "400": {
-                        "description": "member not found",
+                        "description": "Bad Request",
                         "schema": {
                             "type": "string"
                         }
@@ -141,7 +153,7 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "failed to delete member",
+                        "description": "Bad Request",
                         "schema": {
                             "type": "string"
                         }
@@ -184,7 +196,7 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "failed to update member",
+                        "description": "Bad Request",
                         "schema": {
                             "type": "string"
                         }
@@ -194,6 +206,38 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "controllers.GetMemberResonse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "data": {
+                    "$ref": "#/definitions/controllers.MemberinfoResponse"
+                },
+                "msg": {
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
+        "controllers.LoginResonse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "data": {
+                    "$ref": "#/definitions/controllers.TokenResponse"
+                },
+                "msg": {
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
         "controllers.LoginVerify": {
             "type": "object",
             "required": [
@@ -202,30 +246,109 @@ const docTemplate = `{
             ],
             "properties": {
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "123456"
                 },
                 "username": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "test"
                 }
             }
-        },
-        "controllers.MemberController": {
-            "type": "object"
         },
         "controllers.MemberUpdateVerify": {
             "type": "object",
             "properties": {
-                "address": {
-                    "type": "string"
-                },
                 "age": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 18
+                },
+                "birthday": {
+                    "type": "string",
+                    "example": "2021-01-01"
                 },
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "example@example.com"
+                },
+                "gender": {
+                    "type": "integer",
+                    "example": 1
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "test"
+                }
+            }
+        },
+        "controllers.MemberinfoResponse": {
+            "type": "object",
+            "properties": {
+                "birthday": {
+                    "type": "string",
+                    "example": "2021-01-01"
+                },
+                "created_at": {
+                    "type": "string",
+                    "example": "2021-01-01 00:00:00"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "example@example.com"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "123456"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "test"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "example": "2021-01-01 00:00:00"
+                }
+            }
+        },
+        "controllers.TokenResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string",
+                    "example": "jwt token"
+                }
+            }
+        },
+        "response.ResponseFail": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": -1
+                },
+                "data": {
+                    "type": "string",
+                    "example": ""
+                },
+                "msg": {
+                    "type": "string",
+                    "example": "fail reason"
+                }
+            }
+        },
+        "response.ResponseSuccess": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "data": {
+                    "type": "string",
+                    "example": "{}"
+                },
+                "msg": {
+                    "type": "string",
+                    "example": "success"
                 }
             }
         }

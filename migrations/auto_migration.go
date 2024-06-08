@@ -10,4 +10,5 @@ func AutoMigrations() {
 		panic("init db err" + err.Error())
 	}
 	MembersTableUp(Db)
+	AuthenticationTableUp(Db)
 }
