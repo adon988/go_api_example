@@ -5,10 +5,10 @@ import (
 )
 
 func InitSwagger() {
-	docs.SwaggerInfo.Title = "API Document"
-	docs.SwaggerInfo.Description = "Swagger API document"
-	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "localhost:8080"
-	docs.SwaggerInfo.BasePath = "/"
+	docs.SwaggerInfo.Title = Configs.Doc.Title
+	docs.SwaggerInfo.Description = Configs.Doc.Description
+	docs.SwaggerInfo.Version = Configs.Doc.Version
+	docs.SwaggerInfo.Host = Configs.Doc.Host
+	docs.SwaggerInfo.BasePath = Configs.Doc.BasePath
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 }

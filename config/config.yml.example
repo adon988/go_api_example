@@ -12,3 +12,9 @@ jwt:
   expire_at: 7200
   effect_at: -1000
   issuer: adam
+doc:
+  title: "Golang API Example"
+  description: "Golang API Example"
+  version: "1.0.0"
+  host: "localhost:8080"
+  basePath: "/"

@@ -32,11 +32,19 @@ type Jwt struct {
 	Effect_At int64
 	Issuer    string
 }
+type Doc struct {
+	Title       string
+	Description string
+	Version     string
+	Host        string
+	BasePath    string
+}
 type Config struct {
 	App   App
 	Mysql Mysql
 	Redis Redis
 	Jwt   Jwt
+	Doc   Doc
 }
 
 var Configs Config
