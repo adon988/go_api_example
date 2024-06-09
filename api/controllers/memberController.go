@@ -4,8 +4,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/adon988/go_api_example/api/response"
 	model "github.com/adon988/go_api_example/models"
+	"github.com/adon988/go_api_example/models/requests"
+	"github.com/adon988/go_api_example/models/responses"
 	"github.com/adon988/go_api_example/utils"
 	"github.com/gin-gonic/gin"
 )
@@ -48,20 +49,20 @@ func (c MemberController) GetMmeberInfo(ctx *gin.Context) {
 	results := Db.First(&members, memberId)
 
 	if results.Error != nil {
-		response.FailWithMessage("member not found", ctx)
+		responses.FailWithMessage("member not found", ctx)
 		return
 	}
 
 	data := MemberinfoResponse{
 		ID:        members.Id,
-		Name:      response.NullableString(members.Name),
-		Birthday:  response.NullableDate(members.Birthday),
-		Email:     response.NullableString(members.Email),
+		Name:      responses.NullableString(members.Name),
+		Birthday:  responses.NullableDate(members.Birthday),
+		Email:     responses.NullableString(members.Email),
 		CreatedAt: members.CreatedAt,
 		UpdatedAt: members.UpdatedAt,
 	}
 
-	response.OkWithData(data, ctx)
+	responses.OkWithData(data, ctx)
 }
 
 // UpdateMember updates a member.
@@ -70,18 +71,18 @@ func (c MemberController) GetMmeberInfo(ctx *gin.Context) {
 // @Tags member
 // @Accept  json
 // @Produce  json
-// @Param req body MemberUpdateVerify true "req" default({"name":"test","age":18,"email":"","address":""})
+// @Param req body requests.MemberUpdateRequesettrue "req" default({"name":"test","age":18,"email":"","address":""})
 // @Security ApiKeyAuth
-// @success 200 {object} response.ResponseSuccess
+// @success 200 {object} responses.ResponseSuccess
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":"failed to update member"}'
 // @Router /member [patch]
 func (c MemberController) UpdateMember(ctx *gin.Context) {
 
 	memberId, _ := ctx.Get("account")
 
-	var req MemberUpdateVerify
+	var req requests.MemberUpdateRequeset
 	if err := ctx.ShouldBindJSON(&req); err != nil {
-		response.FailWithMessage(err.Error(), ctx)
+		responses.FailWithMessage(err.Error(), ctx)
 		return
 	}
 
@@ -98,11 +99,11 @@ func (c MemberController) UpdateMember(ctx *gin.Context) {
 	result := Db.Where("id = ?", memberId).Updates(&member)
 
 	if result.Error != nil {
-		response.FailWithMessage("update member error", ctx)
+		responses.FailWithMessage("update member error", ctx)
 		return
 	}
 
-	response.Ok(ctx)
+	responses.Ok(ctx)
 }
 
 // DeleteMember deletes a member.
@@ -112,7 +113,7 @@ func (c MemberController) UpdateMember(ctx *gin.Context) {
 // @Accept  json
 // @Produce  json
 // @Security ApiKeyAuth
-// @success 200 {object} response.ResponseSuccess
+// @success 200 {object} responses.ResponseSuccess
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":"failed to delete member"}'
 // @Router /member [delete]
 func (c MemberController) DeleteMember(ctx *gin.Context) {
@@ -125,15 +126,15 @@ func (c MemberController) DeleteMember(ctx *gin.Context) {
 	deleteMemberResult := tx.Where("id = ?", memberId).Delete(&model.Member{})
 	if deleteMemberResult.Error != nil {
 		tx.Rollback()
-		response.FailWithMessage("failed to delete member (:0)", ctx)
+		responses.FailWithMessage("failed to delete member (:0)", ctx)
 		return
 	}
 	deleteAuthResult := tx.Where("member_id = ?", memberId).Delete(&model.Authentication{})
 	if deleteAuthResult.Error != nil {
 		tx.Rollback()
-		response.FailWithMessage("failed to delete member (:1)", ctx)
+		responses.FailWithMessage("failed to delete member (:1)", ctx)
 		return
 	}
 	tx.Commit()
-	response.Ok(ctx)
+	responses.Ok(ctx)
 }

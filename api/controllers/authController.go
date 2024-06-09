@@ -2,8 +2,9 @@ package controllers
 
 import (
 	"github.com/adon988/go_api_example/api/middleware"
-	"github.com/adon988/go_api_example/api/response"
-	"github.com/adon988/go_api_example/models"
+	models "github.com/adon988/go_api_example/models"
+	"github.com/adon988/go_api_example/models/requests"
+	"github.com/adon988/go_api_example/models/responses"
 	"github.com/adon988/go_api_example/utils"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
@@ -27,14 +28,14 @@ type LoginResonse struct {
 // @Accept  json
 // @Produce  json
 // @param req body LoginVerify true "req"
-// @Failure 400 {object} response.ResponseFail "msg: username or password error"
-// @Failure 400 {object} response.ResponseFail "msg: account not exists"
+// @Failure 400 {object} responses.ResponseFail "msg: username or password error"
+// @Failure 400 {object} responses.ResponseFail "msg: account not exists"
 // @success 200 {object} LoginResonse    "{"code":0,"data":{"token":"token"},msg":"success"}"
 // @Router /auth/login [post]
 func (AuthController) Login(ctx *gin.Context) {
-	var req LoginVerify
+	var req requests.LoginRequeset
 	if err := ctx.ShouldBindJSON(&req); err != nil {
-		response.FailWithMessage(err.Error(), ctx)
+		responses.FailWithMessage(err.Error(), ctx)
 	}
 
 	Db, _ := InfoDb.InitDB()
@@ -42,12 +43,12 @@ func (AuthController) Login(ctx *gin.Context) {
 	result := Db.Where("username = ?", req.Username).First(&auth)
 
 	if result.RowsAffected == 0 {
-		response.FailWithMessage("account not exists", ctx)
+		responses.FailWithMessage("account not exists", ctx)
 		return
 	}
 	err := bcrypt.CompareHashAndPassword(auth.Password, []byte(req.Password))
 	if err != nil {
-		response.FailWithMessage("username or password error", ctx)
+		responses.FailWithMessage("username or password error", ctx)
 		return
 	}
 
@@ -56,7 +57,7 @@ func (AuthController) Login(ctx *gin.Context) {
 	data := TokenResponse{
 		Token: token,
 	}
-	response.OkWithData(data, ctx)
+	responses.OkWithData(data, ctx)
 }
 
 // @Summary Register
@@ -64,14 +65,14 @@ func (AuthController) Login(ctx *gin.Context) {
 // @Tags auth
 // @Accept  json
 // @Produce  json
-// @success 200 {object} response.ResponseSuccess
-// @param req body LoginVerify true "req"
-// @Failure 400 {object} response.ResponseFail "msg: account already exists(:0) \n msg: failed to create account(:1, :2)"
+// @success 200 {object} responses.ResponseSuccess
+// @param req body requests.LoginRequeset true "req"
+// @Failure 400 {object} responses.ResponseFail "msg: account already exists(:0) \n msg: failed to create account(:1, :2)"
 // @Router /auth/register [post]
 func (AuthController) Register(ctx *gin.Context) {
-	var req LoginVerify
+	var req requests.LoginRequeset
 	if err := ctx.ShouldBindJSON(&req); err != nil {
-		response.FailWithMessage(err.Error(), ctx)
+		responses.FailWithMessage(err.Error(), ctx)
 		return
 	}
 
@@ -87,7 +88,7 @@ func (AuthController) Register(ctx *gin.Context) {
 
 	if result.RowsAffected > 0 {
 		tx.Rollback()
-		response.FailWithMessage("account already exists(:0)", ctx)
+		responses.FailWithMessage("account already exists(:0)", ctx)
 		return
 	}
 
@@ -102,7 +103,7 @@ func (AuthController) Register(ctx *gin.Context) {
 
 	if authCreateResult.Error != nil {
 		tx.Rollback()
-		response.FailWithMessage("failed to create account(:1)", ctx)
+		responses.FailWithMessage("failed to create account(:1)", ctx)
 		return
 	}
 
@@ -113,10 +114,10 @@ func (AuthController) Register(ctx *gin.Context) {
 	memberCreateResult := tx.Create(&member)
 	if memberCreateResult.Error != nil {
 		tx.Rollback()
-		response.FailWithMessage("failed to create account (:2)", ctx)
+		responses.FailWithMessage("failed to create account (:2)", ctx)
 		return
 	}
 
 	tx.Commit()
-	response.Ok(ctx)
+	responses.Ok(ctx)
 }
