@@ -32,7 +32,7 @@ func GetRouter(r *gin.Engine) {
 	memberGroup.Use(middleware.JWTAuthMiddleware())
 	memberGroup.Use(middleware.CORSMiddleware())
 	{
-		memberGroup.GET("/", memberController.GetMmeberInfo)
+		memberGroup.GET("/", memberController.GetMemberInfo)
 		memberGroup.PATCH("/", memberController.UpdateMember)
 		memberGroup.DELETE("/", memberController.DeleteMember)
 	}

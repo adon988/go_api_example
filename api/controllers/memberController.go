@@ -40,7 +40,7 @@ type GetMemberResonse struct {
 // @Success 200 {object} GetMemberResonse
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":"member not found"}'
 // @Router /member [get]
-func (c MemberController) GetMmeberInfo(ctx *gin.Context) {
+func (c MemberController) GetMemberInfo(ctx *gin.Context) {
 
 	memberId, _ := ctx.Get("account")
 	Db, _ := InfoDb.InitDB()
