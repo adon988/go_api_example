@@ -4,6 +4,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/adon988/go_api_example/api/services"
 	model "github.com/adon988/go_api_example/models"
 	"github.com/adon988/go_api_example/models/requests"
 	"github.com/adon988/go_api_example/models/responses"
@@ -12,6 +13,7 @@ import (
 )
 
 type MemberController struct {
+	InfoDb utils.InfoDb
 }
 
 var InfoDb utils.InfoDb
@@ -43,12 +45,12 @@ type GetMemberResonse struct {
 func (c MemberController) GetMemberInfo(ctx *gin.Context) {
 
 	memberId, _ := ctx.Get("account")
-	Db, _ := InfoDb.InitDB()
+	Db, _ := c.InfoDb.InitDB()
 
-	var members model.Member
-	results := Db.First(&members, memberId)
+	memberServices := services.NewMemberService(Db)
+	members, err := memberServices.GetMemberInfo(memberId.(string))
 
-	if results.Error != nil {
+	if err != nil {
 		responses.FailWithMessage("member not found", ctx)
 		return
 	}
@@ -86,7 +88,7 @@ func (c MemberController) UpdateMember(ctx *gin.Context) {
 		return
 	}
 
-	Db, _ := InfoDb.InitDB()
+	Db, _ := c.InfoDb.InitDB()
 	name := strings.TrimSpace(req.Name)
 	birthday, _ := time.Parse("2006-01-02", req.Birthday) // Convert req.Birthday string to time.Time
 	member := model.Member{
@@ -120,7 +122,7 @@ func (c MemberController) DeleteMember(ctx *gin.Context) {
 
 	memberId, _ := ctx.Get("account")
 
-	Db, _ := InfoDb.InitDB()
+	Db, _ := c.InfoDb.InitDB()
 	tx := Db.Begin() // start a transaction
 
 	deleteMemberResult := tx.Where("id = ?", memberId).Delete(&model.Member{})

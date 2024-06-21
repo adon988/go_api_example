@@ -11,6 +11,7 @@ import (
 )
 
 type AuthController struct {
+	InfoDb utils.InfoDb
 }
 
 type TokenResponse struct {
@@ -32,13 +33,13 @@ type LoginResonse struct {
 // @Failure 400 {object} responses.ResponseFail "msg: account not exists"
 // @success 200 {object} LoginResonse    "{"code":0,"data":{"token":"token"},msg":"success"}"
 // @Router /auth/login [post]
-func (AuthController) Login(ctx *gin.Context) {
+func (c AuthController) Login(ctx *gin.Context) {
 	var req requests.LoginRequeset
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 	}
 
-	Db, _ := InfoDb.InitDB()
+	Db, _ := c.InfoDb.InitDB()
 	var auth models.Authentication
 	result := Db.Where("username = ?", req.Username).First(&auth)
 
@@ -69,7 +70,7 @@ func (AuthController) Login(ctx *gin.Context) {
 // @param req body requests.LoginRequeset true "req"
 // @Failure 400 {object} responses.ResponseFail "msg: account already exists(:0) \n msg: failed to create account(:1, :2)"
 // @Router /auth/register [post]
-func (AuthController) Register(ctx *gin.Context) {
+func (c AuthController) Register(ctx *gin.Context) {
 	var req requests.LoginRequeset
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
@@ -79,7 +80,7 @@ func (AuthController) Register(ctx *gin.Context) {
 	authId, _ := utils.GenId()
 	password, _ := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 
-	Db, _ := InfoDb.InitDB()
+	Db, _ := c.InfoDb.InitDB()
 
 	tx := Db.Begin() // start a transaction
 
