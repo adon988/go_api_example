@@ -23,3 +23,7 @@ func (service MemberService) GetMemberInfo(id string) (*models.Member, error) {
 func (service MemberService) UpdateMember(id string, data models.Member) error {
 	return service.memberRepo.UpdateMember(id, data)
 }
+
+func (service MemberService) DeleteMember(id string) error {
+	return service.memberRepo.DeleteMember(id)
+}

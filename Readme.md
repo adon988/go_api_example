@@ -6,7 +6,7 @@ In this gorm example project, you should setting the default configuration and e
 
 At `config/config.yml.example` is a configuration example, need to rename this example to `config/config.yml` to setting database connection.
 
-```
+``
 cp confing/config.yml.example config/config.yml
 ```
 

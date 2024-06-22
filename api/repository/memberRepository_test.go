@@ -11,6 +11,27 @@ import (
 	"gorm.io/gorm"
 )
 
+func TestMemberRepositoryImpl_DeleteMember(t *testing.T) {
+	// Create a new mock DB instance
+	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
+
+	// migrare schema
+	mockDB.AutoMigrate(&models.Member{})
+	// Create a new instance of the MemberRepositoryImpl
+	repo := NewMemberRepository(mockDB)
+	id := "1"
+	name := "John Doe"
+	birthday := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
+	email := "john@example.com"
+	gender := 1
+	origMember := &models.Member{Id: id, Name: &name, Birthday: &birthday, Email: &email, Gender: &gender}
+	mockDB.Create(&origMember)
+
+	err := repo.DeleteMember(id)
+	assert.Nil(t, err)
+
+}
+
 func TestMemberRepositoryImpl_UPdateMember(t *testing.T) {
 	// Create a new mock DB instance
 	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})

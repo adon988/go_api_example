@@ -19,10 +19,6 @@ func TestNewMemberService(t *testing.T) {
 	assert.NotNil(t, service.memberRepo)
 }
 
-type MemberRepositoryMock struct {
-	DB *gorm.DB
-}
-
 func TestMemberService_UpdateMember(t *testing.T) {
 	// Create a new mock gorm.DB instance
 	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
@@ -86,4 +82,29 @@ func TestMemberService_GetMemberInfo(t *testing.T) {
 	assert.Nil(t, member)
 	// Assert that the error is not nil
 	assert.NotNil(t, err)
+}
+
+func TestMemberService_DeleteMember(t *testing.T) {
+	// Create a new mock gorm.DB instance
+	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
+
+	// Mock the behavior of the DB.First method
+	id := "1"
+	name := "John Doe"
+	birthday := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
+	email := "john@example.com"
+	gender := 1
+	mockMember := &models.Member{Id: id, Name: &name, Birthday: &birthday, Email: &email, Gender: &gender}
+
+	// migrate schema
+	mockDB.AutoMigrate(&models.Member{})
+	// auto insert data to db with mock member
+	mockDB.Create(&mockMember)
+
+	MemberService := NewMemberService(mockDB)
+
+	err := MemberService.DeleteMember(id)
+
+	assert.Nil(t, err)
+
 }

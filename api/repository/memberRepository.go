@@ -8,6 +8,7 @@ import (
 type MemberRepository interface {
 	GetMemberInfo(id string) (*models.Member, error)
 	UpdateMember(id string, data models.Member) error
+	DeleteMember(id string) error
 }
 
 type MemberRepositoryImpl struct {
@@ -30,6 +31,14 @@ func (r *MemberRepositoryImpl) GetMemberInfo(id string) (*models.Member, error) 
 
 func (r *MemberRepositoryImpl) UpdateMember(id string, data models.Member) error {
 	if err := r.DB.Where("id = ?", id).Updates(data).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteMember implements MemberRepository.
+func (r *MemberRepositoryImpl) DeleteMember(id string) error {
+	if err := r.DB.Where("id = ?", id).Delete(&member).Error; err != nil {
 		return err
 	}
 	return nil

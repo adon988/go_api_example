@@ -125,17 +125,19 @@ func (c MemberController) DeleteMember(ctx *gin.Context) {
 
 	Db, _ := c.InfoDb.InitDB()
 	tx := Db.Begin() // start a transaction
-
-	deleteMemberResult := tx.Where("id = ?", memberId).Delete(&model.Member{})
-	if deleteMemberResult.Error != nil {
+	// Delete auth openid
+	err := services.NewAuthService(Db).DeleteAuth(memberId.(string))
+	if err != nil {
 		tx.Rollback()
-		responses.FailWithMessage("failed to delete member (:0)", ctx)
+		responses.FailWithMessage("failed to delete auth openid", ctx)
 		return
 	}
-	deleteAuthResult := tx.Where("member_id = ?", memberId).Delete(&model.Authentication{})
-	if deleteAuthResult.Error != nil {
+
+	// Delete member
+	err = services.NewMemberService(Db).DeleteMember(memberId.(string))
+	if err != nil {
 		tx.Rollback()
-		responses.FailWithMessage("failed to delete member (:1)", ctx)
+		responses.FailWithMessage("failed to delete member", ctx)
 		return
 	}
 	tx.Commit()
