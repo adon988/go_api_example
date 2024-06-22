@@ -31,6 +31,12 @@ func NullableString(s *string) string {
 	}
 	return ""
 }
+func NullableInt(i *int32) int32 {
+	if i != nil {
+		return *i
+	}
+	return 1
+}
 func NullableDate(t *time.Time) string {
 	if t != nil {
 		return t.Format("2006-01-02")

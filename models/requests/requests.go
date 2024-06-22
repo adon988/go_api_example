@@ -4,7 +4,7 @@ type MemberUpdateRequest struct {
 	Name     string `json:"name" binding:"" example:"test"`
 	Email    string `json:"email" binding:"email" example:"example@example.com"`
 	Birthday string `json:"birthday" example:"2021-01-01"`
-	Gender   int    `json:"gender" binding:"" example:"1"`
+	Gender   int32  `json:"gender" binding:"" example:"1"`
 }
 
 type LoginRequeset struct {

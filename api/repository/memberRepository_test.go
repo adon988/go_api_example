@@ -23,7 +23,7 @@ func TestMemberRepositoryImpl_DeleteMember(t *testing.T) {
 	name := "John Doe"
 	birthday := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
 	email := "john@example.com"
-	gender := 1
+	gender := int32(1)
 	origMember := &models.Member{Id: id, Name: &name, Birthday: &birthday, Email: &email, Gender: &gender}
 	mockDB.Create(&origMember)
 
@@ -45,14 +45,14 @@ func TestMemberRepositoryImpl_UPdateMember(t *testing.T) {
 	name := "John Doe"
 	birthday := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
 	email := "john@example.com"
-	gender := 1
+	gender := int32(1)
 	origMember := &models.Member{Id: id, Name: &name, Birthday: &birthday, Email: &email, Gender: &gender}
 	mockDB.Create(&origMember)
 
 	name = "Jane Doe2"
 	birthday = time.Date(2024, 1, 2, 0, 0, 0, 0, time.UTC)
 	email = "john2@example.com"
-	gender = 0
+	gender = int32(0)
 	mockMember := &models.Member{Name: &name, Birthday: &birthday, Email: &email, Gender: &gender}
 	err := repo.UpdateMember(id, *mockMember)
 	assert.Nil(t, err)
@@ -77,7 +77,7 @@ func TestMemberRepositoryImpl_GetMemberInfo(t *testing.T) {
 	name := "John Doe"
 	birthday := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
 	email := "john@example.com"
-	gender := 1
+	gender := int32(1)
 	mockMember := &models.Member{Id: id, Name: &name, Birthday: &birthday, Email: &email, Gender: &gender}
 
 	// migrate schema

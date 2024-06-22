@@ -30,7 +30,7 @@ func TestMemberService_UpdateMember(t *testing.T) {
 	name := "John Doe"
 	birthday := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
 	email := "john@example.com"
-	gender := 1
+	gender := int32(1)
 	origMember := &models.Member{Id: id, Name: &name, Birthday: &birthday, Email: &email, Gender: &gender}
 	mockDB.Create(&origMember)
 
@@ -52,7 +52,7 @@ func TestMemberService_GetMemberInfo(t *testing.T) {
 	name := "John Doe"
 	birthday := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
 	email := "john@example.com"
-	gender := 1
+	gender := int32(1)
 	mockMember := &models.Member{Id: "1", Name: &name, Birthday: &birthday, Email: &email, Gender: &gender}
 
 	// migrate schema
@@ -93,7 +93,7 @@ func TestMemberService_DeleteMember(t *testing.T) {
 	name := "John Doe"
 	birthday := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
 	email := "john@example.com"
-	gender := 1
+	gender := int32(1)
 	mockMember := &models.Member{Id: id, Name: &name, Birthday: &birthday, Email: &email, Gender: &gender}
 
 	// migrate schema

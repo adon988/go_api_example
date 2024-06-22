@@ -32,6 +32,8 @@ definitions:
       email:
         example: example@example.com
         type: string
+      gender:
+        type: integer
       id:
         example: "123456"
         type: string

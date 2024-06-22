@@ -22,6 +22,7 @@ type MemberinfoResponse struct {
 	ID        string    `json:"id" example:"123456"`
 	Name      string    `json:"name" example:"test"`
 	Birthday  string    `json:"birthday" example:"2021-01-01"`
+	Gender    int32     `json: "gender" example:"1"`
 	Email     string    `json:"email" example:"example@example.com"`
 	CreatedAt time.Time `json:"created_at" example:"2021-01-01 00:00:00"`
 	UpdatedAt time.Time `json:"updated_at" example:"2021-01-01 00:00:00"`
@@ -59,6 +60,7 @@ func (c MemberController) GetMemberInfo(ctx *gin.Context) {
 		ID:        members.Id,
 		Name:      responses.NullableString(members.Name),
 		Birthday:  responses.NullableDate(members.Birthday),
+		Gender:    responses.NullableInt(members.Gender),
 		Email:     responses.NullableString(members.Email),
 		CreatedAt: members.CreatedAt,
 		UpdatedAt: members.UpdatedAt,
