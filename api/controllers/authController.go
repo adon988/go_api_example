@@ -28,7 +28,7 @@ type LoginResonse struct {
 // @Tags auth
 // @Accept  json
 // @Produce  json
-// @param req body LoginVerify true "req"
+// @param req body requests.LoginRequeset true "req"
 // @Failure 400 {object} responses.ResponseFail "msg: username or password error"
 // @Failure 400 {object} responses.ResponseFail "msg: account not exists"
 // @success 200 {object} LoginResonse    "{"code":0,"data":{"token":"token"},msg":"success"}"

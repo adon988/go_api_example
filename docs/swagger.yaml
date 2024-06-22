@@ -21,36 +21,6 @@ definitions:
         example: success
         type: string
     type: object
-  controllers.LoginVerify:
-    properties:
-      password:
-        example: "123456"
-        type: string
-      username:
-        example: test
-        type: string
-    required:
-    - password
-    - username
-    type: object
-  controllers.MemberUpdateVerify:
-    properties:
-      age:
-        example: 18
-        type: integer
-      birthday:
-        example: "2021-01-01"
-        type: string
-      email:
-        example: example@example.com
-        type: string
-      gender:
-        example: 1
-        type: integer
-      name:
-        example: test
-        type: string
-    type: object
   controllers.MemberinfoResponse:
     properties:
       birthday:
@@ -78,7 +48,34 @@ definitions:
         example: jwt token
         type: string
     type: object
-  response.ResponseFail:
+  requests.LoginRequeset:
+    properties:
+      password:
+        example: "123456"
+        type: string
+      username:
+        example: test
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  requests.MemberUpdateRequest:
+    properties:
+      birthday:
+        example: "2021-01-01"
+        type: string
+      email:
+        example: example@example.com
+        type: string
+      gender:
+        example: 1
+        type: integer
+      name:
+        example: test
+        type: string
+    type: object
+  responses.ResponseFail:
     properties:
       code:
         example: -1
@@ -90,7 +87,7 @@ definitions:
         example: fail reason
         type: string
     type: object
-  response.ResponseSuccess:
+  responses.ResponseSuccess:
     properties:
       code:
         example: 0
@@ -116,7 +113,7 @@ paths:
         name: req
         required: true
         schema:
-          $ref: '#/definitions/controllers.LoginVerify'
+          $ref: '#/definitions/requests.LoginRequeset'
       produces:
       - application/json
       responses:
@@ -127,7 +124,7 @@ paths:
         "400":
           description: 'msg: account not exists'
           schema:
-            $ref: '#/definitions/response.ResponseFail'
+            $ref: '#/definitions/responses.ResponseFail'
       summary: Login
       tags:
       - auth
@@ -142,19 +139,19 @@ paths:
         name: req
         required: true
         schema:
-          $ref: '#/definitions/controllers.LoginVerify'
+          $ref: '#/definitions/requests.LoginRequeset'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.ResponseSuccess'
+            $ref: '#/definitions/responses.ResponseSuccess'
         "400":
           description: 'msg: account already exists(:0) \n msg: failed to create account(:1,
             :2)'
           schema:
-            $ref: '#/definitions/response.ResponseFail'
+            $ref: '#/definitions/responses.ResponseFail'
       summary: Register
       tags:
       - auth
@@ -169,7 +166,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.ResponseSuccess'
+            $ref: '#/definitions/responses.ResponseSuccess'
         "400":
           description: Bad Request
           schema:
@@ -209,14 +206,14 @@ paths:
         name: req
         required: true
         schema:
-          $ref: '#/definitions/controllers.MemberUpdateVerify'
+          $ref: '#/definitions/requests.MemberUpdateRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.ResponseSuccess'
+            $ref: '#/definitions/responses.ResponseSuccess'
         "400":
           description: Bad Request
           schema:

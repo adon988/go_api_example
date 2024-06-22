@@ -35,7 +35,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controllers.LoginVerify"
+                            "$ref": "#/definitions/requests.LoginRequeset"
                         }
                     }
                 ],
@@ -49,7 +49,7 @@ const docTemplate = `{
                     "400": {
                         "description": "msg: account not exists",
                         "schema": {
-                            "$ref": "#/definitions/response.ResponseFail"
+                            "$ref": "#/definitions/responses.ResponseFail"
                         }
                     }
                 }
@@ -75,7 +75,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controllers.LoginVerify"
+                            "$ref": "#/definitions/requests.LoginRequeset"
                         }
                     }
                 ],
@@ -83,13 +83,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.ResponseSuccess"
+                            "$ref": "#/definitions/responses.ResponseSuccess"
                         }
                     },
                     "400": {
                         "description": "msg: account already exists(:0) \\n msg: failed to create account(:1, :2)",
                         "schema": {
-                            "$ref": "#/definitions/response.ResponseFail"
+                            "$ref": "#/definitions/responses.ResponseFail"
                         }
                     }
                 }
@@ -149,7 +149,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.ResponseSuccess"
+                            "$ref": "#/definitions/responses.ResponseSuccess"
                         }
                     },
                     "400": {
@@ -184,7 +184,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controllers.MemberUpdateVerify"
+                            "$ref": "#/definitions/requests.MemberUpdateRequest"
                         }
                     }
                 ],
@@ -192,7 +192,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.ResponseSuccess"
+                            "$ref": "#/definitions/responses.ResponseSuccess"
                         }
                     },
                     "400": {
@@ -238,48 +238,6 @@ const docTemplate = `{
                 }
             }
         },
-        "controllers.LoginVerify": {
-            "type": "object",
-            "required": [
-                "password",
-                "username"
-            ],
-            "properties": {
-                "password": {
-                    "type": "string",
-                    "example": "123456"
-                },
-                "username": {
-                    "type": "string",
-                    "example": "test"
-                }
-            }
-        },
-        "controllers.MemberUpdateVerify": {
-            "type": "object",
-            "properties": {
-                "age": {
-                    "type": "integer",
-                    "example": 18
-                },
-                "birthday": {
-                    "type": "string",
-                    "example": "2021-01-01"
-                },
-                "email": {
-                    "type": "string",
-                    "example": "example@example.com"
-                },
-                "gender": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "name": {
-                    "type": "string",
-                    "example": "test"
-                }
-            }
-        },
         "controllers.MemberinfoResponse": {
             "type": "object",
             "properties": {
@@ -318,7 +276,45 @@ const docTemplate = `{
                 }
             }
         },
-        "response.ResponseFail": {
+        "requests.LoginRequeset": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "example": "123456"
+                },
+                "username": {
+                    "type": "string",
+                    "example": "test"
+                }
+            }
+        },
+        "requests.MemberUpdateRequest": {
+            "type": "object",
+            "properties": {
+                "birthday": {
+                    "type": "string",
+                    "example": "2021-01-01"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "example@example.com"
+                },
+                "gender": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "test"
+                }
+            }
+        },
+        "responses.ResponseFail": {
             "type": "object",
             "properties": {
                 "code": {
@@ -335,7 +331,7 @@ const docTemplate = `{
                 }
             }
         },
-        "response.ResponseSuccess": {
+        "responses.ResponseSuccess": {
             "type": "object",
             "properties": {
                 "code": {

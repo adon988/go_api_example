@@ -73,7 +73,7 @@ func (c MemberController) GetMemberInfo(ctx *gin.Context) {
 // @Tags member
 // @Accept  json
 // @Produce  json
-// @Param req body requests.MemberUpdateRequesettrue "req" default({"name":"test","age":18,"email":"","address":""})
+// @Param req body requests.MemberUpdateRequest true "req" default({"name":"test2", "email":"","gender":0, "birthday":"2021-01-01"})
 // @Security ApiKeyAuth
 // @success 200 {object} responses.ResponseSuccess
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":"failed to update member"}'
@@ -82,7 +82,7 @@ func (c MemberController) UpdateMember(ctx *gin.Context) {
 
 	memberId, _ := ctx.Get("account")
 
-	var req requests.MemberUpdateRequeset
+	var req requests.MemberUpdateRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
