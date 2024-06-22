@@ -1,11 +1,9 @@
 package services
 
 import (
-	"fmt"
 	"testing"
 	"time"
 
-	"github.com/adon988/go_api_example/api/repository"
 	"github.com/adon988/go_api_example/models"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/driver/sqlite"
@@ -25,19 +23,29 @@ type MemberRepositoryMock struct {
 	DB *gorm.DB
 }
 
-func MockMemberRepository(db *gorm.DB) repository.MemberRepository {
-	return &MemberRepositoryMock{DB: db}
-}
+func TestMemberService_UpdateMember(t *testing.T) {
+	// Create a new mock gorm.DB instance
+	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
 
-func (r *MemberRepositoryMock) GetMemberInfo(id string) (*models.Member, error) {
-	// Mock the behavior of the memberRepo.GetMemberInfo method
+	// migrate schema
+	mockDB.AutoMigrate(&models.Member{})
+	// Create default member data
+	id := "1"
 	name := "John Doe"
 	birthday := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
-	email := "asdf@adsf.asdf"
-	if id == "1" {
-		return &models.Member{Id: "1", Name: &name, Birthday: &birthday, Email: &email}, nil
-	}
-	return nil, fmt.Errorf("member not found")
+	email := "john@example.com"
+	gender := 1
+	origMember := &models.Member{Id: id, Name: &name, Birthday: &birthday, Email: &email, Gender: &gender}
+	mockDB.Create(&origMember)
+
+	// Mock the behavior of the DB.First method
+	name = "John Doe2"
+	memberMock := &models.Member{Name: &name}
+
+	// Update member
+	service := NewMemberService(mockDB)
+	err := service.UpdateMember(id, *memberMock)
+	assert.Nil(t, err)
 }
 
 func TestMemberService_GetMemberInfo(t *testing.T) {

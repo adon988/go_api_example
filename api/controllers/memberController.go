@@ -98,9 +98,10 @@ func (c MemberController) UpdateMember(ctx *gin.Context) {
 		Gender:   &req.Gender,
 	}
 
-	result := Db.Where("id = ?", memberId).Updates(&member)
+	memberService := services.NewMemberService(Db)
+	result := memberService.UpdateMember(memberId.(string), member)
 
-	if result.Error != nil {
+	if result != nil {
 		responses.FailWithMessage("update member error", ctx)
 		return
 	}

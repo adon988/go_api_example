@@ -19,3 +19,7 @@ func NewMemberService(db *gorm.DB) *MemberService {
 func (service MemberService) GetMemberInfo(id string) (*models.Member, error) {
 	return service.memberRepo.GetMemberInfo(id)
 }
+
+func (service MemberService) UpdateMember(id string, data models.Member) error {
+	return service.memberRepo.UpdateMember(id, data)
+}
