@@ -6,6 +6,7 @@ import (
 
 	"github.com/adon988/go_api_example/models"
 	"github.com/stretchr/testify/assert"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -95,7 +96,15 @@ func TestMemberService_DeleteMember(t *testing.T) {
 	email := "john@example.com"
 	gender := int32(1)
 	mockMember := &models.Member{Id: id, Name: &name, Birthday: &birthday, Email: &email, Gender: &gender}
-
+	// migrate schema
+	mockDB.AutoMigrate(&models.Authentication{})
+	// Create default member data
+	username := "john"
+	password, _ := bcrypt.GenerateFromPassword([]byte("mypassword"), bcrypt.DefaultCost)
+	memberId := id
+	Type := "ApikeyAuth"
+	oriAuth := &models.Authentication{Username: username, Password: password, MemberId: memberId, Type: &Type}
+	mockDB.Create(&oriAuth)
 	// migrate schema
 	mockDB.AutoMigrate(&models.Member{})
 	// auto insert data to db with mock member
@@ -103,7 +112,7 @@ func TestMemberService_DeleteMember(t *testing.T) {
 
 	MemberService := NewMemberService(mockDB)
 
-	err := MemberService.DeleteMember(id)
+	err := MemberService.DeleteMemberAndAuth(id)
 
 	assert.Nil(t, err)
 

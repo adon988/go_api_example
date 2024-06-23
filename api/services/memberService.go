@@ -8,11 +8,13 @@ import (
 
 type MemberService struct {
 	memberRepo repository.MemberRepository
+	authRepo   repository.AuthRepository
 }
 
 func NewMemberService(db *gorm.DB) *MemberService {
 	return &MemberService{
 		memberRepo: repository.NewMemberRepository(db),
+		authRepo:   repository.NewAuthRepository(db),
 	}
 }
 
@@ -24,6 +26,12 @@ func (service MemberService) UpdateMember(id string, data models.Member) error {
 	return service.memberRepo.UpdateMember(id, data)
 }
 
-func (service MemberService) DeleteMember(id string) error {
-	return service.memberRepo.DeleteMember(id)
+func (service MemberService) DeleteMemberAndAuth(id string) error {
+	if err := service.authRepo.DeleteAuth(id); err != nil {
+		return err
+	}
+	if err := service.memberRepo.DeleteMember(id); err != nil {
+		return err
+	}
+	return nil
 }

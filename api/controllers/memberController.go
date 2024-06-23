@@ -22,7 +22,7 @@ type MemberinfoResponse struct {
 	ID        string    `json:"id" example:"123456"`
 	Name      string    `json:"name" example:"test"`
 	Birthday  string    `json:"birthday" example:"2021-01-01"`
-	Gender    int32     `json: "gender" example:"1"`
+	Gender    int32     `json:"gender" example:"1"`
 	Email     string    `json:"email" example:"example@example.com"`
 	CreatedAt time.Time `json:"created_at" example:"2021-01-01 00:00:00"`
 	UpdatedAt time.Time `json:"updated_at" example:"2021-01-01 00:00:00"`
@@ -127,16 +127,9 @@ func (c MemberController) DeleteMember(ctx *gin.Context) {
 
 	Db, _ := c.InfoDb.InitDB()
 	tx := Db.Begin() // start a transaction
-	// Delete auth openid
-	err := services.NewAuthService(Db).DeleteAuth(memberId.(string))
-	if err != nil {
-		tx.Rollback()
-		responses.FailWithMessage("failed to delete auth openid", ctx)
-		return
-	}
 
-	// Delete member
-	err = services.NewMemberService(Db).DeleteMember(memberId.(string))
+	// Delete member and auth
+	err := services.NewMemberService(Db).DeleteMemberAndAuth(memberId.(string))
 	if err != nil {
 		tx.Rollback()
 		responses.FailWithMessage("failed to delete member", ctx)
