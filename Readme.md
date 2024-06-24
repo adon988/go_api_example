@@ -104,3 +104,9 @@ func main() {
 	docs.SwaggerInfo.BasePath = "/v2"
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 ```
+
+### DB cluster (read/write) resolver
+
+https://gorm.io/docs/dbresolver.html
+
+utils/database.go 可使用 database connection resolver 

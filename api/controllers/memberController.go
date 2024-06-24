@@ -10,6 +10,7 @@ import (
 	"github.com/adon988/go_api_example/models/responses"
 	"github.com/adon988/go_api_example/utils"
 	"github.com/gin-gonic/gin"
+	"gorm.io/plugin/dbresolver"
 )
 
 type MemberController struct {
@@ -124,7 +125,9 @@ func (c MemberController) DeleteMember(ctx *gin.Context) {
 	memberId, _ := ctx.Get("account")
 
 	Db, _ := c.InfoDb.InitDB()
-	tx := Db.Begin() // start a transaction
+
+	// Use Write Mode: read user from sources `db1`
+	tx := Db.Clauses(dbresolver.Write).Begin()
 
 	// Delete member and auth
 	err := services.NewMemberService(Db).DeleteMemberAndAuth(memberId.(string))

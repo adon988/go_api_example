@@ -9,6 +9,7 @@ import (
 	"github.com/adon988/go_api_example/utils"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/plugin/dbresolver"
 )
 
 type AuthController struct {
@@ -83,7 +84,8 @@ func (c AuthController) Register(ctx *gin.Context) {
 
 	Db, _ := c.InfoDb.InitDB()
 
-	tx := Db.Begin() // start a transaction
+	// Use Write Mode: read user from sources `db1`
+	tx := Db.Clauses(dbresolver.Write).Begin()
 
 	authService := services.NewAuthService(tx)
 	authType := "ApikeyAuth"
