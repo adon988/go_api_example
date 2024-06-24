@@ -7,6 +7,7 @@ import (
 
 type MemberRepository interface {
 	GetMemberInfo(id string) (*models.Member, error)
+	CreateMember(id string) error
 	UpdateMember(id string, data models.Member) error
 	DeleteMember(id string) error
 }
@@ -27,6 +28,14 @@ func (r *MemberRepositoryImpl) GetMemberInfo(id string) (*models.Member, error) 
 		return nil, err
 	}
 	return &member, nil
+}
+
+func (r *MemberRepositoryImpl) CreateMember(id string) error {
+	member := &models.Member{
+		Id: id,
+	}
+	err := r.DB.Create(&member)
+	return err.Error
 }
 
 func (r *MemberRepositoryImpl) UpdateMember(id string, data models.Member) error {

@@ -19,6 +19,30 @@ func TestNewService(t *testing.T) {
 	assert.NotNil(t, service.authRepo)
 }
 
+func TestAuthService_Register(t *testing.T) {
+	// Create a new mock gorm.DB instance
+	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
+
+	// migrate schema
+	mockDB.AutoMigrate(&models.Authentication{})
+	mockDB.AutoMigrate(&models.Member{})
+	// Create a new instance of the MemberRepositoryImpl
+	service := NewAuthService(mockDB)
+	username := "john"
+	password, _ := bcrypt.GenerateFromPassword([]byte("mypassword"), bcrypt.DefaultCost)
+	memberId := "1"
+	Type := "ApikeyAuth"
+	oriAuth := &models.Authentication{Username: username, Password: password, MemberId: memberId, Type: &Type}
+	err := service.Register(*oriAuth)
+	assert.Nil(t, err)
+
+	mockDB.First(&oriAuth, "username = ?", username)
+	assert.Equal(t, oriAuth.Username, username)
+	member := models.Member{}
+	mockDB.First(&member, "id = ?", memberId)
+	assert.Equal(t, member.Id, memberId)
+}
+
 func TestAuthService_DeleteAuth(t *testing.T) {
 	// Create a new mock gorm.DB instance
 	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})

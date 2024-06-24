@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/adon988/go_api_example/api/middleware"
+	"github.com/adon988/go_api_example/api/services"
 	models "github.com/adon988/go_api_example/models"
 	"github.com/adon988/go_api_example/models/requests"
 	"github.com/adon988/go_api_example/models/responses"
@@ -84,38 +85,20 @@ func (c AuthController) Register(ctx *gin.Context) {
 
 	tx := Db.Begin() // start a transaction
 
-	var auth models.Authentication
-	result := tx.First(&auth, "username = ?", req.Username)
-
-	if result.RowsAffected > 0 {
-		tx.Rollback()
-		responses.FailWithMessage("account already exists(:0)", ctx)
-		return
-	}
-
-	// generate account
-	auth = models.Authentication{
+	authService := services.NewAuthService(tx)
+	authType := "ApikeyAuth"
+	auth := models.Authentication{
 		MemberId: authId,
 		Username: req.Username,
 		Password: password,
+		Type:     &authType,
 	}
 
-	authCreateResult := tx.Create(&auth)
+	err := authService.Register(auth)
 
-	if authCreateResult.Error != nil {
+	if err != nil {
 		tx.Rollback()
-		responses.FailWithMessage("failed to create account(:1)", ctx)
-		return
-	}
-
-	// create member after account generate successfully
-	member := models.Member{
-		Id: authId,
-	}
-	memberCreateResult := tx.Create(&member)
-	if memberCreateResult.Error != nil {
-		tx.Rollback()
-		responses.FailWithMessage("failed to create account (:2)", ctx)
+		responses.FailWithMessage(err.Error(), ctx)
 		return
 	}
 

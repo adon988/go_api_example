@@ -9,6 +9,8 @@ var authentication models.Authentication
 
 type AuthRepository interface {
 	DeleteAuth(id string) error
+	GetAuthenticationByUsername(username string) (*gorm.DB, models.Authentication)
+	CreateAuthentication(auth models.Authentication) error
 }
 
 type AuthRepositoryImpl struct {
@@ -24,4 +26,13 @@ func (r *AuthRepositoryImpl) DeleteAuth(id string) error {
 		return err
 	}
 	return nil
+}
+
+func (r *AuthRepositoryImpl) GetAuthenticationByUsername(username string) (*gorm.DB, models.Authentication) {
+	result := r.Db.First(&authentication, "username = ?", username)
+	return result, authentication
+}
+
+func (r *AuthRepositoryImpl) CreateAuthentication(auth models.Authentication) error {
+	return r.Db.Create(&auth).Error
 }

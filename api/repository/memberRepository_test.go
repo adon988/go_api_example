@@ -11,6 +11,21 @@ import (
 	"gorm.io/gorm"
 )
 
+func TestMemberRepositoryImpl_CreateMember(t *testing.T) {
+	// Create a new mock DB instance
+	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
+
+	// migrare schema
+	mockDB.AutoMigrate(&models.Member{})
+	// Create a new instance of the MemberRepositoryImpl
+	repo := NewMemberRepository(mockDB)
+
+	id := "1"
+	err := repo.CreateMember(id)
+	assert.Nil(t, err)
+
+}
+
 func TestMemberRepositoryImpl_DeleteMember(t *testing.T) {
 	// Create a new mock DB instance
 	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})

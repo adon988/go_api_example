@@ -16,8 +16,6 @@ type MemberController struct {
 	InfoDb utils.InfoDb
 }
 
-var InfoDb utils.InfoDb
-
 type MemberinfoResponse struct {
 	ID        string    `json:"id" example:"123456"`
 	Name      string    `json:"name" example:"test"`
