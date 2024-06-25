@@ -22,11 +22,11 @@ type InfoDb struct {
 func (infoDb InfoDb) InitDB() (*gorm.DB, error) {
 	var err error
 	o.Do(func() {
-		dsnPrimary := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", Configs.Mysql.Username, Configs.Mysql.Password, Configs.Mysql.Host, Configs.Mysql.Port, Configs.Mysql.Database)
-		dsnReader := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", Configs.Mysql.Username, Configs.Mysql.Password, Configs.Mysql.Host, Configs.Mysql.Port, Configs.Mysql.Database)
+		dsnPrimary := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", Configs.Db.Writer.Username, Configs.Db.Writer.Password, Configs.Db.Writer.Host, Configs.Db.Writer.Port, Configs.Db.Writer.Database)
+		dsnReader := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", Configs.Db.Reader.Username, Configs.Db.Reader.Password, Configs.Db.Reader.Host, Configs.Db.Reader.Port, Configs.Db.Reader.Database)
 		fmt.Println("Init DB once", dsnPrimary)
 		db, err = func() (*gorm.DB, error) {
-			db, err := gorm.Open(mysql.Open(dsnPrimary), &gorm.Config{}) // db1 writer
+			db, err := gorm.Open(mysql.Open(dsnPrimary), &gorm.Config{}) // db1 Reader
 			if err != nil {
 				panic("Failed to connect to database: " + err.Error())
 			}
@@ -35,6 +35,10 @@ func (infoDb InfoDb) InitDB() (*gorm.DB, error) {
 				// Replicas: []gorm.Dialector{mysql.Open(dsn)}, // optional db3, db4
 
 			}))
+			// Debug mode
+			if Configs.Db.Debug_Mode {
+				db = db.Debug()
+			}
 			fmt.Println("Connection to database!")
 			return db, err
 		}()

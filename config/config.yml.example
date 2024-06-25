@@ -1,20 +1,22 @@
 app:
   name: golang_api_example
   prefix: gae
-mysql:
-  host: 127.0.0.1
-  port: 3306
-  username: default
-  password: deafult
-  database: local_test
+db:
+  writer:
+    host: 127.0.0.1
+    port: 3306
+    username: root
+    password: root
+    database: local_test
+  reader:
+    host: 127.0.0.1
+    port: 3306
+    username: root
+    password: root
+    database: local_test
+  debug_mode: true
 jwt:
-  secret: "jwt_secret_sting"
+  secret: this is jwt secret
   expire_at: 7200
   effect_at: -1000
   issuer: adam
-doc:
-  title: "Golang API Example"
-  description: "Golang API Example"
-  version: "1.0.0"
-  host: "localhost:8080"
-  basePath: "/"

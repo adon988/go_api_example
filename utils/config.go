@@ -14,6 +14,12 @@ type Mysql struct {
 	Password string
 	Database string
 }
+
+type Db struct {
+	Writer     Mysql
+	Reader     Mysql
+	Debug_Mode bool
+}
 type App struct {
 	Name   string
 	Prefix string
@@ -41,7 +47,7 @@ type Doc struct {
 }
 type Config struct {
 	App   App
-	Mysql Mysql
+	Db    Db
 	Redis Redis
 	Jwt   Jwt
 	Doc   Doc
