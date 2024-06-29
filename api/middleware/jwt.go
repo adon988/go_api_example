@@ -29,9 +29,9 @@ func GenToken(account string) (string, error) {
 	c := MyClaims{
 		account,
 		jwt.StandardClaims{
-			NotBefore: time.Now().Unix() + utils.Configs.Jwt.Effect_At, //生效時間
-			ExpiresAt: time.Now().Unix() * utils.Configs.Jwt.Expire_At, //失效時間
-			Issuer:    utils.Configs.Jwt.Issuer,                        //簽發者
+			NotBefore: time.Now().Unix() + utils.Configs.Jwt.Effect_At, //effect time 生效時間
+			ExpiresAt: time.Now().Unix() * utils.Configs.Jwt.Expire_At, //expire at 過期時間
+			Issuer:    utils.Configs.Jwt.Issuer,                        //issuer 簽署者
 		},
 	}
 	// Choose specific algorithm
