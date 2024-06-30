@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+	"strconv"
+
 	router "github.com/adon988/go_api_example/api/route"
 	migrations "github.com/adon988/go_api_example/migrations"
 	"github.com/adon988/go_api_example/utils"
@@ -27,8 +30,16 @@ func init() {
 // @name Authorization
 // @BasePath /
 func main() {
+	if utils.Configs.Gin.Debug_Mode {
+		gin.SetMode(gin.DebugMode) //gin debug mode
+	} else {
+		gin.SetMode(gin.ReleaseMode) //gin release mode
+	}
 	r := gin.Default()
+	r.Use(gin.Recovery()) // prevent gin panic
+	r.Use(gin.Logger())   // gin default logger
 	router.GetRouter(r)
-
-	r.Run(`:8080`)
+	fmt.Println()
+	port := utils.Configs.Gin.Port
+	r.Run(":" + strconv.Itoa(port))
 }

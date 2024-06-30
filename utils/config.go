@@ -45,12 +45,19 @@ type Doc struct {
 	Host        string
 	BasePath    string
 }
+type Gin struct {
+	Debug_Mode    bool
+	Port          int
+	Read_Timeout  int
+	Write_Timeout int
+}
 type Config struct {
 	App   App
 	Db    Db
 	Redis Redis
 	Jwt   Jwt
 	Doc   Doc
+	Gin   Gin
 }
 
 var Configs Config
