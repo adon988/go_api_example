@@ -1,6 +1,9 @@
 package migrations
 
-import "github.com/adon988/go_api_example/utils"
+import (
+	model "github.com/adon988/go_api_example/models"
+	"github.com/adon988/go_api_example/utils"
+)
 
 var InfoDb utils.InfoDb
 
@@ -9,6 +12,7 @@ func AutoMigrations() {
 	if err != nil {
 		panic("init db err" + err.Error())
 	}
-	MembersTableUp(Db)
-	AuthenticationTableUp(Db)
+	Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Authentication{})
+	Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Member{})
+
 }
