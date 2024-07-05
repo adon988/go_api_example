@@ -19,5 +19,6 @@ func AutoMigrations() {
 	Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Word{})
 	Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Count{})
 	Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Role{})
+	Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Course{})
 
 }

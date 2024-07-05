@@ -1,12 +1,15 @@
 package repository
 
 import (
+	"fmt"
+
 	"github.com/adon988/go_api_example/models"
 	"gorm.io/gorm"
 )
 
 type MemberRepository interface {
 	GetMemberInfo(id string) (*models.Member, error)
+	GetMembersWithRoles(id string) (*models.Member, error)
 	CreateMember(id string) error
 	UpdateMember(id string, data models.Member) error
 	DeleteMember(id string) error
@@ -27,6 +30,20 @@ func (r *MemberRepositoryImpl) GetMemberInfo(id string) (*models.Member, error) 
 	if err := r.DB.First(&member, "id = ?", id).Error; err != nil {
 		return nil, err
 	}
+	return &member, nil
+}
+
+func (r *MemberRepositoryImpl) GetMembersWithRoles(id string) (*models.Member, error) {
+	var member models.Member
+	err := r.DB.Joins("Role").First(&member, "members.id = ?", id).Error
+	if err != nil {
+		return nil, err
+	}
+
+	fmt.Println(member.Role)
+	fmt.Println("Hello")
+	fmt.Println(member.Role.Id)
+	fmt.Println(member.Role.Title)
 	return &member, nil
 }
 

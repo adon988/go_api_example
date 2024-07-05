@@ -33,6 +33,7 @@ func GetRouter(r *gin.Engine) {
 	memberGroup.Use(middleware.CORSMiddleware())
 	{
 		memberGroup.GET("/", memberController.GetMemberInfo)
+		memberGroup.GET("/roles", memberController.FindMembersWithRoles)
 		memberGroup.PATCH("/", memberController.UpdateMember)
 		memberGroup.DELETE("/", memberController.DeleteMember)
 	}
