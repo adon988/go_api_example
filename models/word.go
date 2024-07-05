@@ -8,7 +8,7 @@ import (
 
 type Word struct {
 	Id            string `gorm:"primaryKey;size:24"`
-	UnitId        string `gorm:"size:24"`
+	UnitId        string `gorm:"size:24;index"`
 	Word          string `gorm:"size:255"`
 	Definition    string `gorm:"longtext"`
 	Image         string `gorm:"longtext"`
