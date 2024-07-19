@@ -1,0 +1,27 @@
+app:
+  name: golang_api_example
+  prefix: gae
+db:
+  writer:
+    host: 127.0.0.1
+    port: 3306
+    username: root
+    password: root
+    database: local_test
+  reader:
+    host: 127.0.0.1
+    port: 3306
+    username: root
+    password: root
+    database: local_test
+  debug_mode: true
+jwt:
+  secret: this is jwt secret
+  expire_at: 7200
+  effect_at: -1000
+  issuer: adam
+gin:
+  debug_mode: false
+  port: 8080
+  read_timeout: 60
+  write_timeout: 60

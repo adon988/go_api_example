@@ -10,6 +10,7 @@ import (
 
 var memberController controllers.MemberController
 var authController controllers.AuthController
+var roleController controllers.RoleController
 
 func GetRouter(r *gin.Engine) {
 
@@ -28,6 +29,16 @@ func GetRouter(r *gin.Engine) {
 		authGroup.POST("/register", authController.Register)
 	}
 
+	adminGroup := r.Group("/admin")
+	adminGroup.Use(middleware.JWTAuthMiddleware())
+	adminGroup.Use(middleware.CORSMiddleware())
+	{
+		adminGroup.GET("/roles", roleController.GetRole)
+		adminGroup.POST("/roles", roleController.CreateRole)
+		adminGroup.PATCH("/roles", roleController.UpdateRole)
+		adminGroup.DELETE("/roles", roleController.DeleteRole)
+	}
+
 	memberGroup := r.Group("/member")
 	memberGroup.Use(middleware.JWTAuthMiddleware())
 	memberGroup.Use(middleware.CORSMiddleware())
@@ -37,4 +48,5 @@ func GetRouter(r *gin.Engine) {
 		memberGroup.PATCH("/", memberController.UpdateMember)
 		memberGroup.DELETE("/", memberController.DeleteMember)
 	}
+
 }

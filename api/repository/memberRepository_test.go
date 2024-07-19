@@ -40,7 +40,7 @@ func TestMemberRepositoryImpl_DeleteMember(t *testing.T) {
 	email := "john@example.com"
 	gender := int32(1)
 	roleId := int32(1)
-	origMember := &models.Member{Id: id, Name: &name, Birthday: &birthday, Email: &email, Gender: &gender, RoleId: &roleId}
+	origMember := &models.Member{Id: id, Name: &name, Birthday: &birthday, Email: &email, Gender: &gender, RoleId: roleId}
 	mockDB.Create(&origMember)
 
 	err := repo.DeleteMember(id)
@@ -63,14 +63,14 @@ func TestMemberRepositoryImpl_UPdateMember(t *testing.T) {
 	email := "john@example.com"
 	roleId := int32(1)
 	gender := int32(1)
-	origMember := &models.Member{Id: id, Name: &name, Birthday: &birthday, Email: &email, Gender: &gender, RoleId: &roleId}
+	origMember := &models.Member{Id: id, Name: &name, Birthday: &birthday, Email: &email, Gender: &gender, RoleId: roleId}
 	mockDB.Create(&origMember)
 
 	name = "Jane Doe2"
 	birthday = time.Date(2024, 1, 2, 0, 0, 0, 0, time.UTC)
 	email = "john2@example.com"
 	gender = int32(0)
-	mockMember := &models.Member{Name: &name, Birthday: &birthday, Email: &email, Gender: &gender, RoleId: &roleId}
+	mockMember := &models.Member{Name: &name, Birthday: &birthday, Email: &email, Gender: &gender, RoleId: roleId}
 	err := repo.UpdateMember(id, *mockMember)
 	assert.Nil(t, err)
 
@@ -97,7 +97,7 @@ func TestMemberRepositoryImpl_GetMemberInfo(t *testing.T) {
 	roleId := int32(1)
 	email := "john@example.com"
 	gender := int32(1)
-	mockMember := &models.Member{Id: id, Name: &name, Birthday: &birthday, Email: &email, Gender: &gender, RoleId: &roleId}
+	mockMember := &models.Member{Id: id, Name: &name, Birthday: &birthday, Email: &email, Gender: &gender, RoleId: roleId}
 
 	// migrate schema
 	mockDB.AutoMigrate(&models.Member{})
@@ -142,7 +142,7 @@ func TestMemberRepositoryImpl_GetMemberRole(t *testing.T) {
 	email := "john@example.com"
 	gender := int32(1)
 
-	mockMember := &models.Member{Id: id, Name: &name, Birthday: &birthday, Email: &email, Gender: &gender, RoleId: &roleId}
+	mockMember := &models.Member{Id: id, Name: &name, Birthday: &birthday, Email: &email, Gender: &gender, RoleId: roleId}
 
 	// migrate schema
 	mockDB.AutoMigrate(&models.Member{})
