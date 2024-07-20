@@ -3,8 +3,8 @@ package repository
 import (
 	"testing"
 
-	"github.com/adon988/go_api_example/models"
-	"github.com/adon988/go_api_example/utils"
+	"github.com/adon988/go_api_example/internal/models"
+	"github.com/adon988/go_api_example/internal/utils"
 	"github.com/stretchr/testify/assert"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/sqlite"

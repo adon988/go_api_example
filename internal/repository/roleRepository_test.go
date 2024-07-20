@@ -3,7 +3,7 @@ package repository
 import (
 	"testing"
 
-	"github.com/adon988/go_api_example/models"
+	"github.com/adon988/go_api_example/internal/models"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"

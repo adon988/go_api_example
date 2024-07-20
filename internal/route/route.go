@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"github.com/adon988/go_api_example/api/controllers"
-	"github.com/adon988/go_api_example/api/middleware"
+	"github.com/adon988/go_api_example/internal/controllers"
+	"github.com/adon988/go_api_example/internal/middleware"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"

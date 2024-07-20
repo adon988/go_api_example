@@ -3,7 +3,7 @@ package repository
 import (
 	"fmt"
 
-	"github.com/adon988/go_api_example/models"
+	"github.com/adon988/go_api_example/internal/models"
 	"gorm.io/gorm"
 )
 

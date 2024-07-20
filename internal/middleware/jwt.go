@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/adon988/go_api_example/utils"
+	"github.com/adon988/go_api_example/internal/utils"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )

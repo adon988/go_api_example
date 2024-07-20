@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/adon988/go_api_example/api/repository"
-	"github.com/adon988/go_api_example/models"
+	"github.com/adon988/go_api_example/internal/models"
+	"github.com/adon988/go_api_example/internal/repository"
 	"gorm.io/gorm"
 )
 

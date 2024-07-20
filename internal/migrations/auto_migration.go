@@ -1,8 +1,8 @@
 package migrations
 
 import (
-	model "github.com/adon988/go_api_example/models"
-	"github.com/adon988/go_api_example/utils"
+	model "github.com/adon988/go_api_example/internal/models"
+	"github.com/adon988/go_api_example/internal/utils"
 )
 
 var InfoDb utils.InfoDb

@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strconv"
 
-	router "github.com/adon988/go_api_example/api/route"
-	migrations "github.com/adon988/go_api_example/migrations"
-	"github.com/adon988/go_api_example/utils"
+	migrations "github.com/adon988/go_api_example/internal/migrations"
+	router "github.com/adon988/go_api_example/internal/route"
+	"github.com/adon988/go_api_example/internal/utils"
 	"github.com/gin-gonic/gin"
 )
 

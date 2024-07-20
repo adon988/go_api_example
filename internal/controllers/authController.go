@@ -1,12 +1,12 @@
 package controllers
 
 import (
-	"github.com/adon988/go_api_example/api/middleware"
-	"github.com/adon988/go_api_example/api/services"
-	models "github.com/adon988/go_api_example/models"
-	"github.com/adon988/go_api_example/models/requests"
-	"github.com/adon988/go_api_example/models/responses"
-	"github.com/adon988/go_api_example/utils"
+	"github.com/adon988/go_api_example/internal/middleware"
+	models "github.com/adon988/go_api_example/internal/models"
+	"github.com/adon988/go_api_example/internal/services"
+	"github.com/adon988/go_api_example/internal/utils"
+	"github.com/adon988/go_api_example/internal/utils/requests"
+	"github.com/adon988/go_api_example/internal/utils/responses"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/plugin/dbresolver"
