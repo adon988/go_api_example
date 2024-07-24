@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	migrations "github.com/adon988/go_api_example/internal/migrations"
+	"github.com/adon988/go_api_example/internal/migrations"
 	router "github.com/adon988/go_api_example/internal/route"
 	"github.com/adon988/go_api_example/internal/utils"
 	"github.com/gin-gonic/gin"
@@ -22,6 +22,13 @@ func init() {
 
 	//Init swagger
 	utils.InitSwagger()
+
+	//Init Casbin
+	utils.Casbin, err = utils.InitCasbin()
+
+	if err != nil {
+		panic("error: model:" + err.Error())
+	}
 
 }
 

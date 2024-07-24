@@ -20,3 +20,6 @@ jwt:
   expire_at: 7200
   effect_at: -1000
   issuer: adam
+acm:
+  model:
+    config: config/casbin_lib/model.conf

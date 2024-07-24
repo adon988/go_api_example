@@ -51,6 +51,12 @@ type Gin struct {
 	Read_Timeout  int
 	Write_Timeout int
 }
+type ACM_MODEL struct {
+	Config string
+}
+type ACM struct {
+	Model ACM_MODEL
+}
 type Config struct {
 	App   App
 	Db    Db
@@ -58,6 +64,7 @@ type Config struct {
 	Jwt   Jwt
 	Doc   Doc
 	Gin   Gin
+	ACM   ACM
 }
 
 var Configs Config

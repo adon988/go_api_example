@@ -109,4 +109,19 @@ func main() {
 
 https://gorm.io/docs/dbresolver.html
 
-utils/database.go 可使用 database connection resolver 
+utils/database.go 可使用 database connection resolver
+
+### Casbin
+
+The casbin permission control only used on small user and role case (like backsite, cms), the benchmarks only suitable for users < 10k.
+
+Install casbin for permission control
+```
+go get github.com/casbin/casbin/v2
+```
+
+Gorm adapter to save the policy to DB
+
+```
+go get github.com/casbin/gorm-adapter/v3
+```
