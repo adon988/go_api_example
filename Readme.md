@@ -27,6 +27,13 @@ export JWT_ISSUER=adam
 
 The environment variables will auto replace config value.
 
+### Initialize go env
+
+Directly install the go versions by [asdf](https://hoohoo.top/blog/20240315145428-asdf-quick-note/) .tool-versions with:
+
+```
+asdf install
+```
 
 ### Initialize Table
 
