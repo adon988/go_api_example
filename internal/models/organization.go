@@ -12,8 +12,8 @@ type Organization struct {
 	Order           int32  `gorm:"size:10"`
 	SourceLangeuage string `gorm:"size:255"`
 	TargetLanguage  string `gorm:"size:255"`
+	Publish         int32  `gorm:"size:1;index;default:0;comment:'(0 private, 1 public)'"`
 	CreaterId       string `gorm:"size:24;index;comment:'only note the creater id, not the permission'"`
-	Permissions     string `gorm:"type:json;column:permissions"`
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
 	DeletedAt       gorm.DeletedAt `gorm:"index"`

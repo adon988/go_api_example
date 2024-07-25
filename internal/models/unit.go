@@ -15,8 +15,7 @@ type Unit struct {
 	TargetLanguage  string `gorm:"size:255;default:null"`
 	Order           int32  `gorm:"size:10"`
 	CreaterId       string `gorm:"size:24;index;comment:'only note the creater id, not the permission'"`
-	PublishStatus   int32  `gorm:"size:10;default:3;comment:'(1 public, 2 member_public, 3 draft)'"`
-	Permissions     string `gorm:"type:json;column:permissions"`
+	Publish         int32  `gorm:"size:1;index;default:0;comment:'(0 private, 1 public)'"`
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
 	DeletedAt       gorm.DeletedAt `gorm:"index"`

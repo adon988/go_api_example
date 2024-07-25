@@ -14,6 +14,9 @@ func AutoMigrations() {
 	}
 	Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Authentication{})
 	Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Organization{})
+	Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.OriganizationPermission{})
+	Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.CoursePermission{})
+	Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.UnitPermission{})
 	Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Unit{})
 	Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Word{})
 	Db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Course{})
