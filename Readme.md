@@ -6,7 +6,7 @@ In this gorm example project, you should setting the default configuration and e
 
 At `config/config.yml.example` is a configuration example, need to rename this example to `config/config.yml` to setting database connection.
 
-``
+```
 cp confing/config.yml.example config/config.yml
 ```
 
@@ -30,12 +30,29 @@ The environment variables will auto replace config value.
 
 ### Initialize Table
 
-Run the project and auto migration to generate `members` table and execute CRUD 
-
+Run the project
 ```
 go mod tidy
 go run main.go
 ```
+
+
+### DB Migration
+
+The basic models (internal/models/basic.go) are migration mappings and can be migrated by following the migration process.
+
+Migrate all tables
+
+```
+go run cmd/migrate/main.go -automigrate
+```
+
+Migrate single table
+
+```
+go run cmd/migrate/main.go -migrate_table=Organization
+```
+
 
 ### Try APIs
 
@@ -61,7 +78,7 @@ go get -u github.com/swaggo/swag/cmd/swag
 go install github.com/swaggo/swag/cmd/swag@latest
 
 ```
-Install swag 
+Install swag
 ```
 echo 'export PATH=$PATH:$(go env GOPATH)/bin' >> ~/.zshrc
 source ~/.zshrc
@@ -125,3 +142,4 @@ Gorm adapter to save the policy to DB
 ```
 go get github.com/casbin/gorm-adapter/v3
 ```
+

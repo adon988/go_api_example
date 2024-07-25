@@ -12,6 +12,7 @@ func InitCasbin() (*casbin.Enforcer, error) {
 	var InfoDb InfoDb
 	model_config := Configs.ACM.Model.Config
 	db, _ := InfoDb.InitDB()
+	gormadapter.TurnOffAutoMigrate(db) // disable auto migrate
 	a, err := gormadapter.NewAdapterByDB(db)
 	if err != nil {
 		panic("error: adapter:" + err.Error())

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/adon988/go_api_example/internal/migrations"
 	router "github.com/adon988/go_api_example/internal/route"
 	"github.com/adon988/go_api_example/internal/utils"
 	"github.com/gin-gonic/gin"
@@ -17,8 +16,6 @@ func init() {
 	if err != nil {
 		panic("init config error:" + err.Error())
 	}
-	//Auto migrations
-	migrations.AutoMigrations()
 
 	//Init swagger
 	utils.InitSwagger()
