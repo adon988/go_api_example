@@ -7,7 +7,7 @@ import (
 )
 
 // Permission represents the permissions a member has on various entities.
-type OriganizationPermission struct {
+type OrganizationPermission struct {
 	Id        string         `gorm:"primaryKey;size:24"`
 	MemberId  string         `gorm:"size:24;index"`
 	EntityId  string         `gorm:"size:24;index"`

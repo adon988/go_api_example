@@ -3,7 +3,7 @@ package models
 var ModelsMap = map[string]interface{}{
 	"Authentication":          &Authentication{},
 	"Organization":            &Organization{},
-	"OriganizationPermission": &OriganizationPermission{},
+	"OriganizationPermission": &OrganizationPermission{},
 	"CoursePermission":        &CoursePermission{},
 	"UnitPermission":          &UnitPermission{},
 	"Unit":                    &Unit{},
