@@ -6,12 +6,18 @@ import (
 	"gorm.io/gorm"
 )
 
+var PermissionRoleEnum = map[string]bool{
+	"admin":  true,
+	"editor": true,
+	"guest":  true,
+}
+
 // Permission represents the permissions a member has on various entities.
 type OrganizationPermission struct {
 	Id        string         `gorm:"primaryKey;size:24"`
 	MemberId  string         `gorm:"size:24;index"`
 	EntityId  string         `gorm:"size:24;index"`
-	Role      string         `gorm:"size:50"` // Role type: admin, editor, view
+	Role      string         `gorm:"size:50"` // Role type: admin, editor, guest
 	CreatedAt time.Time      // Automatically managed by GORM for creation time
 	UpdatedAt time.Time      // Automatically managed by GORM for update time
 	DeletedAt gorm.DeletedAt `gorm:"index"` // Automatically managed by GORM for soft delete
