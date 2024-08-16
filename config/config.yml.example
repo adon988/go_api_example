@@ -22,4 +22,4 @@ jwt:
   issuer: adam
 acm:
   model:
-    config: config/casbin_lib/model.conf
+    config: ../../config/casbin_lib/model.conf

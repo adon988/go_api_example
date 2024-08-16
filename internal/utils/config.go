@@ -74,7 +74,7 @@ func InitConfig() error {
 	//set config file as default
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
-	viper.AddConfigPath("config/")
+	viper.AddConfigPath("../../config/")
 
 	// viper auto read all env variables, the key will auto uppercase
 	viper.AutomaticEnv()
