@@ -32,7 +32,6 @@ func init() {
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header
 // @name Authorization
-// @BasePath /
 func main() {
 	if utils.Configs.Gin.Debug_Mode {
 		gin.SetMode(gin.DebugMode) //gin debug mode

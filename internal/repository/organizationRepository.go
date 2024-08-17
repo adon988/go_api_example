@@ -8,7 +8,7 @@ import (
 )
 
 type OrganizationRepository interface {
-	CreateOrganization(member_id string, organization models.Organization) error
+	CreateOrganization(organization models.Organization) error
 	UpdateOrganization(organization models.Organization) error
 	DeleteOrganization(id string) error
 	GetOrganizationByMemberID(member_id string) ([]models.Organization, error)
@@ -24,7 +24,7 @@ type OrganizationRepositoryImpl struct {
 }
 
 // Implement the interface methods
-func (r *OrganizationRepositoryImpl) CreateOrganization(member_id string, organization models.Organization) error {
+func (r *OrganizationRepositoryImpl) CreateOrganization(organization models.Organization) error {
 	err := r.DB.Create(&organization)
 
 	if err != nil {
@@ -34,9 +34,12 @@ func (r *OrganizationRepositoryImpl) CreateOrganization(member_id string, organi
 	return nil
 }
 func (r *OrganizationRepositoryImpl) UpdateOrganization(organization models.Organization) error {
-	err := r.DB.Save(&organization)
+	err := r.DB.Where("id = ?", organization.Id).Updates(organization)
 	if err.Error != nil {
-		return err.Error
+		return fmt.Errorf("oh! %s", err.Error)
+	}
+	if err.RowsAffected == 0 {
+		return fmt.Errorf("no organization found with id: %s", organization.Id)
 	}
 	return nil
 }

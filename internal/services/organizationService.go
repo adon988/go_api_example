@@ -3,6 +3,7 @@ package services
 import (
 	"github.com/adon988/go_api_example/internal/models"
 	"github.com/adon988/go_api_example/internal/repository"
+	"github.com/adon988/go_api_example/internal/utils"
 	"gorm.io/gorm"
 )
 
@@ -12,6 +13,7 @@ type OrganizationServiceInterface interface {
 	GetOrganizationByMemberIDAndOrganizationID(member_id string, organization_id string) (models.Organization, error)
 	UpdateOrganization(organization models.Organization) error
 	DeleteOrganization(id string) error
+	GetOrganizationPermissionByOrganizationIDAndMemberID(member_id string, organization_id string) (models.OrganizationPermission, error)
 }
 
 func NewOrganizationService(db *gorm.DB) OrganizationServiceInterface {
@@ -27,8 +29,9 @@ type OrganizationService struct {
 }
 
 func (service OrganizationService) CreateOrganizationNPermission(member_id string, role string, organization models.Organization) error {
-
+	orgPerId, _ := utils.GenId()
 	organizationPermission := models.OrganizationPermission{
+		Id:       orgPerId,
 		MemberId: member_id,
 		EntityId: organization.Id,
 		Role:     role,
@@ -39,7 +42,7 @@ func (service OrganizationService) CreateOrganizationNPermission(member_id strin
 		return result
 	}
 
-	err := service.organization.CreateOrganization(member_id, organization)
+	err := service.organization.CreateOrganization(organization)
 	if err != nil {
 		return err
 	}
@@ -54,12 +57,10 @@ func (service OrganizationService) GetOrganization(member_id string) ([]models.O
 }
 
 func (service OrganizationService) UpdateOrganization(organization models.Organization) error {
-	//這裡要再檢查 role 是否有 admin 權限
 	return service.organization.UpdateOrganization(organization)
 }
 
 func (service OrganizationService) DeleteOrganization(id string) error {
-	//這裡要再檢查 role 是否有 admin 權限
 	if err := service.organizationPermission.DeleteOrganizationPermission(id); err != nil {
 		return err
 	}
@@ -67,4 +68,12 @@ func (service OrganizationService) DeleteOrganization(id string) error {
 		return err
 	}
 	return nil
+}
+
+func (service OrganizationService) GetOrganizationPermissionByOrganizationIDAndMemberID(member_id string, organization_id string) (models.OrganizationPermission, error) {
+	result, err := service.organizationPermission.GetOrganizationPermissionByOrganizationIDAndMemberID(member_id, organization_id)
+	if err != nil {
+		return models.OrganizationPermission{}, err
+	}
+	return result, nil
 }

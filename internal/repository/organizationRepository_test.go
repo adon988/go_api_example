@@ -26,7 +26,7 @@ func TestOrganizationRepository_CreateOrganization(t *testing.T) {
 		Publish:        1,
 		CreaterId:      memberId,
 	}
-	err := repo.CreateOrganization(memberId, org)
+	err := repo.CreateOrganization(org)
 	assert.Nil(t, err)
 
 	repoOP := NewOrganizationPermission(mockDB)

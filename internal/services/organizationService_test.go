@@ -30,7 +30,7 @@ func TestOrganizationService_CreateOrganizationNPermission(t *testing.T) {
 
 }
 
-func TestOrganizationService_GetOriganization(t *testing.T) {
+func TestOrganizationService_GetOrganization(t *testing.T) {
 	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
 	mockDB.AutoMigrate(&models.Organization{}, &models.OrganizationPermission{})
 
@@ -52,6 +52,33 @@ func TestOrganizationService_GetOriganization(t *testing.T) {
 	orgs, err := service.GetOrganization(memberId)
 	assert.Nil(t, err)
 	assert.Equal(t, 1, len(orgs))
+}
+
+func TestOrganizationService_GetOrganizationPermissionByOrganizationIDAndMemberID(t *testing.T) {
+	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
+	mockDB.AutoMigrate(&models.Organization{}, &models.OrganizationPermission{})
+
+	memberId := "1"
+	org := models.Organization{
+		Id:             "1",
+		Title:          "org title",
+		Order:          1,
+		SourceLanguage: "en",
+		TargetLanguage: "es",
+		Publish:        1,
+		CreaterId:      memberId,
+	}
+	role := "admin"
+	service := NewOrganizationService(mockDB)
+	result := service.CreateOrganizationNPermission(memberId, role, org)
+	assert.Nil(t, result)
+
+	orgPerm, err := service.GetOrganizationPermissionByOrganizationIDAndMemberID(memberId, "1")
+	assert.Nil(t, err)
+	assert.Equal(t, memberId, orgPerm.MemberId)
+
+	orgPerm, err = service.GetOrganizationPermissionByOrganizationIDAndMemberID(memberId, "2")
+	assert.NotNil(t, err)
 }
 
 func TestOrganizationService_UpdateOrganization(t *testing.T) {

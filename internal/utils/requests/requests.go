@@ -27,3 +27,24 @@ type RoleUpdateRequest struct {
 type RoleDeleteRequest struct {
 	Id int32 `json:"id" binding:"required" example:"1"`
 }
+
+type OrganizationCreateRequest struct {
+	Title          string `json:"title" binding:"required" example:"organization title"`
+	Order          int32  `json:"order" binding:"required" example:"1"`
+	SourceLanguage string `json:"source_language" binding:"required" example:"en"`
+	TargetLanguage string `json:"target_language" binding:"required" example:"zh"`
+	Publish        int32  `json:"publish" binding:"required" example:"1"`
+}
+
+type OrganizationUpdateRequest struct {
+	Id             string `json:"id" binding:"required" example:"1"`
+	Title          string `json:"title" example:"organization title update"`
+	Order          int32  `json:"order" example:"1"`
+	SourceLanguage string `json:"source_language" example:"en"`
+	TargetLanguage string `json:"target_language" example:"zh"`
+	Publish        int32  `json:"publish" example:"1"`
+}
+
+type OrganizationDeleteRequest struct {
+	Id string `json:"id" binding:"required" example:"1"`
+}

@@ -11,6 +11,7 @@ import (
 var memberController controllers.MemberController
 var authController controllers.AuthController
 var roleController controllers.RoleController
+var organizationController controllers.OrganizationController
 
 func GetRouter(r *gin.Engine) {
 
@@ -47,6 +48,16 @@ func GetRouter(r *gin.Engine) {
 		memberGroup.GET("/roles", memberController.FindMembersWithRoles)
 		memberGroup.PATCH("/", memberController.UpdateMember)
 		memberGroup.DELETE("/", memberController.DeleteMember)
+
+	}
+	orgGroup := r.Group("/admin")
+	orgGroup.Use(middleware.JWTAuthMiddleware())
+	orgGroup.Use(middleware.CORSMiddleware())
+	{
+		orgGroup.GET("/organization", organizationController.GetOrganization)
+		orgGroup.POST("/organization", organizationController.CreateOrganization)
+		orgGroup.PATCH("/organization", organizationController.UpdateOrganization)
+		orgGroup.DELETE("/organization", organizationController.DeleteOrganization)
 	}
 
 }

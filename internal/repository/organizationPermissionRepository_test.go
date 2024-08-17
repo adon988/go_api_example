@@ -88,3 +88,24 @@ func TestOrganizationPermissionRepository_GetOrganizationPermissionByMemberID(t 
 	assert.Equal(t, "1", orgPerms[0].MemberId)
 	assert.Equal(t, "1", orgPerms[0].EntityId)
 }
+
+func TestOrganizationPermissionRepository_GetOrganizationPermissionByOrganizationIDAndMemberID(t *testing.T) {
+	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
+	mockDB.AutoMigrate(&models.OrganizationPermission{})
+	repo := NewOrganizationPermission(mockDB)
+	orgPerm := models.OrganizationPermission{
+		Id:       "1",
+		MemberId: "1",
+		EntityId: "1",
+		Role:     "admin",
+	}
+	mockDB.Create(&orgPerm)
+	orgPerms, err := repo.GetOrganizationPermissionByOrganizationIDAndMemberID("1", "1")
+	assert.Nil(t, err)
+	assert.Equal(t, "1", orgPerms.Id)
+	assert.Equal(t, "1", orgPerms.MemberId)
+	assert.Equal(t, "1", orgPerms.EntityId)
+
+	orgPerms, err = repo.GetOrganizationPermissionByOrganizationIDAndMemberID("1", "2")
+	assert.NotNil(t, err)
+}
