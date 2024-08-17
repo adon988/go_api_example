@@ -103,7 +103,13 @@ go get -u github.com/swaggo/gin-swagger
 generate doc (swagger.json, swagger.yaml) to `go-project-name/docs.`
 
 ```
-swag init
+cd cmd/server/
+
+swag init --dir ./cmd/server,./internal/ --output ./docs
+
+
+//or execute by makefile
+make swag_init
 ```
 
 add swagger access page

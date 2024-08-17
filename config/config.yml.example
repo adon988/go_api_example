@@ -23,3 +23,9 @@ jwt:
 acm:
   model:
     config: ../../config/casbin_lib/model.conf
+doc:
+  title: golang API Example
+  description: This is a golang API example
+  version: 1.0.0
+  host: localhost:8080
+  base_path: /

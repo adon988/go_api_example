@@ -33,6 +33,7 @@ definitions:
         example: example@example.com
         type: string
       gender:
+        example: 1
         type: integer
       id:
         example: "123456"
@@ -42,6 +43,38 @@ definitions:
         type: string
       updated_at:
         example: "2021-01-01 00:00:00"
+        type: string
+    type: object
+  controllers.OrganizationResponse:
+    properties:
+      created_at:
+        type: string
+      creater_id:
+        type: string
+      id:
+        type: string
+      order:
+        type: integer
+      publish:
+        type: integer
+      source_language:
+        type: string
+      target_language:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  controllers.RoleResponse:
+    properties:
+      id:
+        type: integer
+      image:
+        type: string
+      role_type:
+        type: string
+      title:
         type: string
     type: object
   controllers.TokenResponse:
@@ -77,6 +110,102 @@ definitions:
         example: test
         type: string
     type: object
+  requests.OrganizationCreateRequest:
+    properties:
+      order:
+        example: 1
+        type: integer
+      publish:
+        example: 1
+        type: integer
+      source_language:
+        example: en
+        type: string
+      target_language:
+        example: zh
+        type: string
+      title:
+        example: organization title
+        type: string
+    required:
+    - order
+    - publish
+    - source_language
+    - target_language
+    - title
+    type: object
+  requests.OrganizationDeleteRequest:
+    properties:
+      id:
+        example: "1"
+        type: string
+    required:
+    - id
+    type: object
+  requests.OrganizationUpdateRequest:
+    properties:
+      id:
+        example: "1"
+        type: string
+      order:
+        example: 1
+        type: integer
+      publish:
+        example: 1
+        type: integer
+      source_language:
+        example: en
+        type: string
+      target_language:
+        example: zh
+        type: string
+      title:
+        example: organization title update
+        type: string
+    required:
+    - id
+    type: object
+  requests.RoleCreateRequest:
+    properties:
+      image:
+        example: role.png
+        type: string
+      role_type:
+        example: role type
+        type: string
+      title:
+        example: role title
+        type: string
+    required:
+    - image
+    - role_type
+    - title
+    type: object
+  requests.RoleDeleteRequest:
+    properties:
+      id:
+        example: 1
+        type: integer
+    required:
+    - id
+    type: object
+  requests.RoleUpdateRequest:
+    properties:
+      id:
+        example: 1
+        type: integer
+      image:
+        example: role_update.png
+        type: string
+      role_type:
+        example: role type update
+        type: string
+      title:
+        example: role title update
+        type: string
+    required:
+    - id
+    type: object
   responses.ResponseFail:
     properties:
       code:
@@ -104,6 +233,111 @@ definitions:
 info:
   contact: {}
 paths:
+  /admin/organization:
+    delete:
+      consumes:
+      - application/json
+      description: Delete organization
+      parameters:
+      - description: Organization object that needs to be deleted
+        in: body
+        name: organization
+        required: true
+        schema:
+          $ref: '#/definitions/requests.OrganizationDeleteRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":0,"data":{},"msg":"success"}'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Organization
+      tags:
+      - Organization
+    get:
+      consumes:
+      - application/json
+      description: Get all organizations that the member belongs to
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/controllers.OrganizationResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Organization
+      tags:
+      - Organization
+    patch:
+      consumes:
+      - application/json
+      description: Update organization information
+      parameters:
+      - description: Organization object that needs to be updated
+        in: body
+        name: organization
+        required: true
+        schema:
+          $ref: '#/definitions/requests.OrganizationUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":0,"data":{},"msg":"success"}'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update Organization
+      tags:
+      - Organization
+    post:
+      consumes:
+      - application/json
+      description: Create a new organization, and the creator will be the admin of
+        the organization
+      parameters:
+      - description: Organization object that needs to be created
+        in: body
+        name: organization
+        required: true
+        schema:
+          $ref: '#/definitions/requests.OrganizationCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":0,"data":{},"msg":"success"}'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Create Organization
+      tags:
+      - Organization
   /auth/login:
     post:
       consumes:
@@ -225,6 +459,102 @@ paths:
       summary: Update a member
       tags:
       - member
+  /roles:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an existing role
+      parameters:
+      - description: Role object that needs to be deleted
+        in: body
+        name: role
+        required: true
+        schema:
+          $ref: '#/definitions/requests.RoleDeleteRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Role deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Delete Role
+      tags:
+      - Role
+    get:
+      consumes:
+      - application/json
+      description: Get all roles
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/controllers.RoleResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Get Role
+      tags:
+      - Role
+    post:
+      consumes:
+      - application/json
+      description: Create a new role
+      parameters:
+      - description: Role object that needs to be created
+        in: body
+        name: role
+        required: true
+        schema:
+          $ref: '#/definitions/requests.RoleCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Role created successfully
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Create Role
+      tags:
+      - Role
+    put:
+      consumes:
+      - application/json
+      description: Update an existing role
+      parameters:
+      - description: Role object that needs to be updated
+        in: body
+        name: role
+        required: true
+        schema:
+          $ref: '#/definitions/requests.RoleUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Role updated successfully
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Update Role
+      tags:
+      - Role
 securityDefinitions:
   ApiKeyAuth:
     in: header
