@@ -24,8 +24,16 @@ type OrganizationPermissionImpl struct {
 }
 
 func (r *OrganizationPermissionImpl) CreateOrganizationPermission(organization_permissions models.OrganizationPermission) error {
-	if _, ok := models.PermissionRoleEnum[organization_permissions.Role]; !ok {
-		return fmt.Errorf("role %s not found", organization_permissions.Role)
+
+	hasRole := false
+	for _, v := range models.PermissionRoleEnum {
+		if v == organization_permissions.Role {
+			hasRole = true
+			break
+		}
+	}
+	if !hasRole {
+		return fmt.Errorf("role not found")
 	}
 
 	result := r.DB.Create(&organization_permissions)

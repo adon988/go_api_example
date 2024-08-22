@@ -17,7 +17,7 @@ func TestOrganizationPermissionRepository_CreateOrganizationPerimission(t *testi
 		Id:       "1",
 		MemberId: "1",
 		EntityId: "1",
-		Role:     "admin",
+		Role:     1,
 	}
 	err := repo.CreateOrganizationPermission(orgPerm)
 	assert.Nil(t, err)
@@ -28,6 +28,15 @@ func TestOrganizationPermissionRepository_CreateOrganizationPerimission(t *testi
 	assert.Equal(t, "1", orgPerms[0].Id)
 	assert.Equal(t, "1", orgPerms[0].MemberId)
 	assert.Equal(t, "1", orgPerms[0].EntityId)
+
+	orgPerm = models.OrganizationPermission{
+		Id:       "2",
+		MemberId: "1",
+		EntityId: "1",
+		Role:     4,
+	}
+	err = repo.CreateOrganizationPermission(orgPerm)
+	assert.Equal(t, "role not found", err.Error())
 }
 
 func TestOrganizationPermissionRepository_UpdateOrganizationPermission(t *testing.T) {
@@ -38,17 +47,17 @@ func TestOrganizationPermissionRepository_UpdateOrganizationPermission(t *testin
 		Id:       "1",
 		MemberId: "1",
 		EntityId: "1",
-		Role:     "admin",
+		Role:     1,
 	}
 	mockDB.Create(&orgPerm)
-	orgPerm.Role = "member"
+	orgPerm.Role = 2
 	err := repo.UpdateOrganizationPermission(orgPerm)
 	assert.Nil(t, err)
 	// 檢查 organization_permissions 是否被更新
 	var orgPerms []models.OrganizationPermission
 	mockDB.Find(&orgPerms)
 	assert.Equal(t, 1, len(orgPerms))
-	assert.Equal(t, "member", orgPerms[0].Role)
+	assert.Equal(t, int32(2), orgPerms[0].Role)
 }
 
 func TestOrganizationPermissionRepository_DeleteOrganizationPermission(t *testing.T) {
@@ -59,7 +68,7 @@ func TestOrganizationPermissionRepository_DeleteOrganizationPermission(t *testin
 		Id:       "1",
 		MemberId: "1",
 		EntityId: "1",
-		Role:     "admin",
+		Role:     1,
 	}
 	mockDB.Create(&orgPerm)
 	err := repo.DeleteOrganizationPermission("1")
@@ -78,7 +87,7 @@ func TestOrganizationPermissionRepository_GetOrganizationPermissionByMemberID(t 
 		Id:       "1",
 		MemberId: "1",
 		EntityId: "1",
-		Role:     "admin",
+		Role:     1,
 	}
 	mockDB.Create(&orgPerm)
 	orgPerms, err := repo.GetOrganizationPermissionByMemberID("1")
@@ -97,7 +106,7 @@ func TestOrganizationPermissionRepository_GetOrganizationPermissionByOrganizatio
 		Id:       "1",
 		MemberId: "1",
 		EntityId: "1",
-		Role:     "admin",
+		Role:     1,
 	}
 	mockDB.Create(&orgPerm)
 	orgPerms, err := repo.GetOrganizationPermissionByOrganizationIDAndMemberID("1", "1")

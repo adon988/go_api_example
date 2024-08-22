@@ -34,7 +34,7 @@ func TestOrganizationRepository_CreateOrganization(t *testing.T) {
 		Id:       "1",
 		MemberId: memberId,
 		EntityId: org.Id,
-		Role:     "admin",
+		Role:     1,
 	}
 	err = repoOP.CreateOrganizationPermission(org_perm)
 	assert.Nil(t, err)
@@ -145,7 +145,7 @@ func TestOrganizationRepository_GetOrganizationByMemberID(t *testing.T) {
 		Id:       "1",
 		MemberId: "1",
 		EntityId: "1",
-		Role:     "admin",
+		Role:     1,
 	}
 	mockDB.Create(&org)
 	mockDB.Create(&org_perm)

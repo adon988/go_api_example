@@ -8,7 +8,7 @@ import (
 )
 
 type OrganizationServiceInterface interface {
-	CreateOrganizationNPermission(member_id string, role string, organization models.Organization) error
+	CreateOrganizationNPermission(member_id string, role int32, organization models.Organization) error
 	GetOrganization(member_id string) ([]models.Organization, error)
 	GetOrganizationByMemberIDAndOrganizationID(member_id string, organization_id string) (models.Organization, error)
 	UpdateOrganization(organization models.Organization) error
@@ -28,7 +28,7 @@ type OrganizationService struct {
 	organizationPermission repository.OrganizationPermissionRepository
 }
 
-func (service OrganizationService) CreateOrganizationNPermission(member_id string, role string, organization models.Organization) error {
+func (service OrganizationService) CreateOrganizationNPermission(member_id string, role int32, organization models.Organization) error {
 	orgPerId, _ := utils.GenId()
 	organizationPermission := models.OrganizationPermission{
 		Id:       orgPerId,

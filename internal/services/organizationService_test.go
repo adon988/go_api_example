@@ -23,7 +23,7 @@ func TestOrganizationService_CreateOrganizationNPermission(t *testing.T) {
 		Publish:        1,
 		CreaterId:      memberId,
 	}
-	role := "admin"
+	role := int32(1)
 	service := NewOrganizationService(mockDB)
 	result := service.CreateOrganizationNPermission(memberId, role, org)
 	assert.Nil(t, result)
@@ -44,7 +44,7 @@ func TestOrganizationService_GetOrganization(t *testing.T) {
 		Publish:        1,
 		CreaterId:      memberId,
 	}
-	role := "admin"
+	role := int32(1)
 	service := NewOrganizationService(mockDB)
 	result := service.CreateOrganizationNPermission(memberId, role, org)
 	assert.Nil(t, result)
@@ -68,7 +68,7 @@ func TestOrganizationService_GetOrganizationPermissionByOrganizationIDAndMemberI
 		Publish:        1,
 		CreaterId:      memberId,
 	}
-	role := "admin"
+	role := int32(1)
 	service := NewOrganizationService(mockDB)
 	result := service.CreateOrganizationNPermission(memberId, role, org)
 	assert.Nil(t, result)
@@ -95,7 +95,7 @@ func TestOrganizationService_UpdateOrganization(t *testing.T) {
 		Publish:        1,
 		CreaterId:      memberId,
 	}
-	role := "admin"
+	role := int32(1)
 	service := NewOrganizationService(mockDB)
 	result := service.CreateOrganizationNPermission(memberId, role, org)
 	assert.Nil(t, result)
@@ -119,7 +119,7 @@ func TestOrganizationService_DeleteOrganization(t *testing.T) {
 		Publish:        1,
 		CreaterId:      memberId,
 	}
-	role := "admin"
+	role := int32(1)
 	service := NewOrganizationService(mockDB)
 	result := service.CreateOrganizationNPermission(memberId, role, org)
 	assert.Nil(t, result)

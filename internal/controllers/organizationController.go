@@ -27,9 +27,9 @@ type OrganizationResponse struct {
 	UpdatedAt      time.Time `json:"updated_at"`
 }
 
-var allowEditorRoles = map[string]bool{
-	"admin":  true,
-	"editor": true,
+var allowEditorRoles = map[int32]string{
+	1: "admin",
+	2: "editor",
 }
 
 // @Summary Get Organization
@@ -83,7 +83,7 @@ func (c OrganizationController) GetOrganization(ctx *gin.Context) {
 // @Router /admin/organization [post]
 func (c OrganizationController) CreateOrganization(ctx *gin.Context) {
 	memberId, _ := ctx.Get("account")
-	defaultRole := "admin"
+	defaultRole := int32(1)
 	var req requests.OrganizationCreateRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
@@ -137,7 +137,7 @@ func (c OrganizationController) UpdateOrganization(ctx *gin.Context) {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
 	}
-	if !allowEditorRoles[orgPerm.Role] {
+	if _, ok := allowEditorRoles[orgPerm.Role]; !ok {
 		responses.FailWithMessage("permission denied", ctx)
 		return
 	}
@@ -185,7 +185,7 @@ func (c OrganizationController) DeleteOrganization(ctx *gin.Context) {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
 	}
-	if !allowEditorRoles[orgPerm.Role] {
+	if _, ok := allowEditorRoles[(orgPerm.Role)]; !ok {
 		responses.FailWithMessage("permission denied", ctx)
 		return
 	}
