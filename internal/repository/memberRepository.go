@@ -1,8 +1,6 @@
 package repository
 
 import (
-	"fmt"
-
 	"github.com/adon988/go_api_example/internal/models"
 	"gorm.io/gorm"
 )
@@ -40,10 +38,6 @@ func (r *MemberRepositoryImpl) GetMembersWithRoles(id string) (*models.Member, e
 		return nil, err
 	}
 
-	fmt.Println(member.Role)
-	fmt.Println("Hello")
-	fmt.Println(member.Role.Id)
-	fmt.Println(member.Role.Title)
 	return &member, nil
 }
 

@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"strings"
 	"time"
 
@@ -28,19 +27,7 @@ type MemberinfoResponse struct {
 	CreatedAt time.Time `json:"created_at" example:"2021-01-01 00:00:00"`
 	UpdatedAt time.Time `json:"updated_at" example:"2021-01-01 00:00:00"`
 }
-type MemberRoleResponse struct {
-	ID        string    `json:"id" example:"123456"`
-	Name      string    `json:"name" example:"test"`
-	Birthday  string    `json:"birthday" example:"2021-01-01"`
-	Gender    int32     `json:"gender" example:"1"`
-	Email     string    `json:"email" example:"example@example.com"`
-	CreatedAt time.Time `json:"created_at" example:"2021-01-01 00:00:00"`
-	UpdatedAt time.Time `json:"updated_at" example:"2021-01-01 00:00:00"`
-	RoleId    int32     `json:"role_id" example:"1"`
-	RoleTitle string    `json:"role_title" example:"admin"`
-	RoleImage string    `json:"role_image" example:"admin.png"`
-	RoleType  string    `json:"role_type" example:"admin"`
-}
+
 type GetMemberResonse struct {
 	Code int `json:"code" example:"0"`
 	Data MemberinfoResponse
@@ -80,36 +67,6 @@ func (c MemberController) GetMemberInfo(ctx *gin.Context) {
 		UpdatedAt: members.UpdatedAt,
 	}
 
-	responses.OkWithData(data, ctx)
-}
-
-func (c MemberController) FindMembersWithRoles(ctx *gin.Context) {
-
-	memberId, _ := ctx.Get("account")
-	Db, _ := c.InfoDb.InitDB()
-
-	memberServices := services.NewMemberService(Db)
-	members, err := memberServices.GetMembersWithRoles(memberId.(string))
-	fmt.Println(members)
-
-	if err != nil {
-		responses.FailWithMessage("member not found", ctx)
-		return
-	}
-
-	data := MemberRoleResponse{
-		ID:        members.Id,
-		Name:      responses.NullableString(members.Name),
-		Birthday:  responses.NullableDate(members.Birthday),
-		Gender:    responses.NullableInt(members.Gender),
-		Email:     responses.NullableString(members.Email),
-		CreatedAt: members.CreatedAt,
-		UpdatedAt: members.UpdatedAt,
-		RoleId:    members.Role.Id,
-		RoleTitle: members.Role.Title,
-		RoleImage: members.Role.Image,
-		RoleType:  members.Role.RoleType,
-	}
 	responses.OkWithData(data, ctx)
 }
 

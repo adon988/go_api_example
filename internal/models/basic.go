@@ -9,6 +9,5 @@ var ModelsMap = map[string]interface{}{
 	"Unit":                   &Unit{},
 	"Word":                   &Word{},
 	"Course":                 &Course{},
-	"Role":                   &Role{},
 	"Member":                 &Member{},
 }

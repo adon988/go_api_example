@@ -60,6 +60,12 @@ Migrate single table
 go run cmd/migrate/main.go -migrate_table=Organization
 ```
 
+```
+make automigrate
+
+make migrate table={table_name}
+make migrate table=Organization
+```
 
 ### Try APIs
 
