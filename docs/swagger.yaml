@@ -66,17 +66,6 @@ definitions:
       updated_at:
         type: string
     type: object
-  controllers.RoleResponse:
-    properties:
-      id:
-        type: integer
-      image:
-        type: string
-      role_type:
-        type: string
-      title:
-        type: string
-    type: object
   controllers.TokenResponse:
     properties:
       token:
@@ -161,47 +150,6 @@ definitions:
         type: string
       title:
         example: organization title update
-        type: string
-    required:
-    - id
-    type: object
-  requests.RoleCreateRequest:
-    properties:
-      image:
-        example: role.png
-        type: string
-      role_type:
-        example: role type
-        type: string
-      title:
-        example: role title
-        type: string
-    required:
-    - image
-    - role_type
-    - title
-    type: object
-  requests.RoleDeleteRequest:
-    properties:
-      id:
-        example: 1
-        type: integer
-    required:
-    - id
-    type: object
-  requests.RoleUpdateRequest:
-    properties:
-      id:
-        example: 1
-        type: integer
-      image:
-        example: role_update.png
-        type: string
-      role_type:
-        example: role type update
-        type: string
-      title:
-        example: role title update
         type: string
     required:
     - id
@@ -459,102 +407,6 @@ paths:
       summary: Update a member
       tags:
       - member
-  /roles:
-    delete:
-      consumes:
-      - application/json
-      description: Delete an existing role
-      parameters:
-      - description: Role object that needs to be deleted
-        in: body
-        name: role
-        required: true
-        schema:
-          $ref: '#/definitions/requests.RoleDeleteRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Role deleted successfully
-          schema:
-            type: string
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-      summary: Delete Role
-      tags:
-      - Role
-    get:
-      consumes:
-      - application/json
-      description: Get all roles
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/controllers.RoleResponse'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-      summary: Get Role
-      tags:
-      - Role
-    post:
-      consumes:
-      - application/json
-      description: Create a new role
-      parameters:
-      - description: Role object that needs to be created
-        in: body
-        name: role
-        required: true
-        schema:
-          $ref: '#/definitions/requests.RoleCreateRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Role created successfully
-          schema:
-            type: string
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-      summary: Create Role
-      tags:
-      - Role
-    put:
-      consumes:
-      - application/json
-      description: Update an existing role
-      parameters:
-      - description: Role object that needs to be updated
-        in: body
-        name: role
-        required: true
-        schema:
-          $ref: '#/definitions/requests.RoleUpdateRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Role updated successfully
-          schema:
-            type: string
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-      summary: Update Role
-      tags:
-      - Role
 securityDefinitions:
   ApiKeyAuth:
     in: header
