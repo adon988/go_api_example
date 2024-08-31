@@ -14,9 +14,8 @@ var PermissionRoleEnum = map[string]int32{
 
 // Permission represents the permissions a member has on various entities.
 type OrganizationPermission struct {
-	Id        string         `gorm:"primaryKey;size:24"`
-	MemberId  string         `gorm:"size:24;index"`
-	EntityId  string         `gorm:"size:24;index"`
+	MemberId  string         `gorm:"primaryKey;size:24"`
+	EntityId  string         `gorm:"primaryKey;size:24"`
 	Role      int32          `gorm:"size:10"` // Role type: {admin:1, editor:2, guest:3}
 	CreatedAt time.Time      // Automatically managed by GORM for creation time
 	UpdatedAt time.Time      // Automatically managed by GORM for update time
@@ -25,9 +24,8 @@ type OrganizationPermission struct {
 
 // Permission represents the permissions a member has on various entities.
 type CoursePermission struct {
-	Id        string         `gorm:"primaryKey;size:24"`
-	MemberId  string         `gorm:"size:24;index"`
-	EntityId  string         `gorm:"size:24;index"`
+	MemberId  string         `gorm:"primaryKey;size:24"`
+	EntityId  string         `gorm:"primaryKey;size:24"`
 	Role      int32          `gorm:"size:10"` // Role type: {admin:1, editor:2, guest:3}
 	CreatedAt time.Time      // Automatically managed by GORM for creation time
 	UpdatedAt time.Time      // Automatically managed by GORM for update time
@@ -36,9 +34,8 @@ type CoursePermission struct {
 
 // Permission represents the permissions a member has on various entities.
 type UnitPermission struct {
-	Id        string         `gorm:"primaryKey;size:24"`
-	MemberId  string         `gorm:"size:24;index"`
-	EntityId  string         `gorm:"size:24;index"`
+	MemberId  string         `gorm:"primaryKey;size:24"`
+	EntityId  string         `gorm:"primaryKey;size:24"`
 	Role      int32          `gorm:"size:10"` // Role type: {admin:1, editor:2, guest:3}
 	CreatedAt time.Time      // Automatically managed by GORM for creation time
 	UpdatedAt time.Time      // Automatically managed by GORM for update time

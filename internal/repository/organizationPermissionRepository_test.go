@@ -14,7 +14,6 @@ func TestOrganizationPermissionRepository_CreateOrganizationPerimission(t *testi
 	mockDB.AutoMigrate(&models.OrganizationPermission{})
 	repo := NewOrganizationPermission(mockDB)
 	orgPerm := models.OrganizationPermission{
-		Id:       "1",
 		MemberId: "1",
 		EntityId: "1",
 		Role:     1,
@@ -25,12 +24,10 @@ func TestOrganizationPermissionRepository_CreateOrganizationPerimission(t *testi
 	var orgPerms []models.OrganizationPermission
 	mockDB.Find(&orgPerms)
 	assert.Equal(t, 1, len(orgPerms))
-	assert.Equal(t, "1", orgPerms[0].Id)
 	assert.Equal(t, "1", orgPerms[0].MemberId)
 	assert.Equal(t, "1", orgPerms[0].EntityId)
 
 	orgPerm = models.OrganizationPermission{
-		Id:       "2",
 		MemberId: "1",
 		EntityId: "1",
 		Role:     4,
@@ -44,7 +41,6 @@ func TestOrganizationPermissionRepository_AssignOrganizationPermission(t *testin
 	mockDB.AutoMigrate(&models.OrganizationPermission{})
 	repo := NewOrganizationPermission(mockDB)
 	orgPerm := models.OrganizationPermission{
-		Id:       "1",
 		MemberId: "1",
 		EntityId: "1",
 		Role:     1,
@@ -54,14 +50,12 @@ func TestOrganizationPermissionRepository_AssignOrganizationPermission(t *testin
 	assert.Nil(t, err)
 	orgPerms, err := repo.GetOrganizationPermissionByOrganizationIDAndMemberID("1", "1")
 	assert.Nil(t, err)
-	assert.Equal(t, "1", orgPerms.Id)
 	assert.Equal(t, "1", orgPerms.MemberId)
 	assert.Equal(t, "1", orgPerms.EntityId)
 	assert.Equal(t, int32(1), orgPerm.Role)
 
 	//update
 	orgPerm2 := models.OrganizationPermission{
-		Id:       "1",
 		MemberId: "1",
 		EntityId: "1",
 		Role:     2,
@@ -78,7 +72,6 @@ func TestOrganizationPermissionRepository_UpdateOrganizationPermission(t *testin
 	mockDB.AutoMigrate(&models.OrganizationPermission{})
 	repo := NewOrganizationPermission(mockDB)
 	orgPerm := models.OrganizationPermission{
-		Id:       "1",
 		MemberId: "1",
 		EntityId: "1",
 		Role:     1,
@@ -99,7 +92,6 @@ func TestOrganizationPermissionRepository_DeleteOrganizationPermission(t *testin
 	mockDB.AutoMigrate(&models.OrganizationPermission{})
 	repo := NewOrganizationPermission(mockDB)
 	orgPerm := models.OrganizationPermission{
-		Id:       "1",
 		MemberId: "1",
 		EntityId: "1",
 		Role:     1,
@@ -118,7 +110,6 @@ func TestOrganizationPermissionRepository_GetOrganizationPermissionByMemberID(t 
 	mockDB.AutoMigrate(&models.OrganizationPermission{})
 	repo := NewOrganizationPermission(mockDB)
 	orgPerm := models.OrganizationPermission{
-		Id:       "1",
 		MemberId: "1",
 		EntityId: "1",
 		Role:     1,
@@ -127,7 +118,6 @@ func TestOrganizationPermissionRepository_GetOrganizationPermissionByMemberID(t 
 	orgPerms, err := repo.GetOrganizationPermissionByMemberID("1")
 	assert.Nil(t, err)
 	assert.Equal(t, 1, len(orgPerms))
-	assert.Equal(t, "1", orgPerms[0].Id)
 	assert.Equal(t, "1", orgPerms[0].MemberId)
 	assert.Equal(t, "1", orgPerms[0].EntityId)
 }
@@ -137,7 +127,6 @@ func TestOrganizationPermissionRepository_GetOrganizationPermissionByOrganizatio
 	mockDB.AutoMigrate(&models.OrganizationPermission{})
 	repo := NewOrganizationPermission(mockDB)
 	orgPerm := models.OrganizationPermission{
-		Id:       "1",
 		MemberId: "1",
 		EntityId: "1",
 		Role:     1,
@@ -145,7 +134,6 @@ func TestOrganizationPermissionRepository_GetOrganizationPermissionByOrganizatio
 	mockDB.Create(&orgPerm)
 	orgPerms, err := repo.GetOrganizationPermissionByOrganizationIDAndMemberID("1", "1")
 	assert.Nil(t, err)
-	assert.Equal(t, "1", orgPerms.Id)
 	assert.Equal(t, "1", orgPerms.MemberId)
 	assert.Equal(t, "1", orgPerms.EntityId)
 

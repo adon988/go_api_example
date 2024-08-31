@@ -31,7 +31,6 @@ func TestOrganizationRepository_CreateOrganization(t *testing.T) {
 
 	repoOP := NewOrganizationPermission(mockDB)
 	org_perm := models.OrganizationPermission{
-		Id:       "1",
 		MemberId: memberId,
 		EntityId: org.Id,
 		Role:     1,
@@ -49,7 +48,6 @@ func TestOrganizationRepository_CreateOrganization(t *testing.T) {
 	var orgPerms []models.OrganizationPermission
 	mockDB.Find(&orgPerms)
 	assert.Equal(t, 1, len(orgPerms))
-	assert.Equal(t, org_perm.Id, orgPerms[0].Id)
 	assert.Equal(t, memberId, orgPerms[0].MemberId)
 	assert.Equal(t, org.Id, orgPerms[0].EntityId)
 
@@ -142,7 +140,6 @@ func TestOrganizationRepository_GetOrganizationByMemberID(t *testing.T) {
 		CreaterId:      "1",
 	}
 	org_perm := models.OrganizationPermission{
-		Id:       "1",
 		MemberId: "1",
 		EntityId: "1",
 		Role:     1,

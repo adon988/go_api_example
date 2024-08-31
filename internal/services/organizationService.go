@@ -3,7 +3,6 @@ package services
 import (
 	"github.com/adon988/go_api_example/internal/models"
 	"github.com/adon988/go_api_example/internal/repository"
-	"github.com/adon988/go_api_example/internal/utils"
 	"gorm.io/gorm"
 )
 
@@ -30,9 +29,7 @@ type OrganizationService struct {
 }
 
 func (service OrganizationService) CreateOrganizationNPermission(member_id string, role int32, organization models.Organization) error {
-	orgPerId, _ := utils.GenId()
 	organizationPermission := models.OrganizationPermission{
-		Id:       orgPerId,
 		MemberId: member_id,
 		EntityId: organization.Id,
 		Role:     role,
