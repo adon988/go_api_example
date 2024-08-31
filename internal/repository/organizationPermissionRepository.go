@@ -13,6 +13,7 @@ type OrganizationPermissionRepository interface {
 	GetOrganizationPermissionByOrganizationIDAndMemberID(member_id string, organization_id string) (models.OrganizationPermission, error)
 	UpdateOrganizationPermission(organization_permissions models.OrganizationPermission) error
 	DeleteOrganizationPermission(id string) error
+	AssignOrganizationPermission(organizationPermission models.OrganizationPermission) error
 }
 
 func NewOrganizationPermission(db *gorm.DB) OrganizationPermissionRepository {
@@ -65,7 +66,7 @@ func (r *OrganizationPermissionImpl) GetOrganizationPermissionByOrganizationIDAn
 }
 
 func (r *OrganizationPermissionImpl) UpdateOrganizationPermission(organization_permissions models.OrganizationPermission) error {
-	result := r.DB.Save(&organization_permissions)
+	result := r.DB.Updates(&organization_permissions)
 	if result.Error != nil {
 		return result.Error
 	}
@@ -81,4 +82,27 @@ func (r *OrganizationPermissionImpl) DeleteOrganizationPermission(id string) err
 		return gorm.ErrRecordNotFound
 	}
 	return nil
+}
+
+func (r *OrganizationPermissionImpl) AssignOrganizationPermission(organizationPermission models.OrganizationPermission) error {
+	hasRole := false
+	for _, v := range models.PermissionRoleEnum {
+		if v == organizationPermission.Role {
+			hasRole = true
+			break
+		}
+	}
+	if !hasRole {
+		return fmt.Errorf("role not found")
+	}
+
+	result := r.DB.Model(&models.OrganizationPermission{}).Where("member_id = ? AND entity_id = ?", organizationPermission.MemberId, organizationPermission.EntityId).Updates(&organizationPermission)
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		result = r.DB.Create(&organizationPermission)
+	}
+
+	return result.Error
 }

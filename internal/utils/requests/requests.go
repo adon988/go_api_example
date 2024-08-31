@@ -48,3 +48,9 @@ type OrganizationUpdateRequest struct {
 type OrganizationDeleteRequest struct {
 	Id string `json:"id" binding:"required" example:"1"`
 }
+
+type AssignRoleToMemberRequest struct {
+	MemberId       string `json:"member_id" binding:"required" example:"1"`
+	RoleId         int32  `json:"role_id" binding:"required" example:"1"`
+	OrganizationId string `json:"organization_id" binding:"required" example:"1"`
+}

@@ -193,3 +193,64 @@ func (c OrganizationController) DeleteOrganization(ctx *gin.Context) {
 	}
 	responses.Ok(ctx)
 }
+
+// @Summary Assign Organization Permission
+// @Description Assign organization permission to another member
+// @Tags Organization
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param organization body requests.AssignRoleToMemberRequest true "Organization object that needs to be assigned"
+// @Success 200 {string} string "{"code":0,"data":{},"msg":"success"}"
+// @Failure 400 {string} string '{"code":-1, "data":{}, "msg":""}'
+// @Router /admin/organization/assign [post]
+func (c OrganizationController) AssignOrganizationPermission(ctx *gin.Context) {
+	var req requests.AssignRoleToMemberRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		responses.FailWithMessage(err.Error(), ctx)
+		return
+	}
+	Db, _ := c.InfoDb.InitDB()
+
+	organizationService := services.NewOrganizationService(Db)
+	memberId := ctx.GetString("account")
+
+	orgPerm, err := organizationService.GetOrganizationPermissionByOrganizationIDAndMemberID(memberId, req.OrganizationId)
+	if err != nil {
+		responses.FailWithMessage(err.Error(), ctx)
+		return
+	}
+
+	//check if the member has admin/editor permission
+	err = checkRoleWithEditorPermission(orgPerm.Role)
+	if err != nil {
+		responses.FailWithMessage(err.Error(), ctx)
+		return
+	}
+	//check if the member has enough permission to assign role to member
+	if orgPerm.Role > req.RoleId {
+		responses.FailWithMessage("permission denied (2)", ctx)
+		return
+	}
+
+	organizationData := models.OrganizationPermission{
+		MemberId: req.MemberId,
+		EntityId: orgPerm.EntityId,
+		Role:     req.RoleId,
+	}
+
+	memberServices := services.NewMemberService(Db)
+	_, err = memberServices.GetMemberInfo(req.MemberId)
+
+	if err != nil {
+		responses.FailWithMessage("member not found", ctx)
+		return
+	}
+
+	err = organizationService.AssignOrganizationPermission(organizationData)
+	if err != nil {
+		responses.FailWithMessage(err.Error(), ctx)
+		return
+	}
+	responses.Ok(ctx)
+}

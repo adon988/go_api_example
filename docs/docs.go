@@ -181,6 +181,51 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/organization/assign": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Assign organization permission to another member",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Organization"
+                ],
+                "summary": "Assign Organization Permission",
+                "parameters": [
+                    {
+                        "description": "Organization object that needs to be assigned",
+                        "name": "organization",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.AssignRoleToMemberRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":0,\"data\":{},\"msg\":\"success\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/login": {
             "post": {
                 "description": "Login",
@@ -475,6 +520,28 @@ const docTemplate = `{
                 "token": {
                     "type": "string",
                     "example": "jwt token"
+                }
+            }
+        },
+        "requests.AssignRoleToMemberRequest": {
+            "type": "object",
+            "required": [
+                "member_id",
+                "organization_id",
+                "role_id"
+            ],
+            "properties": {
+                "member_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "organization_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "role_id": {
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },

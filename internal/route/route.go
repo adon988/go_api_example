@@ -46,6 +46,7 @@ func GetRouter(r *gin.Engine) {
 		orgGroup.POST("/organization", organizationController.CreateOrganization)
 		orgGroup.PATCH("/organization", organizationController.UpdateOrganization)
 		orgGroup.DELETE("/organization", organizationController.DeleteOrganization)
+		orgGroup.POST("/organization/assign", organizationController.AssignOrganizationPermission)
 	}
 
 }

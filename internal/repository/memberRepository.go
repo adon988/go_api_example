@@ -25,7 +25,7 @@ var member models.Member
 
 // GetMemberInfo implements MemberRepository.
 func (r *MemberRepositoryImpl) GetMemberInfo(id string) (*models.Member, error) {
-	if err := r.DB.First(&member, "id = ?", id).Error; err != nil {
+	if err := r.DB.Where("id = ?", id).First(&member).Error; err != nil {
 		return nil, err
 	}
 	return &member, nil

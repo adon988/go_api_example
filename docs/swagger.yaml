@@ -72,6 +72,22 @@ definitions:
         example: jwt token
         type: string
     type: object
+  requests.AssignRoleToMemberRequest:
+    properties:
+      member_id:
+        example: "1"
+        type: string
+      organization_id:
+        example: "1"
+        type: string
+      role_id:
+        example: 1
+        type: integer
+    required:
+    - member_id
+    - organization_id
+    - role_id
+    type: object
   requests.LoginRequeset:
     properties:
       password:
@@ -284,6 +300,34 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Create Organization
+      tags:
+      - Organization
+  /admin/organization/assign:
+    post:
+      consumes:
+      - application/json
+      description: Assign organization permission to another member
+      parameters:
+      - description: Organization object that needs to be assigned
+        in: body
+        name: organization
+        required: true
+        schema:
+          $ref: '#/definitions/requests.AssignRoleToMemberRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":0,"data":{},"msg":"success"}'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Assign Organization Permission
       tags:
       - Organization
   /auth/login:

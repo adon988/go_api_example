@@ -14,6 +14,7 @@ type OrganizationServiceInterface interface {
 	UpdateOrganization(organization models.Organization) error
 	DeleteOrganization(id string) error
 	GetOrganizationPermissionByOrganizationIDAndMemberID(member_id string, organization_id string) (models.OrganizationPermission, error)
+	AssignOrganizationPermission(organizationPermission models.OrganizationPermission) error
 }
 
 func NewOrganizationService(db *gorm.DB) OrganizationServiceInterface {
@@ -76,4 +77,8 @@ func (service OrganizationService) GetOrganizationPermissionByOrganizationIDAndM
 		return models.OrganizationPermission{}, err
 	}
 	return result, nil
+}
+
+func (service OrganizationService) AssignOrganizationPermission(organizationPermission models.OrganizationPermission) error {
+	return service.organizationPermission.AssignOrganizationPermission(organizationPermission)
 }

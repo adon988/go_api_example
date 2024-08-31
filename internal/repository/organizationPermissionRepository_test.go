@@ -39,6 +39,40 @@ func TestOrganizationPermissionRepository_CreateOrganizationPerimission(t *testi
 	assert.Equal(t, "role not found", err.Error())
 }
 
+func TestOrganizationPermissionRepository_AssignOrganizationPermission(t *testing.T) {
+	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
+	mockDB.AutoMigrate(&models.OrganizationPermission{})
+	repo := NewOrganizationPermission(mockDB)
+	orgPerm := models.OrganizationPermission{
+		Id:       "1",
+		MemberId: "1",
+		EntityId: "1",
+		Role:     1,
+	}
+	//create
+	err := repo.AssignOrganizationPermission(orgPerm)
+	assert.Nil(t, err)
+	orgPerms, err := repo.GetOrganizationPermissionByOrganizationIDAndMemberID("1", "1")
+	assert.Nil(t, err)
+	assert.Equal(t, "1", orgPerms.Id)
+	assert.Equal(t, "1", orgPerms.MemberId)
+	assert.Equal(t, "1", orgPerms.EntityId)
+	assert.Equal(t, int32(1), orgPerm.Role)
+
+	//update
+	orgPerm2 := models.OrganizationPermission{
+		Id:       "1",
+		MemberId: "1",
+		EntityId: "1",
+		Role:     2,
+	}
+	err = repo.AssignOrganizationPermission(orgPerm2)
+	assert.Nil(t, err)
+	orgPerms, err = repo.GetOrganizationPermissionByOrganizationIDAndMemberID("1", "1")
+	assert.Nil(t, err)
+	assert.Equal(t, int32(2), orgPerm2.Role)
+}
+
 func TestOrganizationPermissionRepository_UpdateOrganizationPermission(t *testing.T) {
 	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
 	mockDB.AutoMigrate(&models.OrganizationPermission{})
