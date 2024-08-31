@@ -27,11 +27,6 @@ type OrganizationResponse struct {
 	UpdatedAt      time.Time `json:"updated_at"`
 }
 
-var allowEditorRoles = map[int32]string{
-	1: "admin",
-	2: "editor",
-}
-
 // @Summary Get Organization
 // @Description Get all organizations that the member belongs to
 // @Tags Organization
@@ -131,14 +126,15 @@ func (c OrganizationController) UpdateOrganization(ctx *gin.Context) {
 	organizationService := services.NewOrganizationService(Db)
 	memberId := ctx.GetString("account")
 
-	//check if the member has permission to update the organization
 	orgPerm, err := organizationService.GetOrganizationPermissionByOrganizationIDAndMemberID(memberId, req.Id)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
 	}
-	if _, ok := allowEditorRoles[orgPerm.Role]; !ok {
-		responses.FailWithMessage("permission denied", ctx)
+	//check if the member has permission to uodate or delete
+	err = checkRoleWithEditorPermission(orgPerm.Role)
+	if err != nil {
+		responses.FailWithMessage(err.Error(), ctx)
 		return
 	}
 
@@ -179,14 +175,15 @@ func (c OrganizationController) DeleteOrganization(ctx *gin.Context) {
 	organizationService := services.NewOrganizationService(Db)
 	memberId := ctx.GetString("account")
 
-	//check if the member has permission to delete the organization
 	orgPerm, err := organizationService.GetOrganizationPermissionByOrganizationIDAndMemberID(memberId, req.Id)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
 	}
-	if _, ok := allowEditorRoles[(orgPerm.Role)]; !ok {
-		responses.FailWithMessage("permission denied", ctx)
+	//check if the member has permission to delete the organization
+	err = checkRoleWithEditorPermission(orgPerm.Role)
+	if err != nil {
+		responses.FailWithMessage(err.Error(), ctx)
 		return
 	}
 
