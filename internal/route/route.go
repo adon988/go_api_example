@@ -11,6 +11,7 @@ import (
 var memberController controllers.MemberController
 var authController controllers.AuthController
 var organizationController controllers.OrganizationController
+var courseController controllers.CourseController
 
 func GetRouter(r *gin.Engine) {
 
@@ -38,15 +39,21 @@ func GetRouter(r *gin.Engine) {
 		memberGroup.DELETE("/", memberController.DeleteMember)
 
 	}
-	orgGroup := r.Group("/admin")
-	orgGroup.Use(middleware.JWTAuthMiddleware())
-	orgGroup.Use(middleware.CORSMiddleware())
+	adminGroup := r.Group("/admin")
+	adminGroup.Use(middleware.JWTAuthMiddleware())
+	adminGroup.Use(middleware.CORSMiddleware())
 	{
-		orgGroup.GET("/organization", organizationController.GetOrganization)
-		orgGroup.POST("/organization", organizationController.CreateOrganization)
-		orgGroup.PATCH("/organization", organizationController.UpdateOrganization)
-		orgGroup.DELETE("/organization", organizationController.DeleteOrganization)
-		orgGroup.POST("/organization/assign", organizationController.AssignOrganizationPermission)
+		adminGroup.GET("/organization", organizationController.GetOrganization)
+		adminGroup.POST("/organization", organizationController.CreateOrganization)
+		adminGroup.PATCH("/organization", organizationController.UpdateOrganization)
+		adminGroup.DELETE("/organization", organizationController.DeleteOrganization)
+		adminGroup.POST("/organization/assign", organizationController.AssignOrganizationPermission)
+
+		adminGroup.GET("/course", courseController.GetCourse)
+		adminGroup.POST("/course", courseController.CreateCourse)
+		adminGroup.PATCH("/course", courseController.UpdateCourse)
+		adminGroup.DELETE("/course", courseController.DeleteCourse)
+		adminGroup.POST("/course/assign", courseController.AssignOrganizationPermission)
 	}
 
 }

@@ -1,4 +1,23 @@
 definitions:
+  controllers.CourseResponse:
+    properties:
+      created_at:
+        type: string
+      creator_id:
+        type: string
+      id:
+        type: string
+      order:
+        type: integer
+      organization_id:
+        type: string
+      publish:
+        type: integer
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
   controllers.GetMemberResonse:
     properties:
       code:
@@ -72,6 +91,26 @@ definitions:
         example: jwt token
         type: string
     type: object
+  requests.AssignCourseRequest:
+    properties:
+      course_id:
+        example: "1"
+        type: string
+      member_id:
+        example: "1"
+        type: string
+      organization_id:
+        example: "1"
+        type: string
+      role_id:
+        example: 1
+        type: integer
+    required:
+    - course_id
+    - member_id
+    - organization_id
+    - role_id
+    type: object
   requests.AssignRoleToMemberRequest:
     properties:
       member_id:
@@ -87,6 +126,54 @@ definitions:
     - member_id
     - organization_id
     - role_id
+    type: object
+  requests.CourseCreateRequest:
+    properties:
+      order:
+        example: 1
+        type: integer
+      organization_id:
+        example: "1"
+        type: string
+      publish:
+        example: 1
+        type: integer
+      title:
+        example: course title
+        type: string
+    required:
+    - order
+    - organization_id
+    - publish
+    - title
+    type: object
+  requests.CourseDeleteReqeust:
+    properties:
+      id:
+        example: "1"
+        type: string
+    required:
+    - id
+    type: object
+  requests.CourseUpdateReqeust:
+    properties:
+      id:
+        example: "1"
+        type: string
+      order:
+        example: 1
+        type: integer
+      organization_id:
+        example: "1"
+        type: string
+      publish:
+        example: 1
+        type: integer
+      title:
+        example: course title update
+        type: string
+    required:
+    - id
     type: object
   requests.LoginRequeset:
     properties:
@@ -197,6 +284,138 @@ definitions:
 info:
   contact: {}
 paths:
+  /admin/course:
+    delete:
+      consumes:
+      - application/json
+      description: Delete course
+      parameters:
+      - description: Course object that needs to be deleted
+        in: body
+        name: course
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CourseDeleteReqeust'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Course
+      tags:
+      - Course
+    get:
+      consumes:
+      - application/json
+      description: Get all courses that the member belongs to
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/controllers.CourseResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Course
+      tags:
+      - Course
+    post:
+      consumes:
+      - application/json
+      description: Create a course, and assign the creator as the admin of the course
+      parameters:
+      - description: Course object that needs to be created
+        in: body
+        name: title
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CourseCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Create Course
+      tags:
+      - Course
+    put:
+      consumes:
+      - application/json
+      description: Update course information
+      parameters:
+      - description: Course object that needs to be updated
+        in: body
+        name: course
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CourseUpdateReqeust'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update Course
+      tags:
+      - Course
+  /admin/course/assign:
+    post:
+      consumes:
+      - application/json
+      description: Assign course permission to member
+      parameters:
+      - description: Course object that needs to be assigned
+        in: body
+        name: course
+        required: true
+        schema:
+          $ref: '#/definitions/requests.AssignCourseRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Assign Course Permission
+      tags:
+      - Course
   /admin/organization:
     delete:
       consumes:

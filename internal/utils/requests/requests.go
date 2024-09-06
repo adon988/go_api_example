@@ -54,3 +54,29 @@ type AssignRoleToMemberRequest struct {
 	RoleId         int32  `json:"role_id" binding:"required" example:"1"`
 	OrganizationId string `json:"organization_id" binding:"required" example:"1"`
 }
+
+type CourseCreateRequest struct {
+	Title          string `json:"title" binding:"required" example:"course title"`
+	OrganizationId string `json:"organization_id" binding:"required" example:"1"`
+	Order          int32  `json:"order" binding:"required" example:"1"`
+	Publish        int32  `json:"publish" binding:"required" example:"1"`
+}
+
+type CourseUpdateReqeust struct {
+	Id             string `json:"id" binding:"required" example:"1"`
+	Title          string `json:"title" example:"course title update"`
+	OrganizationId string `json:"organization_id" example:"1"`
+	Order          int32  `json:"order" example:"1"`
+	Publish        int32  `json:"publish" example:"1"`
+}
+
+type CourseDeleteReqeust struct {
+	Id string `json:"id" binding:"required" example:"1"`
+}
+
+type AssignCourseRequest struct {
+	MemberId       string `json:"member_id" binding:"required" example:"1"`
+	CourseId       string `json:"course_id" binding:"required" example:"1"`
+	OrganizationId string `json:"organization_id" binding:"required" example:"1"`
+	RoleId         int32  `json:"role_id" binding:"required" example:"1"`
+}
