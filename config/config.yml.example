@@ -20,6 +20,11 @@ jwt:
   expire_at: 7200
   effect_at: -1000
   issuer: adam
+gin:
+  debug_mode: true
+  port: 8080
+  read_timeout: 60
+  write_timeout: 60
 acm:
   model:
     config: ../../config/casbin_lib/model.conf

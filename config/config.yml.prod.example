@@ -14,14 +14,14 @@ db:
     username: root
     password: root
     database: local_test
-  debug_mode: true
+  debug_mode: false
 jwt:
   secret: this is jwt secret
   expire_at: 7200
   effect_at: -1000
   issuer: adam
 gin:
-  debug_mode: false
+  debug_mode: true
   port: 8080
   read_timeout: 60
   write_timeout: 60
