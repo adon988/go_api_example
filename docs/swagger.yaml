@@ -91,6 +91,27 @@ definitions:
         example: jwt token
         type: string
     type: object
+  controllers.UnitResponse:
+    properties:
+      course_id:
+        type: string
+      created_at:
+        type: string
+      creator_id:
+        type: string
+      id:
+        type: string
+      order:
+        type: integer
+      organization_id:
+        type: string
+      publish:
+        type: integer
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
   requests.AssignCourseRequest:
     properties:
       course_id:
@@ -126,6 +147,30 @@ definitions:
     - member_id
     - organization_id
     - role_id
+    type: object
+  requests.AssignUnitPermissionRequest:
+    properties:
+      course_id:
+        example: "1"
+        type: string
+      member_id:
+        example: "1"
+        type: string
+      organization_id:
+        example: "1"
+        type: string
+      role_id:
+        example: 1
+        type: integer
+      unit_id:
+        example: "1"
+        type: string
+    required:
+    - course_id
+    - member_id
+    - organization_id
+    - role_id
+    - unit_id
     type: object
   requests.CourseCreateRequest:
     properties:
@@ -253,6 +298,61 @@ definitions:
         type: string
       title:
         example: organization title update
+        type: string
+    required:
+    - id
+    type: object
+  requests.UnitCreateRequest:
+    properties:
+      course_id:
+        example: "1"
+        type: string
+      order:
+        example: 1
+        type: integer
+      organization_id:
+        example: "1"
+        type: string
+      publish:
+        example: 1
+        type: integer
+      title:
+        example: unit title
+        type: string
+    required:
+    - course_id
+    - order
+    - organization_id
+    - publish
+    - title
+    type: object
+  requests.UnitDeleteRequest:
+    properties:
+      id:
+        example: "1"
+        type: string
+    required:
+    - id
+    type: object
+  requests.UnitUpdateRequest:
+    properties:
+      course_id:
+        example: "1"
+        type: string
+      id:
+        example: "1"
+        type: string
+      order:
+        example: 1
+        type: integer
+      organization_id:
+        example: "1"
+        type: string
+      publish:
+        example: 1
+        type: integer
+      title:
+        example: unit title update
         type: string
     required:
     - id
@@ -549,6 +649,144 @@ paths:
       summary: Assign Organization Permission
       tags:
       - Organization
+  /admin/unit:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a unit
+      parameters:
+      - description: Unit object that needs to be deleted
+        in: body
+        name: unit
+        required: true
+        schema:
+          $ref: '#/definitions/requests.UnitDeleteRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Unit
+      tags:
+      - Unit
+    get:
+      consumes:
+      - application/json
+      description: Get all units that the member belongs to
+      parameters:
+      - description: Account
+        in: header
+        name: account
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/controllers.UnitResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Units
+      tags:
+      - Unit
+    post:
+      consumes:
+      - application/json
+      description: Create a unit
+      parameters:
+      - description: Unit object that needs to be created
+        in: body
+        name: title
+        required: true
+        schema:
+          $ref: '#/definitions/requests.UnitCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Create Unit
+      tags:
+      - Unit
+    put:
+      consumes:
+      - application/json
+      description: Update a unit
+      parameters:
+      - description: Unit object that needs to be updated
+        in: body
+        name: unit
+        required: true
+        schema:
+          $ref: '#/definitions/requests.UnitUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update Unit
+      tags:
+      - Unit
+  /admin/unit/permission:
+    post:
+      consumes:
+      - application/json
+      description: Assign a unit permission
+      parameters:
+      - description: Unit object that needs to be assigned
+        in: body
+        name: unit
+        required: true
+        schema:
+          $ref: '#/definitions/requests.AssignUnitPermissionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Assign Unit Permission
+      tags:
+      - Unit
   /auth/login:
     post:
       consumes:

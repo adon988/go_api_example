@@ -437,6 +437,226 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/unit": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get all units that the member belongs to",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Unit"
+                ],
+                "summary": "Get Units",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Account",
+                        "name": "account",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/controllers.UnitResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update a unit",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Unit"
+                ],
+                "summary": "Update Unit",
+                "parameters": [
+                    {
+                        "description": "Unit object that needs to be updated",
+                        "name": "unit",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.UnitUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create a unit",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Unit"
+                ],
+                "summary": "Create Unit",
+                "parameters": [
+                    {
+                        "description": "Unit object that needs to be created",
+                        "name": "title",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.UnitCreateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete a unit",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Unit"
+                ],
+                "summary": "Delete Unit",
+                "parameters": [
+                    {
+                        "description": "Unit object that needs to be deleted",
+                        "name": "unit",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.UnitDeleteRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/unit/permission": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Assign a unit permission",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Unit"
+                ],
+                "summary": "Assign Unit Permission",
+                "parameters": [
+                    {
+                        "description": "Unit object that needs to be assigned",
+                        "name": "unit",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.AssignUnitPermissionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/login": {
             "post": {
                 "description": "Login",
@@ -763,6 +983,38 @@ const docTemplate = `{
                 }
             }
         },
+        "controllers.UnitResponse": {
+            "type": "object",
+            "properties": {
+                "course_id": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "creator_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "order": {
+                    "type": "integer"
+                },
+                "organization_id": {
+                    "type": "string"
+                },
+                "publish": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "requests.AssignCourseRequest": {
             "type": "object",
             "required": [
@@ -809,6 +1061,38 @@ const docTemplate = `{
                 "role_id": {
                     "type": "integer",
                     "example": 1
+                }
+            }
+        },
+        "requests.AssignUnitPermissionRequest": {
+            "type": "object",
+            "required": [
+                "course_id",
+                "member_id",
+                "organization_id",
+                "role_id",
+                "unit_id"
+            ],
+            "properties": {
+                "course_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "member_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "organization_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "role_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "unit_id": {
+                    "type": "string",
+                    "example": "1"
                 }
             }
         },
@@ -990,6 +1274,82 @@ const docTemplate = `{
                 "title": {
                     "type": "string",
                     "example": "organization title update"
+                }
+            }
+        },
+        "requests.UnitCreateRequest": {
+            "type": "object",
+            "required": [
+                "course_id",
+                "order",
+                "organization_id",
+                "publish",
+                "title"
+            ],
+            "properties": {
+                "course_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "order": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "organization_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "publish": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "title": {
+                    "type": "string",
+                    "example": "unit title"
+                }
+            }
+        },
+        "requests.UnitDeleteRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "1"
+                }
+            }
+        },
+        "requests.UnitUpdateRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "course_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "order": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "organization_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "publish": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "title": {
+                    "type": "string",
+                    "example": "unit title update"
                 }
             }
         },

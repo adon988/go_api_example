@@ -12,6 +12,7 @@ var memberController controllers.MemberController
 var authController controllers.AuthController
 var organizationController controllers.OrganizationController
 var courseController controllers.CourseController
+var unitController controllers.UnitController
 
 func GetRouter(r *gin.Engine) {
 
@@ -54,6 +55,12 @@ func GetRouter(r *gin.Engine) {
 		adminGroup.PATCH("/course", courseController.UpdateCourse)
 		adminGroup.DELETE("/course", courseController.DeleteCourse)
 		adminGroup.POST("/course/assign", courseController.AssignOrganizationPermission)
+
+		adminGroup.GET("/units", unitController.GetUnits)
+		adminGroup.POST("/unit", unitController.CreateUnit)
+		adminGroup.PATCH("/unit", unitController.UpdateUnit)
+		adminGroup.DELETE("/unit", unitController.DeleteUnit)
+		adminGroup.POST("/unit/assign", unitController.AssignUnitPermission)
 	}
 
 }
