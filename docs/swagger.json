@@ -28,7 +28,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/controllers.CourseResponse"
+                                "$ref": "#/definitions/responses.CourseResponse"
                             }
                         }
                     },
@@ -239,7 +239,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/controllers.OrganizationResponse"
+                                "$ref": "#/definitions/responses.OrganizationResponse"
                             }
                         }
                     },
@@ -459,7 +459,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/controllers.UnitResponse"
+                                "$ref": "#/definitions/responses.UnitResponse"
                             }
                         }
                     },
@@ -674,7 +674,7 @@
                     "200": {
                         "description": "{\"code\":0,\"data\":{\"token\":\"token\"},msg\":\"success\"}",
                         "schema": {
-                            "$ref": "#/definitions/controllers.LoginResonse"
+                            "$ref": "#/definitions/responses.LoginResonse"
                         }
                     },
                     "400": {
@@ -748,7 +748,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controllers.GetMemberResonse"
+                            "$ref": "#/definitions/responses.GetMemberResonse"
                         }
                     },
                     "400": {
@@ -837,170 +837,6 @@
         }
     },
     "definitions": {
-        "controllers.CourseResponse": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "creator_id": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "order": {
-                    "type": "integer"
-                },
-                "organization_id": {
-                    "type": "string"
-                },
-                "publish": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "controllers.GetMemberResonse": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer",
-                    "example": 0
-                },
-                "data": {
-                    "$ref": "#/definitions/controllers.MemberinfoResponse"
-                },
-                "msg": {
-                    "type": "string",
-                    "example": "success"
-                }
-            }
-        },
-        "controllers.LoginResonse": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer",
-                    "example": 0
-                },
-                "data": {
-                    "$ref": "#/definitions/controllers.TokenResponse"
-                },
-                "msg": {
-                    "type": "string",
-                    "example": "success"
-                }
-            }
-        },
-        "controllers.MemberinfoResponse": {
-            "type": "object",
-            "properties": {
-                "birthday": {
-                    "type": "string",
-                    "example": "2021-01-01"
-                },
-                "created_at": {
-                    "type": "string",
-                    "example": "2021-01-01 00:00:00"
-                },
-                "email": {
-                    "type": "string",
-                    "example": "example@example.com"
-                },
-                "gender": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "id": {
-                    "type": "string",
-                    "example": "123456"
-                },
-                "name": {
-                    "type": "string",
-                    "example": "test"
-                },
-                "updated_at": {
-                    "type": "string",
-                    "example": "2021-01-01 00:00:00"
-                }
-            }
-        },
-        "controllers.OrganizationResponse": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "creater_id": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "order": {
-                    "type": "integer"
-                },
-                "publish": {
-                    "type": "integer"
-                },
-                "source_language": {
-                    "type": "string"
-                },
-                "target_language": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "controllers.TokenResponse": {
-            "type": "object",
-            "properties": {
-                "token": {
-                    "type": "string",
-                    "example": "jwt token"
-                }
-            }
-        },
-        "controllers.UnitResponse": {
-            "type": "object",
-            "properties": {
-                "course_id": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "creator_id": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "order": {
-                    "type": "integer"
-                },
-                "publish": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
         "requests.AssignCourseRequest": {
             "type": "object",
             "required": [
@@ -1325,6 +1161,132 @@
                 }
             }
         },
+        "responses.CourseResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "creator_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "order": {
+                    "type": "integer"
+                },
+                "organization_id": {
+                    "type": "string"
+                },
+                "publish": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "responses.GetMemberResonse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "data": {
+                    "$ref": "#/definitions/responses.MemberinfoResponse"
+                },
+                "msg": {
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
+        "responses.LoginResonse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "data": {
+                    "$ref": "#/definitions/responses.TokenResponse"
+                },
+                "msg": {
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
+        "responses.MemberinfoResponse": {
+            "type": "object",
+            "properties": {
+                "birthday": {
+                    "type": "string",
+                    "example": "2021-01-01"
+                },
+                "created_at": {
+                    "type": "string",
+                    "example": "2021-01-01 00:00:00"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "example@example.com"
+                },
+                "gender": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id": {
+                    "type": "string",
+                    "example": "123456"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "test"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "example": "2021-01-01 00:00:00"
+                }
+            }
+        },
+        "responses.OrganizationResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "creater_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "order": {
+                    "type": "integer"
+                },
+                "publish": {
+                    "type": "integer"
+                },
+                "source_language": {
+                    "type": "string"
+                },
+                "target_language": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "responses.ResponseFail": {
             "type": "object",
             "properties": {
@@ -1356,6 +1318,44 @@
                 "msg": {
                     "type": "string",
                     "example": "success"
+                }
+            }
+        },
+        "responses.TokenResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string",
+                    "example": "jwt token"
+                }
+            }
+        },
+        "responses.UnitResponse": {
+            "type": "object",
+            "properties": {
+                "course_id": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "creator_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "order": {
+                    "type": "integer"
+                },
+                "publish": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
                 }
             }
         }
