@@ -18,22 +18,6 @@ type MemberController struct {
 	InfoDb utils.InfoDb
 }
 
-type MemberinfoResponse struct {
-	ID        string    `json:"id" example:"123456"`
-	Name      string    `json:"name" example:"test"`
-	Birthday  string    `json:"birthday" example:"2021-01-01"`
-	Gender    int32     `json:"gender" example:"1"`
-	Email     string    `json:"email" example:"example@example.com"`
-	CreatedAt time.Time `json:"created_at" example:"2021-01-01 00:00:00"`
-	UpdatedAt time.Time `json:"updated_at" example:"2021-01-01 00:00:00"`
-}
-
-type GetMemberResonse struct {
-	Code int `json:"code" example:"0"`
-	Data MemberinfoResponse
-	Msg  string `json:"msg" example:"success"`
-}
-
 // GetMmeberById retrieves a member by ID.
 // @Summary Get a member by ID
 // @Description Get a member by ID
@@ -41,7 +25,7 @@ type GetMemberResonse struct {
 // @Accept  json
 // @Produce  json
 // @Security ApiKeyAuth
-// @Success 200 {object} GetMemberResonse
+// @Success 200 {object} responses.GetMemberResonse
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":"member not found"}'
 // @Router /member [get]
 func (c MemberController) GetMemberInfo(ctx *gin.Context) {
@@ -57,7 +41,7 @@ func (c MemberController) GetMemberInfo(ctx *gin.Context) {
 		return
 	}
 
-	data := MemberinfoResponse{
+	data := responses.MemberinfoResponse{
 		ID:        members.Id,
 		Name:      responses.NullableString(members.Name),
 		Birthday:  responses.NullableDate(members.Birthday),

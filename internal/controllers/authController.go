@@ -16,15 +16,6 @@ type AuthController struct {
 	InfoDb utils.InfoDb
 }
 
-type TokenResponse struct {
-	Token string `json:"token" example:"jwt token"`
-}
-type LoginResonse struct {
-	Code int `json:"code" example:"0"`
-	Data TokenResponse
-	Msg  string `json:"msg" example:"success"`
-}
-
 // @Summary Login
 // @Description Login
 // @Tags auth
@@ -33,7 +24,7 @@ type LoginResonse struct {
 // @param req body requests.LoginRequeset true "req"
 // @Failure 400 {object} responses.ResponseFail "msg: username or password error"
 // @Failure 400 {object} responses.ResponseFail "msg: account not exists"
-// @success 200 {object} LoginResonse    "{"code":0,"data":{"token":"token"},msg":"success"}"
+// @success 200 {object} responses.LoginResonse    "{"code":0,"data":{"token":"token"},msg":"success"}"
 // @Router /auth/login [post]
 func (c AuthController) Login(ctx *gin.Context) {
 	var req requests.LoginRequeset
@@ -57,7 +48,7 @@ func (c AuthController) Login(ctx *gin.Context) {
 
 	token, _ := middleware.GenToken(auth.MemberId)
 
-	data := TokenResponse{
+	data := responses.TokenResponse{
 		Token: token,
 	}
 	responses.OkWithData(data, ctx)

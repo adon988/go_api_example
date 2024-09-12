@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"time"
-
 	models "github.com/adon988/go_api_example/internal/models"
 	"github.com/adon988/go_api_example/internal/services"
 	"github.com/adon988/go_api_example/internal/utils"
@@ -15,31 +13,20 @@ type CourseController struct {
 	InfoDb utils.InfoDb
 }
 
-type CourseResponse struct {
-	Id             string    `json:"id"`
-	Title          string    `json:"title"`
-	OrganizationId string    `json:"organization_id"`
-	Order          int32     `json:"order"`
-	Publish        int32     `json:"publish"`
-	CreaterId      string    `json:"creator_id"`
-	CreatedAt      time.Time `json:"created_at"`
-	UpdatedAt      time.Time `json:"updated_at"`
-}
-
 // @Summary Get Course
 // @Description Get all courses that the member belongs to
 // @Tags Course
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
-// @Success 200 {array} CourseResponse
+// @Success 200 {array} responses.CourseResponse
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":""}'
 // @Router /admin/course [get]
 func (c CourseController) GetCourse(ctx *gin.Context) {
 	Db, _ := c.InfoDb.InitDB()
 	memberId, _ := ctx.Get("account")
 	courseService := services.NewCourseSerive(Db)
-	var coursesRes []CourseResponse
+	var coursesRes []responses.CourseResponse
 	var err error
 	courses, err := courseService.GetCourse(memberId.(string))
 
@@ -49,7 +36,7 @@ func (c CourseController) GetCourse(ctx *gin.Context) {
 	}
 
 	for _, course := range courses {
-		coursesRes = append(coursesRes, CourseResponse{
+		coursesRes = append(coursesRes, responses.CourseResponse{
 			Id:             course.Id,
 			Title:          course.Title,
 			OrganizationId: course.OrganizationId,

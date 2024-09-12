@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"time"
-
 	models "github.com/adon988/go_api_example/internal/models"
 	"github.com/adon988/go_api_example/internal/services"
 	"github.com/adon988/go_api_example/internal/utils"
@@ -15,17 +13,6 @@ type UnitController struct {
 	InfoDb utils.InfoDb
 }
 
-type UnitResponse struct {
-	Id        string    `json:"id"`
-	Title     string    `json:"title"`
-	CourseId  string    `json:"course_id"`
-	Order     int32     `json:"order"`
-	Publish   int32     `json:"publish"`
-	CreaterId string    `json:"creator_id"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-}
-
 // @Summary Get Units
 // @Description Get all units that the member belongs to
 // @Tags Unit
@@ -33,14 +20,14 @@ type UnitResponse struct {
 // @Produce json
 // @Security ApiKeyAuth
 // @Param account header string true "Account"
-// @Success 200 {array} UnitResponse
+// @Success 200 {array} responses.UnitResponse
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":""}'
 // @Router /admin/unit [get]
 func (c UnitController) GetUnits(ctx *gin.Context) {
 	Db, _ := c.InfoDb.InitDB()
 	memberId, _ := ctx.Get("account")
 	unitService := services.NewUnitService(Db)
-	var unitsRes []UnitResponse
+	var unitsRes []responses.UnitResponse
 	var err error
 	units, err := unitService.GetUnit(memberId.(string))
 	if err != nil {
@@ -48,7 +35,7 @@ func (c UnitController) GetUnits(ctx *gin.Context) {
 		return
 	}
 	for _, unit := range units {
-		unitsRes = append(unitsRes, UnitResponse{
+		unitsRes = append(unitsRes, responses.UnitResponse{
 			Id:        unit.Id,
 			Title:     unit.Title,
 			CourseId:  unit.CourseId,

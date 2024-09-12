@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"time"
-
 	models "github.com/adon988/go_api_example/internal/models"
 	"github.com/adon988/go_api_example/internal/services"
 	"github.com/adon988/go_api_example/internal/utils"
@@ -15,32 +13,20 @@ type OrganizationController struct {
 	InfoDb utils.InfoDb
 }
 
-type OrganizationResponse struct {
-	Id             string    `json:"id"`
-	Title          string    `json:"title"`
-	Order          int32     `json:"order"`
-	SourceLanguage string    `json:"source_language"`
-	TargetLanguage string    `json:"target_language"`
-	Publish        int32     `json:"publish"`
-	CreaterId      string    `json:"creater_id"`
-	CreatedAt      time.Time `json:"created_at"`
-	UpdatedAt      time.Time `json:"updated_at"`
-}
-
 // @Summary Get Organization
 // @Description Get all organizations that the member belongs to
 // @Tags Organization
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
-// @Success 200 {array} OrganizationResponse
+// @Success 200 {array} responses.OrganizationResponse
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":""}'
 // @Router /admin/organization [get]
 func (c OrganizationController) GetOrganization(ctx *gin.Context) {
 	Db, _ := c.InfoDb.InitDB()
 	memberId, _ := ctx.Get("account")
 	organizationService := services.NewOrganizationService(Db)
-	var organizationsRes []OrganizationResponse
+	var organizationsRes []responses.OrganizationResponse
 	var err error
 	organizations, err := organizationService.GetOrganization(memberId.(string))
 
@@ -50,7 +36,7 @@ func (c OrganizationController) GetOrganization(ctx *gin.Context) {
 	}
 
 	for _, organization := range organizations {
-		organizationsRes = append(organizationsRes, OrganizationResponse{
+		organizationsRes = append(organizationsRes, responses.OrganizationResponse{
 			Id:             organization.Id,
 			Title:          organization.Title,
 			Order:          organization.Order,
