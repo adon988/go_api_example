@@ -1,13 +1,16 @@
 package repository
 
 import (
+	"fmt"
+
 	"github.com/adon988/go_api_example/internal/models"
 	"gorm.io/gorm"
 )
 
 type MemberRepository interface {
-	GetMemberInfo(id string) (*models.Member, error)
-	GetMembersWithRoles(id string) (*models.Member, error)
+	GetMemberInfo(id string) (models.Member, error)
+	GetMembersWithRoles(id string) (models.Member, error)
+	GetMembersValid(member_id []string) ([]string, error)
 	CreateMember(id string) error
 	UpdateMember(id string, data models.Member) error
 	DeleteMember(id string) error
@@ -24,21 +27,35 @@ func NewMemberRepository(db *gorm.DB) MemberRepository {
 var member models.Member
 
 // GetMemberInfo implements MemberRepository.
-func (r *MemberRepositoryImpl) GetMemberInfo(id string) (*models.Member, error) {
+func (r *MemberRepositoryImpl) GetMemberInfo(id string) (models.Member, error) {
+	var member models.Member
 	if err := r.DB.Where("id = ?", id).First(&member).Error; err != nil {
-		return nil, err
+		return member, err
 	}
-	return &member, nil
+	return member, nil
 }
 
-func (r *MemberRepositoryImpl) GetMembersWithRoles(id string) (*models.Member, error) {
+func (r *MemberRepositoryImpl) GetMembersWithRoles(id string) (models.Member, error) {
 	var member models.Member
 	err := r.DB.Joins("Role").First(&member, "members.id = ?", id).Error
 	if err != nil {
-		return nil, err
+		return member, err
 	}
 
-	return &member, nil
+	return member, nil
+}
+
+func (r *MemberRepositoryImpl) GetMembersValid(member_id []string) ([]string, error) {
+	var validMemberIDs []string
+	if err := r.DB.Model(&models.Member{}).Where("id IN (?)", member_id).Pluck("id", &validMemberIDs).Error; err != nil {
+		return []string{}, err
+	}
+
+	if len(validMemberIDs) == 0 {
+		return []string{}, fmt.Errorf("no valid members found")
+	}
+
+	return validMemberIDs, nil
 }
 
 func (r *MemberRepositoryImpl) CreateMember(id string) error {

@@ -18,12 +18,21 @@ func NewMemberService(db *gorm.DB) *MemberService {
 	}
 }
 
-func (service MemberService) GetMemberInfo(id string) (*models.Member, error) {
+func (service MemberService) GetMemberInfo(id string) (models.Member, error) {
 	return service.memberRepo.GetMemberInfo(id)
 }
 
-func (service MemberService) GetMembersWithRoles(id string) (*models.Member, error) {
+func (service MemberService) GetMembersWithRoles(id string) (models.Member, error) {
 	return service.memberRepo.GetMembersWithRoles(id)
+}
+
+func (service MemberService) GetValidMembers(member_id []string) ([]string, error) {
+	members, err := service.memberRepo.GetMembersValid(member_id)
+	if err != nil {
+		return []string{}, err
+	}
+
+	return members, nil
 }
 
 func (service MemberService) UpdateMember(id string, data models.Member) error {

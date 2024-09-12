@@ -79,12 +79,49 @@ func TestMemberService_GetMemberInfo(t *testing.T) {
 	// Call the GetMemberInfo method with an invalid ID
 	member, err = service.GetMemberInfo("2")
 
-	// Assert that the returned member is nil
-	assert.Nil(t, member)
 	// Assert that the error is not nil
 	assert.NotNil(t, err)
 }
 
+func TestMemberService_GetValidMembers(t *testing.T) {
+	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
+	mockDB.AutoMigrate(&models.Member{})
+	MemberService := NewMemberService(mockDB)
+
+	id := "1"
+	name := "John Doe"
+	birthday := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
+	email := "john@example.com"
+	gender := int32(1)
+	mockMember := &models.Member{Id: id, Name: &name, Birthday: &birthday, Email: &email, Gender: &gender}
+	mockDB.Create(&mockMember)
+
+	members, err := MemberService.GetValidMembers([]string{"1"})
+
+	assert.Nil(t, err)
+	assert.Equal(t, members, []string{"1"})
+
+	id = "2"
+	name = "John Doe2"
+	birthday = time.Date(2024, 1, 2, 0, 0, 0, 0, time.UTC)
+	email = "john2@example.com"
+	gender = int32(2)
+	mockMember2 := &models.Member{Id: id, Name: &name, Birthday: &birthday, Email: &email, Gender: &gender}
+	mockDB.Create(&mockMember2)
+
+	members, err = MemberService.GetValidMembers([]string{"1", "2"})
+
+	assert.Nil(t, err)
+	assert.Equal(t, members, []string{"1", "2"})
+
+	members, err = MemberService.GetValidMembers([]string{"1", "3"})
+	assert.Nil(t, err)
+	assert.Equal(t, members, []string{"1"})
+
+	members, err = MemberService.GetValidMembers([]string{"4", "3"})
+	assert.NotNil(t, err)
+	assert.Equal(t, members, []string{})
+}
 func TestMemberService_DeleteMember(t *testing.T) {
 	// Create a new mock gorm.DB instance
 	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
