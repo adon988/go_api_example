@@ -70,6 +70,14 @@ func (c CourseController) CreateCourse(ctx *gin.Context) {
 		return
 	}
 	Db, _ := c.InfoDb.InitDB()
+
+	organizationService := services.NewOrganizationService(Db)
+	_, err := organizationService.IsMemberWithEditorPermissionOnOrganization(memberId.(string), req.OrganizationId)
+	if err != nil {
+		responses.FailWithMessage(err.Error(), ctx)
+		return
+	}
+
 	courseService := services.NewCourseSerive(Db)
 	courseId, _ := utils.GenId()
 	courseData := models.Course{
@@ -80,7 +88,7 @@ func (c CourseController) CreateCourse(ctx *gin.Context) {
 		Publish:        req.Publish,
 		CreaterId:      memberId.(string),
 	}
-	err := courseService.CreateCourseNPermission(memberId.(string), defaultRole, courseData)
+	err = courseService.CreateCourseNPermission(memberId.(string), defaultRole, courseData)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
@@ -108,14 +116,14 @@ func (c CourseController) UpdateCourse(ctx *gin.Context) {
 	courseService := services.NewCourseSerive(Db)
 	memberId := ctx.GetString("account")
 
-	coursePerm, err := courseService.GetCoursePermissionByMemberIDAndCourseID(memberId, req.Id)
-
+	organizationService := services.NewOrganizationService(Db)
+	_, err := organizationService.IsMemberWithEditorPermissionOnOrganization(memberId, req.OrganizationId)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
 	}
 
-	err = checkRoleWithEditorPermission(coursePerm.Role)
+	_, err = courseService.IsMemberWithEditorPermissionOnCourse(memberId, req.Id)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
@@ -158,13 +166,7 @@ func (c CourseController) DeleteCourse(ctx *gin.Context) {
 	courseService := services.NewCourseSerive(Db)
 	memberId := ctx.GetString("account")
 
-	coursePerm, err := courseService.GetCoursePermissionByMemberIDAndCourseID(memberId, req.Id)
-	if err != nil {
-		responses.FailWithMessage(err.Error(), ctx)
-		return
-	}
-
-	err = checkRoleWithEditorPermission(coursePerm.Role)
+	_, err := courseService.IsMemberWithEditorPermissionOnCourse(memberId, req.Id)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
@@ -189,7 +191,7 @@ func (c CourseController) DeleteCourse(ctx *gin.Context) {
 // @Success 200 {string} string "ok"
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":""}'
 // @Router /admin/course/assign [post]
-func (c CourseController) AssignOrganizationPermission(ctx *gin.Context) {
+func (c CourseController) AssignCoursePermission(ctx *gin.Context) {
 	var req requests.AssignCourseRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
@@ -198,14 +200,8 @@ func (c CourseController) AssignOrganizationPermission(ctx *gin.Context) {
 	Db, _ := c.InfoDb.InitDB()
 	courseService := services.NewCourseSerive(Db)
 	memberId := ctx.GetString("account")
-	coursePerm, err := courseService.GetCoursePermissionByMemberIDAndCourseID(memberId, req.CourseId)
-	if err != nil {
-		responses.FailWithMessage(err.Error(), ctx)
-		return
-	}
 
-	//check if the member has admin/editor permission
-	err = checkRoleWithEditorPermission(coursePerm.Role)
+	coursePerm, err := courseService.IsMemberWithEditorPermissionOnCourse(memberId, req.CourseId)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return

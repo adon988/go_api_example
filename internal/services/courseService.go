@@ -3,6 +3,7 @@ package services
 import (
 	"github.com/adon988/go_api_example/internal/models"
 	"github.com/adon988/go_api_example/internal/repository"
+	"github.com/adon988/go_api_example/internal/utils"
 	"gorm.io/gorm"
 )
 
@@ -14,6 +15,7 @@ type CourseServiceInterface interface {
 	GetCourseByMemberIDAndCourseID(member_id string, course_id string) (models.Course, error)
 	GetCoursePermissionByMemberIDAndCourseID(member_id string, course_id string) (models.CoursePermission, error)
 	AssignCoursePermission(coursePermission models.CoursePermission) error
+	IsMemberWithEditorPermissionOnCourse(member_id string, course_id string) (models.CoursePermission, error)
 }
 
 func NewCourseSerive(db *gorm.DB) CourseServiceInterface {
@@ -26,6 +28,19 @@ func NewCourseSerive(db *gorm.DB) CourseServiceInterface {
 type CourseService struct {
 	course           repository.CourseRepository
 	coursePermission repository.CoursePermissionRepository
+}
+
+func (service CourseService) IsMemberWithEditorPermissionOnCourse(member_id string, course_id string) (models.CoursePermission, error) {
+	coursePerm, err := service.GetCoursePermissionByMemberIDAndCourseID(member_id, course_id)
+	if err != nil {
+		return coursePerm, err
+	}
+
+	err = utils.CheckRoleWithEditorPermission(coursePerm.Role)
+	if err != nil {
+		return coursePerm, err
+	}
+	return coursePerm, err
 }
 
 func (service CourseService) CreateCourseNPermission(member_id string, role int32, course models.Course) error {

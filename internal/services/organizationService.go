@@ -3,6 +3,7 @@ package services
 import (
 	"github.com/adon988/go_api_example/internal/models"
 	"github.com/adon988/go_api_example/internal/repository"
+	"github.com/adon988/go_api_example/internal/utils"
 	"gorm.io/gorm"
 )
 
@@ -14,6 +15,7 @@ type OrganizationServiceInterface interface {
 	DeleteOrganization(id string) error
 	GetOrganizationPermissionByOrganizationIDAndMemberID(member_id string, organization_id string) (models.OrganizationPermission, error)
 	AssignOrganizationPermission(organizationPermission models.OrganizationPermission) error
+	IsMemberWithEditorPermissionOnOrganization(member_id string, organization_id string) (models.OrganizationPermission, error)
 }
 
 func NewOrganizationService(db *gorm.DB) OrganizationServiceInterface {
@@ -26,6 +28,19 @@ func NewOrganizationService(db *gorm.DB) OrganizationServiceInterface {
 type OrganizationService struct {
 	organization           repository.OrganizationRepository
 	organizationPermission repository.OrganizationPermissionRepository
+}
+
+func (service *OrganizationService) IsMemberWithEditorPermissionOnOrganization(member_id string, organization_id string) (models.OrganizationPermission, error) {
+	orgPerm, err := service.GetOrganizationPermissionByOrganizationIDAndMemberID(member_id, organization_id)
+	if err != nil {
+		return orgPerm, err
+	}
+
+	err = utils.CheckRoleWithEditorPermission(orgPerm.Role)
+	if err != nil {
+		return orgPerm, err
+	}
+	return orgPerm, nil
 }
 
 func (service OrganizationService) CreateOrganizationNPermission(member_id string, role int32, organization models.Organization) error {

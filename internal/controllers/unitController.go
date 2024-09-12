@@ -69,6 +69,14 @@ func (c UnitController) CreateUnit(ctx *gin.Context) {
 		return
 	}
 	Db, _ := c.InfoDb.InitDB()
+
+	courseServicde := services.NewCourseSerive(Db)
+	_, err := courseServicde.IsMemberWithEditorPermissionOnCourse(ctx.GetString("account"), req.CourseId)
+	if err != nil {
+		responses.FailWithMessage(err.Error(), ctx)
+		return
+	}
+
 	unitService := services.NewUnitService(Db)
 	unitId, _ := utils.GenId()
 	unitData := models.Unit{
@@ -79,7 +87,7 @@ func (c UnitController) CreateUnit(ctx *gin.Context) {
 		Publish:   req.Publish,
 		CreaterId: memberId.(string),
 	}
-	err := unitService.CreateUnitNPermission(memberId.(string), defaultRole, unitData)
+	err = unitService.CreateUnitNPermission(memberId.(string), defaultRole, unitData)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
@@ -104,14 +112,16 @@ func (c UnitController) UpdateUnit(ctx *gin.Context) {
 		return
 	}
 	Db, _ := c.InfoDb.InitDB()
-	unitService := services.NewUnitService(Db)
-	memberId := ctx.GetString("account")
-	unitPerm, err := unitService.GetUnitPermissionByMemberIDAndUnitID(memberId, req.Id)
+	courseServicde := services.NewCourseSerive(Db)
+	_, err := courseServicde.IsMemberWithEditorPermissionOnCourse(ctx.GetString("account"), req.CourseId)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
 	}
-	err = checkRoleWithEditorPermission(unitPerm.Role)
+
+	unitService := services.NewUnitService(Db)
+	memberId := ctx.GetString("account")
+	_, err = unitService.IsMemberWithEditorPermissionOnUnit(memberId, req.Id)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
@@ -153,14 +163,7 @@ func (c UnitController) DeleteUnit(ctx *gin.Context) {
 	Db, _ := c.InfoDb.InitDB()
 	unitService := services.NewUnitService(Db)
 	memberId := ctx.GetString("account")
-	unitPerm, err := unitService.GetUnitPermissionByMemberIDAndUnitID(memberId, req.Id)
-
-	if err != nil {
-		responses.FailWithMessage(err.Error(), ctx)
-		return
-	}
-
-	err = checkRoleWithEditorPermission(unitPerm.Role)
+	_, err := unitService.IsMemberWithEditorPermissionOnUnit(memberId, req.Id)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
@@ -192,14 +195,10 @@ func (c UnitController) AssignUnitPermission(ctx *gin.Context) {
 		return
 	}
 	Db, _ := c.InfoDb.InitDB()
+
 	unitService := services.NewUnitService(Db)
 	memberId := ctx.GetString("account")
-	unitPerm, err := unitService.GetUnitPermissionByMemberIDAndUnitID(memberId, req.UnitId)
-	if err != nil {
-		responses.FailWithMessage(err.Error(), ctx)
-		return
-	}
-	err = checkRoleWithEditorPermission(unitPerm.Role)
+	unitPerm, err := unitService.IsMemberWithEditorPermissionOnUnit(memberId, req.UnitId)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return

@@ -112,13 +112,7 @@ func (c OrganizationController) UpdateOrganization(ctx *gin.Context) {
 	organizationService := services.NewOrganizationService(Db)
 	memberId := ctx.GetString("account")
 
-	orgPerm, err := organizationService.GetOrganizationPermissionByOrganizationIDAndMemberID(memberId, req.Id)
-	if err != nil {
-		responses.FailWithMessage(err.Error(), ctx)
-		return
-	}
-	//check if the member has permission to uodate or delete
-	err = checkRoleWithEditorPermission(orgPerm.Role)
+	_, err := organizationService.IsMemberWithEditorPermissionOnOrganization(memberId, req.Id)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
@@ -161,13 +155,7 @@ func (c OrganizationController) DeleteOrganization(ctx *gin.Context) {
 	organizationService := services.NewOrganizationService(Db)
 	memberId := ctx.GetString("account")
 
-	orgPerm, err := organizationService.GetOrganizationPermissionByOrganizationIDAndMemberID(memberId, req.Id)
-	if err != nil {
-		responses.FailWithMessage(err.Error(), ctx)
-		return
-	}
-	//check if the member has permission to delete the organization
-	err = checkRoleWithEditorPermission(orgPerm.Role)
+	_, err := organizationService.IsMemberWithEditorPermissionOnOrganization(memberId, req.Id)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
@@ -201,18 +189,12 @@ func (c OrganizationController) AssignOrganizationPermission(ctx *gin.Context) {
 	organizationService := services.NewOrganizationService(Db)
 	memberId := ctx.GetString("account")
 
-	orgPerm, err := organizationService.GetOrganizationPermissionByOrganizationIDAndMemberID(memberId, req.OrganizationId)
+	orgPerm, err := organizationService.IsMemberWithEditorPermissionOnOrganization(memberId, req.OrganizationId)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
 	}
 
-	//check if the member has admin/editor permission
-	err = checkRoleWithEditorPermission(orgPerm.Role)
-	if err != nil {
-		responses.FailWithMessage(err.Error(), ctx)
-		return
-	}
 	//check if the member has enough permission to assign role to member
 	if orgPerm.Role > req.RoleId {
 		responses.FailWithMessage("permission denied (2)", ctx)

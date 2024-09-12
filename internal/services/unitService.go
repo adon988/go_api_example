@@ -3,6 +3,7 @@ package services
 import (
 	"github.com/adon988/go_api_example/internal/models"
 	"github.com/adon988/go_api_example/internal/repository"
+	"github.com/adon988/go_api_example/internal/utils"
 	"gorm.io/gorm"
 )
 
@@ -13,6 +14,7 @@ type UnitServiceInterface interface {
 	DeleteUnit(id string) error
 	GetUnitPermissionByMemberIDAndUnitID(member_id string, unit_id string) (models.UnitPermission, error)
 	AssignUnitPermission(unitPermission models.UnitPermission) error
+	IsMemberWithEditorPermissionOnUnit(member_id string, unit_id string) (models.UnitPermission, error)
 }
 
 type UnitService struct {
@@ -25,6 +27,19 @@ func NewUnitService(db *gorm.DB) UnitServiceInterface {
 		unit:           repository.NewUnitRepository(db),
 		unitPermission: repository.NewUnitPermissionRepository(db),
 	}
+}
+
+func (service UnitService) IsMemberWithEditorPermissionOnUnit(member_id string, unit_id string) (models.UnitPermission, error) {
+	unitPerm, err := service.GetUnitPermissionByMemberIDAndUnitID(member_id, unit_id)
+	if err != nil {
+		return unitPerm, err
+	}
+
+	err = utils.CheckRoleWithEditorPermission(unitPerm.Role)
+	if err != nil {
+		return unitPerm, err
+	}
+	return unitPerm, nil
 }
 
 func (service UnitService) CreateUnitNPermission(member_id string, role int32, unit models.Unit) error {

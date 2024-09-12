@@ -1,4 +1,4 @@
-package controllers
+package utils
 
 import "fmt"
 
@@ -7,7 +7,7 @@ var allowEditorRoles = map[int32]string{
 	2: "editor",
 }
 
-func checkRoleWithEditorPermission(RoleId int32) error {
+func CheckRoleWithEditorPermission(RoleId int32) error {
 	if _, ok := allowEditorRoles[RoleId]; !ok {
 		return fmt.Errorf("permission denied")
 	}

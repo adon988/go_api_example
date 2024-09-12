@@ -1,4 +1,4 @@
-package controllers
+package utils
 
 import (
 	"testing"
@@ -11,8 +11,8 @@ func Test_checkOrganizationPermissionAllow(t *testing.T) {
 		1: "admin",
 		2: "editor",
 	}
-	for k, _ := range sampleAllowEditorRoles {
-		err := checkRoleWithEditorPermission(k)
+	for k := range sampleAllowEditorRoles {
+		err := CheckRoleWithEditorPermission(k)
 		assert.Nil(t, err)
 	}
 }
@@ -23,8 +23,8 @@ func Test_checkOrganizationPermissionDisallow(t *testing.T) {
 		4: "guest",
 		5: "member",
 	}
-	for k, _ := range sampleDisallowedRoles {
-		err := checkRoleWithEditorPermission(k)
+	for k := range sampleDisallowedRoles {
+		err := CheckRoleWithEditorPermission(k)
 		assert.Equal(t, "permission denied", err.Error())
 	}
 }
