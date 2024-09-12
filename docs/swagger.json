@@ -990,9 +990,6 @@
                 "order": {
                     "type": "integer"
                 },
-                "organization_id": {
-                    "type": "string"
-                },
                 "publish": {
                     "type": "integer"
                 },
@@ -1058,7 +1055,6 @@
             "required": [
                 "course_id",
                 "member_id",
-                "organization_id",
                 "role_id",
                 "unit_id"
             ],
@@ -1068,10 +1064,6 @@
                     "example": "1"
                 },
                 "member_id": {
-                    "type": "string",
-                    "example": "1"
-                },
-                "organization_id": {
                     "type": "string",
                     "example": "1"
                 },
@@ -1271,7 +1263,6 @@
             "required": [
                 "course_id",
                 "order",
-                "organization_id",
                 "publish",
                 "title"
             ],
@@ -1283,10 +1274,6 @@
                 "order": {
                     "type": "integer",
                     "example": 1
-                },
-                "organization_id": {
-                    "type": "string",
-                    "example": "1"
                 },
                 "publish": {
                     "type": "integer",
@@ -1327,10 +1314,6 @@
                 "order": {
                     "type": "integer",
                     "example": 1
-                },
-                "organization_id": {
-                    "type": "string",
-                    "example": "1"
                 },
                 "publish": {
                     "type": "integer",

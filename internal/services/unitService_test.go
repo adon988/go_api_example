@@ -15,13 +15,12 @@ func TestUnitSerivce_CreateUnitNPermission(t *testing.T) {
 
 	memberId := "1"
 	unit := models.Unit{
-		Id:             "1",
-		Title:          "unit title",
-		OrganizationId: "1",
-		CourseId:       "1",
-		Order:          1,
-		Publish:        1,
-		CreaterId:      memberId,
+		Id:        "1",
+		Title:     "unit title",
+		CourseId:  "1",
+		Order:     1,
+		Publish:   1,
+		CreaterId: memberId,
 	}
 	role := int32(1)
 	service := NewUnitService(mockDB)
@@ -35,13 +34,12 @@ func TestUnitSerivce_GetUnit(t *testing.T) {
 
 	memberId := "1"
 	unit := models.Unit{
-		Id:             "1",
-		Title:          "unit title",
-		OrganizationId: "1",
-		CourseId:       "1",
-		Order:          1,
-		Publish:        1,
-		CreaterId:      memberId,
+		Id:        "1",
+		Title:     "unit title",
+		CourseId:  "1",
+		Order:     1,
+		Publish:   1,
+		CreaterId: memberId,
 	}
 	role := int32(1)
 	service := NewUnitService(mockDB)
@@ -59,13 +57,12 @@ func TestUnitSerivce_GetUnitPermissionByMemberIDAndUnitID(t *testing.T) {
 
 	memberId := "1"
 	unit := models.Unit{
-		Id:             "1",
-		Title:          "unit title",
-		OrganizationId: "1",
-		CourseId:       "1",
-		Order:          1,
-		Publish:        1,
-		CreaterId:      memberId,
+		Id:        "1",
+		Title:     "unit title",
+		CourseId:  "1",
+		Order:     1,
+		Publish:   1,
+		CreaterId: memberId,
 	}
 	role := int32(1)
 	service := NewUnitService(mockDB)
@@ -85,13 +82,12 @@ func TestUnitSerivce_AssignUnitPermission(t *testing.T) {
 
 	memberId := "1"
 	unit := models.Unit{
-		Id:             "1",
-		Title:          "unit title",
-		OrganizationId: "1",
-		CourseId:       "1",
-		Order:          1,
-		Publish:        1,
-		CreaterId:      memberId,
+		Id:        "1",
+		Title:     "unit title",
+		CourseId:  "1",
+		Order:     1,
+		Publish:   1,
+		CreaterId: memberId,
 	}
 	role := int32(1)
 	service := NewUnitService(mockDB)
@@ -119,13 +115,12 @@ func TestUnitSerivce_UpdateUnit(t *testing.T) {
 
 	memberId := "1"
 	unit := models.Unit{
-		Id:             "1",
-		Title:          "unit title",
-		OrganizationId: "1",
-		CourseId:       "1",
-		Order:          1,
-		Publish:        1,
-		CreaterId:      memberId,
+		Id:        "1",
+		Title:     "unit title",
+		CourseId:  "1",
+		Order:     1,
+		Publish:   1,
+		CreaterId: memberId,
 	}
 	role := int32(1)
 	service := NewUnitService(mockDB)
@@ -148,13 +143,12 @@ func TestUnitSerivce_DeleteUnit(t *testing.T) {
 
 	memberId := "1"
 	unit := models.Unit{
-		Id:             "1",
-		Title:          "unit title",
-		OrganizationId: "1",
-		CourseId:       "1",
-		Order:          1,
-		Publish:        1,
-		CreaterId:      memberId,
+		Id:        "1",
+		Title:     "unit title",
+		CourseId:  "1",
+		Order:     1,
+		Publish:   1,
+		CreaterId: memberId,
 	}
 	role := int32(1)
 	service := NewUnitService(mockDB)

@@ -16,15 +16,14 @@ type UnitController struct {
 }
 
 type UnitResponse struct {
-	Id             string    `json:"id"`
-	Title          string    `json:"title"`
-	OrganizationId string    `json:"organization_id"`
-	CourseId       string    `json:"course_id"`
-	Order          int32     `json:"order"`
-	Publish        int32     `json:"publish"`
-	CreaterId      string    `json:"creator_id"`
-	CreatedAt      time.Time `json:"created_at"`
-	UpdatedAt      time.Time `json:"updated_at"`
+	Id        string    `json:"id"`
+	Title     string    `json:"title"`
+	CourseId  string    `json:"course_id"`
+	Order     int32     `json:"order"`
+	Publish   int32     `json:"publish"`
+	CreaterId string    `json:"creator_id"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 // @Summary Get Units
@@ -50,15 +49,14 @@ func (c UnitController) GetUnits(ctx *gin.Context) {
 	}
 	for _, unit := range units {
 		unitsRes = append(unitsRes, UnitResponse{
-			Id:             unit.Id,
-			Title:          unit.Title,
-			OrganizationId: unit.OrganizationId,
-			CourseId:       unit.CourseId,
-			Order:          unit.Order,
-			Publish:        unit.Publish,
-			CreaterId:      unit.CreaterId,
-			CreatedAt:      unit.CreatedAt,
-			UpdatedAt:      unit.UpdatedAt,
+			Id:        unit.Id,
+			Title:     unit.Title,
+			CourseId:  unit.CourseId,
+			Order:     unit.Order,
+			Publish:   unit.Publish,
+			CreaterId: unit.CreaterId,
+			CreatedAt: unit.CreatedAt,
+			UpdatedAt: unit.UpdatedAt,
 		})
 	}
 
@@ -87,13 +85,12 @@ func (c UnitController) CreateUnit(ctx *gin.Context) {
 	unitService := services.NewUnitService(Db)
 	unitId, _ := utils.GenId()
 	unitData := models.Unit{
-		Id:             unitId,
-		Title:          req.Title,
-		OrganizationId: req.OrganizationId,
-		CourseId:       req.CourseId,
-		Order:          req.Order,
-		Publish:        req.Publish,
-		CreaterId:      memberId.(string),
+		Id:        unitId,
+		Title:     req.Title,
+		CourseId:  req.CourseId,
+		Order:     req.Order,
+		Publish:   req.Publish,
+		CreaterId: memberId.(string),
 	}
 	err := unitService.CreateUnitNPermission(memberId.(string), defaultRole, unitData)
 	if err != nil {
@@ -134,13 +131,12 @@ func (c UnitController) UpdateUnit(ctx *gin.Context) {
 	}
 
 	unit := models.Unit{
-		Id:             req.Id,
-		Title:          req.Title,
-		OrganizationId: req.OrganizationId,
-		CourseId:       req.CourseId,
-		Order:          req.Order,
-		Publish:        req.Publish,
-		CreaterId:      memberId,
+		Id:        req.Id,
+		Title:     req.Title,
+		CourseId:  req.CourseId,
+		Order:     req.Order,
+		Publish:   req.Publish,
+		CreaterId: memberId,
 	}
 	err = unitService.UpdateUnit(unit)
 	if err != nil {

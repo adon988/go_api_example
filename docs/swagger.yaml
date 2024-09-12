@@ -103,8 +103,6 @@ definitions:
         type: string
       order:
         type: integer
-      organization_id:
-        type: string
       publish:
         type: integer
       title:
@@ -156,9 +154,6 @@ definitions:
       member_id:
         example: "1"
         type: string
-      organization_id:
-        example: "1"
-        type: string
       role_id:
         example: 1
         type: integer
@@ -168,7 +163,6 @@ definitions:
     required:
     - course_id
     - member_id
-    - organization_id
     - role_id
     - unit_id
     type: object
@@ -310,9 +304,6 @@ definitions:
       order:
         example: 1
         type: integer
-      organization_id:
-        example: "1"
-        type: string
       publish:
         example: 1
         type: integer
@@ -322,7 +313,6 @@ definitions:
     required:
     - course_id
     - order
-    - organization_id
     - publish
     - title
     type: object
@@ -345,9 +335,6 @@ definitions:
       order:
         example: 1
         type: integer
-      organization_id:
-        example: "1"
-        type: string
       publish:
         example: 1
         type: integer
