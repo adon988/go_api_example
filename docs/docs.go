@@ -845,6 +845,156 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/my/word": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update a word",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Word"
+                ],
+                "summary": "Update Word",
+                "parameters": [
+                    {
+                        "description": "Word object that needs to be updated",
+                        "name": "title",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.WordUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create a word",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Word"
+                ],
+                "summary": "Create Word",
+                "parameters": [
+                    {
+                        "description": "Word object that needs to be created",
+                        "name": "title",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.WordCreateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete a word",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Word"
+                ],
+                "summary": "Delete Word",
+                "parameters": [
+                    {
+                        "description": "Word object that needs to be deleted",
+                        "name": "title",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.WordDeleteRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/my/words": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get words by unit id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Word"
+                ],
+                "summary": "Get Words",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "unit id",
+                        "name": "unit_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.WordResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1172,6 +1322,109 @@ const docTemplate = `{
                 }
             }
         },
+        "requests.WordCreateRequest": {
+            "type": "object",
+            "required": [
+                "definition",
+                "order",
+                "unit_id",
+                "word"
+            ],
+            "properties": {
+                "comment": {
+                    "type": "string",
+                    "example": "comment"
+                },
+                "definition": {
+                    "type": "string",
+                    "example": "definition"
+                },
+                "description": {
+                    "type": "string",
+                    "example": "description"
+                },
+                "image": {
+                    "type": "string",
+                    "example": "image"
+                },
+                "order": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "pronunciation": {
+                    "type": "string",
+                    "example": "pronunciation"
+                },
+                "unit_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "word": {
+                    "type": "string",
+                    "example": "word"
+                }
+            }
+        },
+        "requests.WordDeleteRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "1"
+                }
+            }
+        },
+        "requests.WordUpdateRequest": {
+            "type": "object",
+            "required": [
+                "definition",
+                "id",
+                "order",
+                "unit_id",
+                "word"
+            ],
+            "properties": {
+                "comment": {
+                    "type": "string",
+                    "example": "comment"
+                },
+                "definition": {
+                    "type": "string",
+                    "example": "definition"
+                },
+                "description": {
+                    "type": "string",
+                    "example": "description"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "image": {
+                    "type": "string",
+                    "example": "image"
+                },
+                "order": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "pronunciation": {
+                    "type": "string",
+                    "example": "pronunciation"
+                },
+                "unit_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "word": {
+                    "type": "string",
+                    "example": "word"
+                }
+            }
+        },
         "responses.CourseResponse": {
             "type": "object",
             "properties": {
@@ -1366,6 +1619,38 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "responses.WordResponse": {
+            "type": "object",
+            "properties": {
+                "comment": {
+                    "type": "string"
+                },
+                "definition": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "order": {
+                    "type": "integer"
+                },
+                "pronunciation": {
+                    "type": "string"
+                },
+                "unit_id": {
+                    "type": "string"
+                },
+                "word": {
                     "type": "string"
                 }
             }

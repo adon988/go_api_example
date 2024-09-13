@@ -233,6 +233,82 @@ definitions:
     required:
     - id
     type: object
+  requests.WordCreateRequest:
+    properties:
+      comment:
+        example: comment
+        type: string
+      definition:
+        example: definition
+        type: string
+      description:
+        example: description
+        type: string
+      image:
+        example: image
+        type: string
+      order:
+        example: 1
+        type: integer
+      pronunciation:
+        example: pronunciation
+        type: string
+      unit_id:
+        example: "1"
+        type: string
+      word:
+        example: word
+        type: string
+    required:
+    - definition
+    - order
+    - unit_id
+    - word
+    type: object
+  requests.WordDeleteRequest:
+    properties:
+      id:
+        example: "1"
+        type: string
+    required:
+    - id
+    type: object
+  requests.WordUpdateRequest:
+    properties:
+      comment:
+        example: comment
+        type: string
+      definition:
+        example: definition
+        type: string
+      description:
+        example: description
+        type: string
+      id:
+        example: "1"
+        type: string
+      image:
+        example: image
+        type: string
+      order:
+        example: 1
+        type: integer
+      pronunciation:
+        example: pronunciation
+        type: string
+      unit_id:
+        example: "1"
+        type: string
+      word:
+        example: word
+        type: string
+    required:
+    - definition
+    - id
+    - order
+    - unit_id
+    - word
+    type: object
   responses.CourseResponse:
     properties:
       created_at:
@@ -366,6 +442,27 @@ definitions:
       title:
         type: string
       updated_at:
+        type: string
+    type: object
+  responses.WordResponse:
+    properties:
+      comment:
+        type: string
+      definition:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      order:
+        type: integer
+      pronunciation:
+        type: string
+      unit_id:
+        type: string
+      word:
         type: string
     type: object
 info:
@@ -895,6 +992,99 @@ paths:
       summary: Assign Unit Permission
       tags:
       - Unit
+  /my/word:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a word
+      parameters:
+      - description: Word object that needs to be deleted
+        in: body
+        name: title
+        required: true
+        schema:
+          $ref: '#/definitions/requests.WordDeleteRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Word
+      tags:
+      - Word
+    post:
+      consumes:
+      - application/json
+      description: Create a word
+      parameters:
+      - description: Word object that needs to be created
+        in: body
+        name: title
+        required: true
+        schema:
+          $ref: '#/definitions/requests.WordCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Create Word
+      tags:
+      - Word
+    put:
+      consumes:
+      - application/json
+      description: Update a word
+      parameters:
+      - description: Word object that needs to be updated
+        in: body
+        name: title
+        required: true
+        schema:
+          $ref: '#/definitions/requests.WordUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update Word
+      tags:
+      - Word
+  /my/words:
+    get:
+      consumes:
+      - application/json
+      description: Get words by unit id
+      parameters:
+      - description: unit id
+        in: query
+        name: unit_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.WordResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Words
+      tags:
+      - Word
 securityDefinitions:
   ApiKeyAuth:
     in: header
