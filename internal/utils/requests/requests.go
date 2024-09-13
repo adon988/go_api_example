@@ -105,3 +105,30 @@ type AssignUnitPermissionRequest struct {
 	UnitId   string `json:"unit_id" binding:"required" example:"1"`
 	RoleId   int32  `json:"role_id" binding:"required" example:"1"`
 }
+
+type WordCreateRequest struct {
+	UnitId        string `json:"unit_id" binding:"required" example:"1"`
+	Word          string `json:"word" binding:"required" example:"word"`
+	Definition    string `json:"definition" binding:"required" example:"definition"`
+	Image         string `json:"image" example:"image"`
+	Pronunciation string `json:"pronunciation" example:"pronunciation"`
+	Description   string `json:"description" example:"description"`
+	Comment       string `json:"comment" example:"comment"`
+	Order         int32  `json:"order" binding:"required" example:"1"`
+}
+
+type WordUpdateRequest struct {
+	Id            string `json:"id" binding:"required" example:"1"`
+	UnitId        string `json:"unit_id" binding:"required" example:"1"`
+	Word          string `json:"word" binding:"required" example:"word"`
+	Definition    string `json:"definition" binding:"required" example:"definition"`
+	Image         string `json:"image" example:"image"`
+	Pronunciation string `json:"pronunciation" example:"pronunciation"`
+	Description   string `json:"description" example:"description"`
+	Comment       string `json:"comment" example:"comment"`
+	Order         int32  `json:"order" binding:"required" example:"1"`
+}
+
+type WordDeleteRequest struct {
+	Id string `json:"id" binding:"required" example:"1"`
+}

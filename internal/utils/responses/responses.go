@@ -2,6 +2,17 @@ package responses
 
 import "time"
 
+type WordResponse struct {
+	Id            string `json:"id"`
+	UnitId        string `json:"unit_id"`
+	Word          string `json:"word"`
+	Definition    string `json:"definition"`
+	Image         string `json:"image"`
+	Pronunciation string `json:"pronunciation"`
+	Description   string `json:"description"`
+	Comment       string `json:"comment"`
+	Order         int32  `json:"order"`
+}
 type UnitResponse struct {
 	Id        string    `json:"id"`
 	Title     string    `json:"title"`
