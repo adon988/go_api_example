@@ -22,7 +22,7 @@ type UnitController struct {
 // @Param account header string true "Account"
 // @Success 200 {array} responses.UnitResponse
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":""}'
-// @Router /admin/unit [get]
+// @Router /my/unit [get]
 func (c UnitController) GetUnits(ctx *gin.Context) {
 	Db, _ := c.InfoDb.InitDB()
 	memberId, _ := ctx.Get("account")
@@ -59,7 +59,7 @@ func (c UnitController) GetUnits(ctx *gin.Context) {
 // @Param title body requests.UnitCreateRequest true "Unit object that needs to be created"
 // @Success 200 {string} string "ok"
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":""}'
-// @Router /admin/unit [post]
+// @Router /my/unit [post]
 func (c UnitController) CreateUnit(ctx *gin.Context) {
 	memberId, _ := ctx.Get("account")
 	defaultRole := int32(1)
@@ -104,7 +104,7 @@ func (c UnitController) CreateUnit(ctx *gin.Context) {
 // @Param unit body requests.UnitUpdateRequest true "Unit object that needs to be updated"
 // @Success 200 {string} string "ok"
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":""}'
-// @Router /admin/unit [put]
+// @Router /my/unit [put]
 func (c UnitController) UpdateUnit(ctx *gin.Context) {
 	var req requests.UnitUpdateRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -153,7 +153,7 @@ func (c UnitController) UpdateUnit(ctx *gin.Context) {
 // @Param unit body requests.UnitDeleteRequest true "Unit object that needs to be deleted"
 // @Success 200 {string} string "ok"
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":""}'
-// @Router /admin/unit [delete]
+// @Router /my/unit [delete]
 func (c UnitController) DeleteUnit(ctx *gin.Context) {
 	var req requests.UnitDeleteRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -187,7 +187,7 @@ func (c UnitController) DeleteUnit(ctx *gin.Context) {
 // @Param unit body requests.AssignUnitPermissionRequest true "Unit object that needs to be assigned"
 // @Success 200 {string} string "ok"
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":""}'
-// @Router /admin/unit/permission [post]
+// @Router /my/unit/permission [post]
 func (c UnitController) AssignUnitPermission(ctx *gin.Context) {
 	var req requests.AssignUnitPermissionRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {

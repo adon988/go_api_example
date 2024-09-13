@@ -21,7 +21,7 @@ type OrganizationController struct {
 // @Security ApiKeyAuth
 // @Success 200 {array} responses.OrganizationResponse
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":""}'
-// @Router /admin/organization [get]
+// @Router /my/organization [get]
 func (c OrganizationController) GetOrganization(ctx *gin.Context) {
 	Db, _ := c.InfoDb.InitDB()
 	memberId, _ := ctx.Get("account")
@@ -61,7 +61,7 @@ func (c OrganizationController) GetOrganization(ctx *gin.Context) {
 // @Param organization body requests.OrganizationCreateRequest true "Organization object that needs to be created"
 // @Success 200 {string} string "{"code":0,"data":{},"msg":"success"}"
 // @Failure 400 {string} string '{"code":-1, "data":{}, "msg":""}'
-// @Router /admin/organization [post]
+// @Router /my/organization [post]
 func (c OrganizationController) CreateOrganization(ctx *gin.Context) {
 	memberId, _ := ctx.Get("account")
 	defaultRole := int32(1)
@@ -101,7 +101,7 @@ func (c OrganizationController) CreateOrganization(ctx *gin.Context) {
 // @Param organization body requests.OrganizationUpdateRequest true "Organization object that needs to be updated"
 // @Success 200 {string} string "{"code":0,"data":{},"msg":"success"}"
 // @Failure 400 {string} string '{"code":-1, "data":{}, "msg":""}'
-// @Router /admin/organization [patch]
+// @Router /my/organization [patch]
 func (c OrganizationController) UpdateOrganization(ctx *gin.Context) {
 	var req requests.OrganizationUpdateRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -143,7 +143,7 @@ func (c OrganizationController) UpdateOrganization(ctx *gin.Context) {
 // @Param organization body requests.OrganizationDeleteRequest true "Organization object that needs to be deleted"
 // @Success 200 {string} string "{"code":0,"data":{},"msg":"success"}"
 // @Failure 400 {string} string '{"code":-1, "data":{}, "msg":""}'
-// @Router /admin/organization [delete]
+// @Router /my/organization [delete]
 func (c OrganizationController) DeleteOrganization(ctx *gin.Context) {
 	var req requests.OrganizationDeleteRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -177,7 +177,7 @@ func (c OrganizationController) DeleteOrganization(ctx *gin.Context) {
 // @Param organization body requests.AssignRoleToMemberRequest true "Organization object that needs to be assigned"
 // @Success 200 {string} string "{"code":0,"data":{},"msg":"success"}"
 // @Failure 400 {string} string '{"code":-1, "data":{}, "msg":""}'
-// @Router /admin/organization/assign [post]
+// @Router /my/organization/assign [post]
 func (c OrganizationController) AssignOrganizationPermission(ctx *gin.Context) {
 	var req requests.AssignRoleToMemberRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {

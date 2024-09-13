@@ -21,7 +21,7 @@ type CourseController struct {
 // @Security ApiKeyAuth
 // @Success 200 {array} responses.CourseResponse
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":""}'
-// @Router /admin/course [get]
+// @Router /my/course [get]
 func (c CourseController) GetCourse(ctx *gin.Context) {
 	Db, _ := c.InfoDb.InitDB()
 	memberId, _ := ctx.Get("account")
@@ -60,7 +60,7 @@ func (c CourseController) GetCourse(ctx *gin.Context) {
 // @Param title body requests.CourseCreateRequest true "Course object that needs to be created"
 // @Success 200 {string} string "ok"
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":""}'
-// @Router /admin/course [post]
+// @Router /my/course [post]
 func (c CourseController) CreateCourse(ctx *gin.Context) {
 	memberId, _ := ctx.Get("account")
 	defaultRole := int32(1)
@@ -105,7 +105,7 @@ func (c CourseController) CreateCourse(ctx *gin.Context) {
 // @Param course body requests.CourseUpdateReqeust true "Course object that needs to be updated"
 // @Success 200 {string} string "ok"
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":""}'
-// @Router /admin/course [put]
+// @Router /my/course [put]
 func (c CourseController) UpdateCourse(ctx *gin.Context) {
 	var req requests.CourseUpdateReqeust
 	if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -154,7 +154,7 @@ func (c CourseController) UpdateCourse(ctx *gin.Context) {
 // @Param course body requests.CourseDeleteReqeust true "Course object that needs to be deleted"
 // @Success 200 {string} string "ok"
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":""}'
-// @Router /admin/course [delete]
+// @Router /my/course [delete]
 func (c CourseController) DeleteCourse(ctx *gin.Context) {
 	var req requests.CourseDeleteReqeust
 	if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -190,7 +190,7 @@ func (c CourseController) DeleteCourse(ctx *gin.Context) {
 // @Param course body requests.AssignCourseRequest true "Course object that needs to be assigned"
 // @Success 200 {string} string "ok"
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":""}'
-// @Router /admin/course/assign [post]
+// @Router /my/course/assign [post]
 func (c CourseController) AssignCoursePermission(ctx *gin.Context) {
 	var req requests.AssignCourseRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {

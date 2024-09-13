@@ -371,409 +371,6 @@ definitions:
 info:
   contact: {}
 paths:
-  /admin/course:
-    delete:
-      consumes:
-      - application/json
-      description: Delete course
-      parameters:
-      - description: Course object that needs to be deleted
-        in: body
-        name: course
-        required: true
-        schema:
-          $ref: '#/definitions/requests.CourseDeleteReqeust'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: ok
-          schema:
-            type: string
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: Delete Course
-      tags:
-      - Course
-    get:
-      consumes:
-      - application/json
-      description: Get all courses that the member belongs to
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/responses.CourseResponse'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: Get Course
-      tags:
-      - Course
-    post:
-      consumes:
-      - application/json
-      description: Create a course, and assign the creator as the admin of the course
-      parameters:
-      - description: Course object that needs to be created
-        in: body
-        name: title
-        required: true
-        schema:
-          $ref: '#/definitions/requests.CourseCreateRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: ok
-          schema:
-            type: string
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: Create Course
-      tags:
-      - Course
-    put:
-      consumes:
-      - application/json
-      description: Update course information
-      parameters:
-      - description: Course object that needs to be updated
-        in: body
-        name: course
-        required: true
-        schema:
-          $ref: '#/definitions/requests.CourseUpdateReqeust'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: ok
-          schema:
-            type: string
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: Update Course
-      tags:
-      - Course
-  /admin/course/assign:
-    post:
-      consumes:
-      - application/json
-      description: Assign course permission to member
-      parameters:
-      - description: Course object that needs to be assigned
-        in: body
-        name: course
-        required: true
-        schema:
-          $ref: '#/definitions/requests.AssignCourseRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: ok
-          schema:
-            type: string
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: Assign Course Permission
-      tags:
-      - Course
-  /admin/organization:
-    delete:
-      consumes:
-      - application/json
-      description: Delete organization
-      parameters:
-      - description: Organization object that needs to be deleted
-        in: body
-        name: organization
-        required: true
-        schema:
-          $ref: '#/definitions/requests.OrganizationDeleteRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: '{"code":0,"data":{},"msg":"success"}'
-          schema:
-            type: string
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: Delete Organization
-      tags:
-      - Organization
-    get:
-      consumes:
-      - application/json
-      description: Get all organizations that the member belongs to
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/responses.OrganizationResponse'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: Get Organization
-      tags:
-      - Organization
-    patch:
-      consumes:
-      - application/json
-      description: Update organization information
-      parameters:
-      - description: Organization object that needs to be updated
-        in: body
-        name: organization
-        required: true
-        schema:
-          $ref: '#/definitions/requests.OrganizationUpdateRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: '{"code":0,"data":{},"msg":"success"}'
-          schema:
-            type: string
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: Update Organization
-      tags:
-      - Organization
-    post:
-      consumes:
-      - application/json
-      description: Create a new organization, and the creator will be the admin of
-        the organization
-      parameters:
-      - description: Organization object that needs to be created
-        in: body
-        name: organization
-        required: true
-        schema:
-          $ref: '#/definitions/requests.OrganizationCreateRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: '{"code":0,"data":{},"msg":"success"}'
-          schema:
-            type: string
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: Create Organization
-      tags:
-      - Organization
-  /admin/organization/assign:
-    post:
-      consumes:
-      - application/json
-      description: Assign organization permission to another member
-      parameters:
-      - description: Organization object that needs to be assigned
-        in: body
-        name: organization
-        required: true
-        schema:
-          $ref: '#/definitions/requests.AssignRoleToMemberRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: '{"code":0,"data":{},"msg":"success"}'
-          schema:
-            type: string
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: Assign Organization Permission
-      tags:
-      - Organization
-  /admin/unit:
-    delete:
-      consumes:
-      - application/json
-      description: Delete a unit
-      parameters:
-      - description: Unit object that needs to be deleted
-        in: body
-        name: unit
-        required: true
-        schema:
-          $ref: '#/definitions/requests.UnitDeleteRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: ok
-          schema:
-            type: string
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: Delete Unit
-      tags:
-      - Unit
-    get:
-      consumes:
-      - application/json
-      description: Get all units that the member belongs to
-      parameters:
-      - description: Account
-        in: header
-        name: account
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/responses.UnitResponse'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: Get Units
-      tags:
-      - Unit
-    post:
-      consumes:
-      - application/json
-      description: Create a unit
-      parameters:
-      - description: Unit object that needs to be created
-        in: body
-        name: title
-        required: true
-        schema:
-          $ref: '#/definitions/requests.UnitCreateRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: ok
-          schema:
-            type: string
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: Create Unit
-      tags:
-      - Unit
-    put:
-      consumes:
-      - application/json
-      description: Update a unit
-      parameters:
-      - description: Unit object that needs to be updated
-        in: body
-        name: unit
-        required: true
-        schema:
-          $ref: '#/definitions/requests.UnitUpdateRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: ok
-          schema:
-            type: string
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: Update Unit
-      tags:
-      - Unit
-  /admin/unit/permission:
-    post:
-      consumes:
-      - application/json
-      description: Assign a unit permission
-      parameters:
-      - description: Unit object that needs to be assigned
-        in: body
-        name: unit
-        required: true
-        schema:
-          $ref: '#/definitions/requests.AssignUnitPermissionRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: ok
-          schema:
-            type: string
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: Assign Unit Permission
-      tags:
-      - Unit
   /auth/login:
     post:
       consumes:
@@ -895,6 +492,409 @@ paths:
       summary: Update a member
       tags:
       - member
+  /my/course:
+    delete:
+      consumes:
+      - application/json
+      description: Delete course
+      parameters:
+      - description: Course object that needs to be deleted
+        in: body
+        name: course
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CourseDeleteReqeust'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Course
+      tags:
+      - Course
+    get:
+      consumes:
+      - application/json
+      description: Get all courses that the member belongs to
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/responses.CourseResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Course
+      tags:
+      - Course
+    post:
+      consumes:
+      - application/json
+      description: Create a course, and assign the creator as the admin of the course
+      parameters:
+      - description: Course object that needs to be created
+        in: body
+        name: title
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CourseCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Create Course
+      tags:
+      - Course
+    put:
+      consumes:
+      - application/json
+      description: Update course information
+      parameters:
+      - description: Course object that needs to be updated
+        in: body
+        name: course
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CourseUpdateReqeust'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update Course
+      tags:
+      - Course
+  /my/course/assign:
+    post:
+      consumes:
+      - application/json
+      description: Assign course permission to member
+      parameters:
+      - description: Course object that needs to be assigned
+        in: body
+        name: course
+        required: true
+        schema:
+          $ref: '#/definitions/requests.AssignCourseRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Assign Course Permission
+      tags:
+      - Course
+  /my/organization:
+    delete:
+      consumes:
+      - application/json
+      description: Delete organization
+      parameters:
+      - description: Organization object that needs to be deleted
+        in: body
+        name: organization
+        required: true
+        schema:
+          $ref: '#/definitions/requests.OrganizationDeleteRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":0,"data":{},"msg":"success"}'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Organization
+      tags:
+      - Organization
+    get:
+      consumes:
+      - application/json
+      description: Get all organizations that the member belongs to
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/responses.OrganizationResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Organization
+      tags:
+      - Organization
+    patch:
+      consumes:
+      - application/json
+      description: Update organization information
+      parameters:
+      - description: Organization object that needs to be updated
+        in: body
+        name: organization
+        required: true
+        schema:
+          $ref: '#/definitions/requests.OrganizationUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":0,"data":{},"msg":"success"}'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update Organization
+      tags:
+      - Organization
+    post:
+      consumes:
+      - application/json
+      description: Create a new organization, and the creator will be the admin of
+        the organization
+      parameters:
+      - description: Organization object that needs to be created
+        in: body
+        name: organization
+        required: true
+        schema:
+          $ref: '#/definitions/requests.OrganizationCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":0,"data":{},"msg":"success"}'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Create Organization
+      tags:
+      - Organization
+  /my/organization/assign:
+    post:
+      consumes:
+      - application/json
+      description: Assign organization permission to another member
+      parameters:
+      - description: Organization object that needs to be assigned
+        in: body
+        name: organization
+        required: true
+        schema:
+          $ref: '#/definitions/requests.AssignRoleToMemberRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":0,"data":{},"msg":"success"}'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Assign Organization Permission
+      tags:
+      - Organization
+  /my/unit:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a unit
+      parameters:
+      - description: Unit object that needs to be deleted
+        in: body
+        name: unit
+        required: true
+        schema:
+          $ref: '#/definitions/requests.UnitDeleteRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Unit
+      tags:
+      - Unit
+    get:
+      consumes:
+      - application/json
+      description: Get all units that the member belongs to
+      parameters:
+      - description: Account
+        in: header
+        name: account
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/responses.UnitResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Units
+      tags:
+      - Unit
+    post:
+      consumes:
+      - application/json
+      description: Create a unit
+      parameters:
+      - description: Unit object that needs to be created
+        in: body
+        name: title
+        required: true
+        schema:
+          $ref: '#/definitions/requests.UnitCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Create Unit
+      tags:
+      - Unit
+    put:
+      consumes:
+      - application/json
+      description: Update a unit
+      parameters:
+      - description: Unit object that needs to be updated
+        in: body
+        name: unit
+        required: true
+        schema:
+          $ref: '#/definitions/requests.UnitUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update Unit
+      tags:
+      - Unit
+  /my/unit/permission:
+    post:
+      consumes:
+      - application/json
+      description: Assign a unit permission
+      parameters:
+      - description: Unit object that needs to be assigned
+        in: body
+        name: unit
+        required: true
+        schema:
+          $ref: '#/definitions/requests.AssignUnitPermissionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Assign Unit Permission
+      tags:
+      - Unit
 securityDefinitions:
   ApiKeyAuth:
     in: header

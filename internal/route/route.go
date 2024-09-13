@@ -13,6 +13,7 @@ var authController controllers.AuthController
 var organizationController controllers.OrganizationController
 var courseController controllers.CourseController
 var unitController controllers.UnitController
+var wordController controllers.WordController
 
 func GetRouter(r *gin.Engine) {
 
@@ -38,29 +39,34 @@ func GetRouter(r *gin.Engine) {
 		memberGroup.GET("/", memberController.GetMemberInfo)
 		memberGroup.PATCH("/", memberController.UpdateMember)
 		memberGroup.DELETE("/", memberController.DeleteMember)
-
 	}
-	adminGroup := r.Group("/admin")
-	adminGroup.Use(middleware.JWTAuthMiddleware())
-	adminGroup.Use(middleware.CORSMiddleware())
+
+	myGroup := r.Group("/my")
+	myGroup.Use(middleware.JWTAuthMiddleware())
+	myGroup.Use(middleware.CORSMiddleware())
 	{
-		adminGroup.GET("/organization", organizationController.GetOrganization)
-		adminGroup.POST("/organization", organizationController.CreateOrganization)
-		adminGroup.PATCH("/organization", organizationController.UpdateOrganization)
-		adminGroup.DELETE("/organization", organizationController.DeleteOrganization)
-		adminGroup.POST("/organization/assign", organizationController.AssignOrganizationPermission)
+		myGroup.GET("/organization", organizationController.GetOrganization)
+		myGroup.POST("/organization", organizationController.CreateOrganization)
+		myGroup.PATCH("/organization", organizationController.UpdateOrganization)
+		myGroup.DELETE("/organization", organizationController.DeleteOrganization)
+		myGroup.POST("/organization/assign", organizationController.AssignOrganizationPermission)
 
-		adminGroup.GET("/course", courseController.GetCourse)
-		adminGroup.POST("/course", courseController.CreateCourse)
-		adminGroup.PATCH("/course", courseController.UpdateCourse)
-		adminGroup.DELETE("/course", courseController.DeleteCourse)
-		adminGroup.POST("/course/assign", courseController.AssignCoursePermission)
+		myGroup.GET("/course", courseController.GetCourse)
+		myGroup.POST("/course", courseController.CreateCourse)
+		myGroup.PATCH("/course", courseController.UpdateCourse)
+		myGroup.DELETE("/course", courseController.DeleteCourse)
+		myGroup.POST("/course/assign", courseController.AssignCoursePermission)
 
-		adminGroup.GET("/units", unitController.GetUnits)
-		adminGroup.POST("/unit", unitController.CreateUnit)
-		adminGroup.PATCH("/unit", unitController.UpdateUnit)
-		adminGroup.DELETE("/unit", unitController.DeleteUnit)
-		adminGroup.POST("/unit/assign", unitController.AssignUnitPermission)
+		myGroup.GET("/units", unitController.GetUnits)
+		myGroup.POST("/unit", unitController.CreateUnit)
+		myGroup.PATCH("/unit", unitController.UpdateUnit)
+		myGroup.DELETE("/unit", unitController.DeleteUnit)
+		myGroup.POST("/unit/assign", unitController.AssignUnitPermission)
+
+		myGroup.POST("/unit/word", wordController.CreateWord)
+		myGroup.PATCH("/unit/word", wordController.UpdateWord)
+		myGroup.DELETE("/unit/word", wordController.DeleteWord)
+		myGroup.GET("/unit/word", wordController.GetWords)
 	}
 
 }
