@@ -23,13 +23,20 @@ type WordController struct {
 // @Success 200 {string} string "ok"
 // @Router /my/word [post]
 func (c WordController) CreateWord(ctx *gin.Context) {
-	Db, _ := c.InfoDb.InitDB()
 	var req requests.WordCreateRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
 	}
 
+	Db, _ := c.InfoDb.InitDB()
+	memberId, _ := ctx.Get("account")
+	unitService := services.NewUnitService(Db)
+	_, err := unitService.IsMemberWithEditorPermissionOnUnit(memberId.(string), req.UnitId)
+	if err != nil {
+		responses.FailWithMessage("Permission Denied! Cannot create word to unit(1)", ctx)
+		return
+	}
 	wordService := services.NewWordService(Db)
 	var word models.Word
 	_ = ctx.ShouldBindJSON(&word)
@@ -46,7 +53,7 @@ func (c WordController) CreateWord(ctx *gin.Context) {
 		Order:         req.Order,
 	}
 
-	err := wordService.CreateWord(wordData)
+	err = wordService.CreateWord(wordData)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
@@ -70,7 +77,13 @@ func (c WordController) UpdateWord(ctx *gin.Context) {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
 	}
-
+	memberId, _ := ctx.Get("account")
+	unitService := services.NewUnitService(Db)
+	_, err := unitService.IsMemberWithEditorPermissionOnUnit(memberId.(string), req.UnitId)
+	if err != nil {
+		responses.FailWithMessage("Permission Denied! Cannot create word to unit(2)", ctx)
+		return
+	}
 	wordService := services.NewWordService(Db)
 	word := models.Word{
 		Id:            req.Id,
@@ -84,7 +97,7 @@ func (c WordController) UpdateWord(ctx *gin.Context) {
 		Order:         req.Order,
 	}
 	_ = ctx.ShouldBindJSON(&word)
-	err := wordService.UpdateWord(word)
+	err = wordService.UpdateWord(word)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
@@ -108,9 +121,22 @@ func (c WordController) DeleteWord(ctx *gin.Context) {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
 	}
+
+	memberId, _ := ctx.Get("account")
+	word_id := req.Id
+
 	wordService := services.NewWordService(Db)
-	id := req.Id
-	err := wordService.DeleteWord(id)
+
+	//check word's unit premission
+	word, err := wordService.CheckWordPermissionByMemberIDAndWordID(memberId.(string), word_id)
+	unitService := services.NewUnitService(Db)
+	_, err = unitService.IsMemberWithEditorPermissionOnUnit(memberId.(string), word.UnitId)
+	if err != nil {
+		responses.FailWithMessage("Permission Denied! Cannot create word to unit(3)", ctx)
+		return
+	}
+
+	err = wordService.DeleteWord(word_id)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
@@ -126,14 +152,15 @@ func (c WordController) DeleteWord(ctx *gin.Context) {
 // @Security ApiKeyAuth
 // @Param unit_id query string true "unit id"
 // @Success 200 {object} responses.WordResponse
-// @Router /my/words [get]
-func (c WordController) GetWords(ctx *gin.Context) {
+// @Router /my/unit_id/:unit_id/words [get]
+func (c WordController) GetWordsByUnitID(ctx *gin.Context) {
 	Db, _ := c.InfoDb.InitDB()
-	unitId := ctx.Query("unit_id")
+	unitId := ctx.Param("unit_id")
+	memberId, _ := ctx.Get("account")
 	wordService := services.NewWordService(Db)
 	var wordsRes []responses.WordResponse
 	var err error
-	words, err := wordService.GetWordByUnitID(unitId)
+	words, err := wordService.GetWordByMemberIDAndUnitID(memberId.(string), unitId)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return

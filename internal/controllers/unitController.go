@@ -225,3 +225,48 @@ func (c UnitController) AssignUnitPermission(ctx *gin.Context) {
 	}
 	responses.Ok(ctx)
 }
+
+// @Summary Get Units By Course ID
+// @Description Get all units by course id
+// @Tags Unit
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Param account header string true "Account"
+// @Param course_id query string true "Course ID"
+// @Success 200 {array} responses.UnitResponse
+// @Failure 400 {string} string '{"code":-1,"data":{},"msg":""}'
+// @Router /my/course/:course_id/units [get]
+func (c UnitController) GetUnitsByCourseID(ctx *gin.Context) {
+	memberId := ctx.GetString("account")
+	courseId := ctx.Param("course_id")
+	Db, _ := c.InfoDb.InitDB()
+	courseService := services.NewCourseSerive(Db)
+	//check Unit Permission
+	_, err := courseService.GetCoursePermissionByMemberIDAndCourseID(memberId, courseId)
+	if err != nil {
+		responses.FailWithMessage(err.Error(), ctx)
+		return
+	}
+
+	unitService := services.NewUnitService(Db)
+	units, err := unitService.GetUnitsByCourseID(courseId)
+	if err != nil {
+		responses.FailWithMessage(err.Error(), ctx)
+		return
+	}
+	var unitsRes []responses.UnitResponse
+	for _, unit := range units {
+		unitsRes = append(unitsRes, responses.UnitResponse{
+			Id:        unit.Id,
+			Title:     unit.Title,
+			CourseId:  unit.CourseId,
+			Order:     unit.Order,
+			Publish:   unit.Publish,
+			CreaterId: unit.CreaterId,
+			CreatedAt: unit.CreatedAt,
+			UpdatedAt: unit.UpdatedAt,
+		})
+	}
+	responses.OkWithData(unitsRes, ctx)
+}

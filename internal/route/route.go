@@ -57,16 +57,17 @@ func GetRouter(r *gin.Engine) {
 		myGroup.DELETE("/course", courseController.DeleteCourse)
 		myGroup.POST("/course/assign", courseController.AssignCoursePermission)
 
+		myGroup.GET("course/:course_id/units", unitController.GetUnitsByCourseID)
 		myGroup.GET("/units", unitController.GetUnits)
 		myGroup.POST("/unit", unitController.CreateUnit)
 		myGroup.PATCH("/unit", unitController.UpdateUnit)
 		myGroup.DELETE("/unit", unitController.DeleteUnit)
 		myGroup.POST("/unit/assign", unitController.AssignUnitPermission)
 
+		myGroup.GET("/unit/:unit_id/words", wordController.GetWordsByUnitID)
 		myGroup.POST("/word", wordController.CreateWord)
 		myGroup.PATCH("/word", wordController.UpdateWord)
 		myGroup.DELETE("/word", wordController.DeleteWord)
-		myGroup.GET("/words", wordController.GetWords)
 	}
 
 }

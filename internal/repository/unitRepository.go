@@ -12,6 +12,8 @@ type UnitRepository interface {
 	UpdateUnit(unit models.Unit) error
 	DeleteUnit(id string) error
 	GetUnitByMemberID(member_id string) ([]models.Unit, error)
+	GetUnitsByCourseID(course_id string) ([]models.Unit, error)
+	GetUnitByMemberIDAndUnitID(member_id string, unit_id string) (models.Unit, error)
 }
 
 type UnitRepositoryImpl struct {
@@ -65,4 +67,23 @@ func (r *UnitRepositoryImpl) GetUnitByMemberID(member_id string) ([]models.Unit,
 	}
 
 	return units, nil
+}
+
+func (r *UnitRepositoryImpl) GetUnitsByCourseID(course_id string) ([]models.Unit, error) {
+	var units []models.Unit
+	err := r.DB.Model(&models.Unit{}).Where("course_id = ?", course_id).Find(&units)
+	if err.Error != nil {
+		return nil, err.Error
+	}
+
+	return units, nil
+}
+
+func (r *UnitRepositoryImpl) GetUnitByMemberIDAndUnitID(member_id string, unit_id string) (models.Unit, error) {
+	var unit models.Unit
+	err := r.DB.Model(&models.Unit{}).Joins("JOIN unit_permissions ON units.id = unit_permissions.entity_id").Where("unit_permissions.member_id = ? AND units.id = ?", member_id, unit_id).Find(&unit)
+	if err.Error != nil {
+		return models.Unit{}, err.Error
+	}
+	return unit, nil
 }

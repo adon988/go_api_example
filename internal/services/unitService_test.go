@@ -162,3 +162,54 @@ func TestUnitSerivce_DeleteUnit(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, 0, len(units))
 }
+
+func TestUnitService_GetUnitsByCourseID(t *testing.T) {
+	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
+	mockDB.AutoMigrate(&models.Unit{}, &models.UnitPermission{})
+
+	memberId := "1"
+	unit := models.Unit{
+		Id:        "1",
+		Title:     "unit title",
+		CourseId:  "1",
+		Order:     1,
+		Publish:   1,
+		CreaterId: memberId,
+	}
+	role := int32(1)
+	service := NewUnitService(mockDB)
+	result := service.CreateUnitNPermission(memberId, role, unit)
+	assert.Nil(t, result)
+
+	units, err := service.GetUnitsByCourseID(unit.CourseId)
+	assert.Nil(t, err)
+	assert.Equal(t, 1, len(units))
+	assert.Equal(t, "unit title", units[0].Title)
+}
+func TestUnitService_GetUnitByMemberIDAndUnitID(t *testing.T) {
+	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
+	mockDB.AutoMigrate(&models.Unit{}, &models.UnitPermission{})
+	repo := NewUnitService(mockDB)
+	memberId := "1"
+
+	unit := models.Unit{
+		Id:        "1",
+		Title:     "unit title",
+		Order:     1,
+		Publish:   1,
+		CourseId:  "1",
+		CreaterId: memberId,
+	}
+
+	unit_perm := models.UnitPermission{
+		MemberId: "1",
+		EntityId: "1",
+		Role:     1,
+	}
+	mockDB.Create(&unit_perm)
+	mockDB.Create(&unit)
+	unitData, err := repo.GetUnitByMemberIDAndUnitID("1", "1")
+	assert.Nil(t, err)
+	assert.Equal(t, unit.Id, unitData.Id)
+	assert.Equal(t, unit.Title, unitData.Title)
+}

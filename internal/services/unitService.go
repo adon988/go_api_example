@@ -12,9 +12,11 @@ type UnitServiceInterface interface {
 	GetUnit(member_id string) ([]models.Unit, error)
 	UpdateUnit(unit models.Unit) error
 	DeleteUnit(id string) error
+	GetUnitByMemberIDAndUnitID(member_id string, unit_id string) (models.Unit, error)
 	GetUnitPermissionByMemberIDAndUnitID(member_id string, unit_id string) (models.UnitPermission, error)
 	AssignUnitPermission(unitPermission models.UnitPermission) error
 	IsMemberWithEditorPermissionOnUnit(member_id string, unit_id string) (models.UnitPermission, error)
+	GetUnitsByCourseID(course_id string) ([]models.Unit, error)
 }
 
 type UnitService struct {
@@ -76,10 +78,18 @@ func (service UnitService) DeleteUnit(id string) error {
 	return service.unit.DeleteUnit(id)
 }
 
+func (service UnitService) GetUnitByMemberIDAndUnitID(member_id string, unit_id string) (models.Unit, error) {
+	return service.unit.GetUnitByMemberIDAndUnitID(member_id, unit_id)
+}
+
 func (service UnitService) GetUnitPermissionByMemberIDAndUnitID(member_id string, unit_id string) (models.UnitPermission, error) {
 	return service.unitPermission.GetUnitPermissionByMemberIDAndUnitID(member_id, unit_id)
 }
 
 func (service UnitService) AssignUnitPermission(unitPermission models.UnitPermission) error {
 	return service.unitPermission.AssignUnitPermission(unitPermission)
+}
+
+func (service UnitService) GetUnitsByCourseID(course_id string) ([]models.Unit, error) {
+	return service.unit.GetUnitsByCourseID(course_id)
 }

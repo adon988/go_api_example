@@ -370,6 +370,59 @@ const docTemplate = `{
                 }
             }
         },
+        "/my/course/:course_id/units": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get all units by course id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Unit"
+                ],
+                "summary": "Get Units By Course ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Account",
+                        "name": "account",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Course ID",
+                        "name": "course_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/responses.UnitResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/my/course/assign": {
             "post": {
                 "security": [
@@ -846,6 +899,43 @@ const docTemplate = `{
                 }
             }
         },
+        "/my/unit_id/:unit_id/words": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get words by unit id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Word"
+                ],
+                "summary": "Get Words",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "unit id",
+                        "name": "unit_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.WordResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/my/word": {
             "put": {
                 "security": [
@@ -954,43 +1044,6 @@ const docTemplate = `{
                         "description": "ok",
                         "schema": {
                             "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/my/words": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Get words by unit id",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Word"
-                ],
-                "summary": "Get Words",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "unit id",
-                        "name": "unit_id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/responses.WordResponse"
                         }
                     }
                 }

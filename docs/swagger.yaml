@@ -693,6 +693,40 @@ paths:
       summary: Update Course
       tags:
       - Course
+  /my/course/:course_id/units:
+    get:
+      consumes:
+      - application/json
+      description: Get all units by course id
+      parameters:
+      - description: Account
+        in: header
+        name: account
+        required: true
+        type: string
+      - description: Course ID
+        in: query
+        name: course_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/responses.UnitResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Units By Course ID
+      tags:
+      - Unit
   /my/course/assign:
     post:
       consumes:
@@ -992,6 +1026,29 @@ paths:
       summary: Assign Unit Permission
       tags:
       - Unit
+  /my/unit_id/:unit_id/words:
+    get:
+      consumes:
+      - application/json
+      description: Get words by unit id
+      parameters:
+      - description: unit id
+        in: query
+        name: unit_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.WordResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Words
+      tags:
+      - Word
   /my/word:
     delete:
       consumes:
@@ -1060,29 +1117,6 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Update Word
-      tags:
-      - Word
-  /my/words:
-    get:
-      consumes:
-      - application/json
-      description: Get words by unit id
-      parameters:
-      - description: unit id
-        in: query
-        name: unit_id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/responses.WordResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: Get Words
       tags:
       - Word
 securityDefinitions:
