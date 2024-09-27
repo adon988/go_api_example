@@ -1,6 +1,8 @@
 app:
   name: golang_api_example
   prefix: gae
+service:
+  page_items: 10
 db:
   writer:
     host: 127.0.0.1

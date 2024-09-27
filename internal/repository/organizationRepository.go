@@ -33,6 +33,7 @@ func (r *OrganizationRepositoryImpl) CreateOrganization(organization models.Orga
 
 	return nil
 }
+
 func (r *OrganizationRepositoryImpl) UpdateOrganization(organization models.Organization) error {
 	err := r.DB.Where("id = ?", organization.Id).Updates(organization)
 	if err.Error != nil {
@@ -46,6 +47,7 @@ func (r *OrganizationRepositoryImpl) UpdateOrganization(organization models.Orga
 
 func (r *OrganizationRepositoryImpl) DeleteOrganization(id string) error {
 	result := r.DB.Delete(&models.Organization{}, id)
+
 	if result.Error != nil {
 		return result.Error
 	}
@@ -56,6 +58,7 @@ func (r *OrganizationRepositoryImpl) DeleteOrganization(id string) error {
 
 	return nil
 }
+
 func (r *OrganizationRepositoryImpl) GetOrganizationByMemberID(member_id string) ([]models.Organization, error) {
 
 	var orgs []models.Organization

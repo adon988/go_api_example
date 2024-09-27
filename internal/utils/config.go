@@ -57,14 +57,19 @@ type ACM_MODEL struct {
 type ACM struct {
 	Model ACM_MODEL
 }
+
+type Service struct {
+	Page_Items int
+}
 type Config struct {
-	App   App
-	Db    Db
-	Redis Redis
-	Jwt   Jwt
-	Doc   Doc
-	Gin   Gin
-	ACM   ACM
+	App     App
+	Db      Db
+	Redis   Redis
+	Jwt     Jwt
+	Doc     Doc
+	Gin     Gin
+	ACM     ACM
+	Service Service
 }
 
 var Configs Config
