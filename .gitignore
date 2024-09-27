@@ -3,3 +3,5 @@
 vendor/
 vendor/*
 config/config.yml
+docker/
+docker/*
