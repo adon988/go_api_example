@@ -132,3 +132,31 @@ type WordUpdateRequest struct {
 type WordDeleteRequest struct {
 	Id string `json:"id" binding:"required" example:"1"`
 }
+
+// Quiz - Quiz.Type will be 1
+type QuizCreateRequest struct {
+	QuestionType []string `json:"question_type" binding:"required" example:"mutiple_choice, true_false, full_in_blank"`
+	Topic        int32    `json:"topic" binding:"required" example:"1"`
+	ExamDate     string   `json:"exam_date" example:"30"`
+	// Info
+	QuizCount      int32  `json:"quiz_count" binding:"required" example:"10"`
+	OrganizationId string `json:"organization_id" binding:"required" example:"1"`
+	CourseId       string `json:"course_id" binding:"required" example:"1"`
+	UnitId         string `json:"unit_id" example:"1"`
+	// --/info
+	MembersId []string `json:"members_id" example:"1,2,3"`
+}
+
+// Challenge - Quiz.Type will be 2
+type QuizChallengesRequest struct {
+	QuestionType []string `json:"question_type" binding:"required" example:"mutiple_choice, true_false, full_in_blank"`
+	Topic        int32    `json:"topic" binding:"required" example:"1"`
+	// Info
+	QuizDays       int32  `json:"quiz_days" bindding:"required" example:"30"`
+	RetryTimes     int32  `json:"retry_times" binding:"required" example:"2"`
+	OrganizationId string `json:"organization_id" binding:"required" example:"1"`
+	CourseId       string `json:"course_id" binding:"required" example:"1"`
+	UnitId         string `json:"unit_id" example:"1"`
+	// --/info
+	MembersId []string `json:"members_id" example:"1,2,3"`
+}
