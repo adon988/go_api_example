@@ -12,6 +12,7 @@ type CourseRepository interface {
 	UpdateCourse(course models.Course) error
 	DeleteCourse(id string) error
 	GetCourseByMemberID(member_id string) ([]models.Course, error)
+	GetCourseByMemberIDAndCourseID(member_id string, course_id string) (models.Course, error)
 }
 
 type CourseRepositoryImpl struct {
@@ -64,4 +65,13 @@ func (r *CourseRepositoryImpl) GetCourseByMemberID(member_id string) ([]models.C
 		return nil, err.Error
 	}
 	return courses, nil
+}
+
+func (r *CourseRepositoryImpl) GetCourseByMemberIDAndCourseID(member_id string, course_id string) (models.Course, error) {
+	var course models.Course
+	err := r.DB.Model(&models.Course{}).Joins("JOIN course_permissions ON courses.id = course_permissions.entity_id").Where("course_permissions.member_id = ? AND courses.id = ?", member_id, course_id).Find(&course)
+	if err.Error != nil {
+		return models.Course{}, err.Error
+	}
+	return course, nil
 }

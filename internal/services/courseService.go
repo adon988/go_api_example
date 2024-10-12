@@ -11,6 +11,7 @@ type CourseServiceInterface interface {
 	GetCourse(member_id string) ([]models.Course, error)
 	UpdateCourse(course models.Course) error
 	DeleteCourse(id string) error
+	GetCourseByMemberIDAndCourseID(member_id string, course_id string) (models.Course, error)
 	GetCoursePermissionByMemberIDAndCourseID(member_id string, course_id string) (models.CoursePermission, error)
 	AssignCoursePermission(coursePermission models.CoursePermission) error
 }
@@ -48,6 +49,10 @@ func (service CourseService) CreateCourseNPermission(member_id string, role int3
 
 func (service CourseService) GetCourse(member_id string) ([]models.Course, error) {
 	return service.course.GetCourseByMemberID(member_id)
+}
+
+func (service CourseService) GetCourseByMemberIDAndCourseID(member_id string, course_id string) (models.Course, error) {
+	return service.course.GetCourseByMemberIDAndCourseID(member_id, course_id)
 }
 
 func (service CourseService) UpdateCourse(course models.Course) error {
