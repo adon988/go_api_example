@@ -135,9 +135,9 @@ type WordDeleteRequest struct {
 
 // Quiz - Quiz.Type will be 1
 type QuizCreateRequest struct {
-	QuestionType []string `json:"question_type" binding:"required" example:"mutiple_choice, true_false, full_in_blank"`
-	Topic        int32    `json:"topic" binding:"required" example:"1"`
-	ExamDate     string   `json:"exam_date" example:"30"`
+	QuestionTypes []string `json:"question_type" binding:"required" example:"mutiple_choice, true_false, full_in_blank"`
+	Topic         int32    `json:"topic" binding:"required" example:"1"`
+	ExamDate      string   `json:"exam_date" example:"30"`
 	// Info
 	QuizCount      int32  `json:"quiz_count" binding:"required" example:"10"`
 	OrganizationId string `json:"organization_id" binding:"required" example:"1"`

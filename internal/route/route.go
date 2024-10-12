@@ -14,6 +14,7 @@ var organizationController controllers.OrganizationController
 var courseController controllers.CourseController
 var unitController controllers.UnitController
 var wordController controllers.WordController
+var quizController controllers.QuizController
 
 func GetRouter(r *gin.Engine) {
 
@@ -68,6 +69,8 @@ func GetRouter(r *gin.Engine) {
 		myGroup.POST("/word", wordController.CreateWord)
 		myGroup.PATCH("/word", wordController.UpdateWord)
 		myGroup.DELETE("/word", wordController.DeleteWord)
+
+		myGroup.POST("/quiz", quizController.CreateQuiz)
 	}
 
 }

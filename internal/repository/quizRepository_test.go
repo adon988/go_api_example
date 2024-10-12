@@ -22,7 +22,7 @@ func TestQuizRepository_CreateQuiz(t *testing.T) {
 	quiz := models.Quiz{
 		Id:           "1",
 		CreaterId:    "1",
-		QuestionType: "multiple_choice",
+		QuestionType: "multiple_choice, true_false, full_in_blank",
 		Topic:        1,
 		Type:         1,
 		Info:         nil,
@@ -60,12 +60,11 @@ func TestQuizRepository_GetQuizByMember(t *testing.T) {
 	ContentItem := models.ContentItem{
 		QuestionType: "multiple_choice",
 		Question: []models.Title{
-			{Title: "What is the capital of France?"},
-			{Title: "What is the capital of France2?"},
-			{Title: "What is the capital of France3?"},
+			{Title: "What is the capital of France?", Id: "1"},
+			{Title: "What is the capital of France2?", Id: "2"},
+			{Title: "What is the capital of France3?", Id: "3"},
 		},
-		Answer:        "Paris",
-		WordId:        "1",
+		Answer:        "0", //word_id
 		Word:          "capital",
 		Definition:    "The city or town that functions as the seat of government and administrative centre of a country or region.",
 		Pronunciation: "ˈkapɪt(ə)l",
@@ -74,7 +73,7 @@ func TestQuizRepository_GetQuizByMember(t *testing.T) {
 	ContentItem = models.ContentItem{
 		QuestionType: "true_false",
 		Question: []models.Title{
-			{Title: "飛機"},
+			{Title: "飛機", Id: "1"},
 		},
 		Answer:        "0",
 		WordId:        "2",
@@ -86,9 +85,9 @@ func TestQuizRepository_GetQuizByMember(t *testing.T) {
 	contentItem := models.ContentItem{
 		QuestionType: "full_in_blank",
 		Question: []models.Title{
-			{Title: ""},
+			{Title: "App[*]lca[*]ion"},
 		},
-		Answer:        "Application",
+		Answer:        "i,t",
 		WordId:        "2",
 		Word:          "Application",
 		Definition:    "This appliction will help to improve your efficiency.",
