@@ -73,6 +73,7 @@ type Titles struct {
 
 type Title struct {
 	Title string `json:"title"`
+	Id    string `json:"id"`
 }
 
 type ContentItem struct {
