@@ -12,6 +12,7 @@ type OrganizationRepository interface {
 	UpdateOrganization(organization models.Organization) error
 	DeleteOrganization(id string) error
 	GetOrganizationByMemberID(member_id string) ([]models.Organization, error)
+	GetOrganizationByMemberIDAndOrgID(member_id string, organization_id string) (models.Organization, error)
 }
 
 func NewOrganizationRepository(db *gorm.DB) OrganizationRepository {
@@ -61,4 +62,13 @@ func (r *OrganizationRepositoryImpl) GetOrganizationByMemberID(member_id string)
 	}
 
 	return orgs, nil
+}
+
+func (r *OrganizationRepositoryImpl) GetOrganizationByMemberIDAndOrgID(member_id string, organization_id string) (models.Organization, error) {
+	var organization models.Organization
+	err := r.DB.Model(&models.Organization{}).Joins("JOIN organization_permissions ON organizations.id = organization_permissions.entity_id").Where("organization_permissions.member_id = ? AND organizations.id = ?", member_id, organization_id).Find(&organization)
+	if err.Error != nil {
+		return models.Organization{}, err.Error
+	}
+	return organization, nil
 }

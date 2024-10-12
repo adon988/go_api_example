@@ -126,7 +126,7 @@ func TestOrganizationRepository_UpdateOrganization(t *testing.T) {
 	assert.Equal(t, orgUpdate.Title, orgs[0].Title)
 }
 
-func TestOrganizationRepository_GetOrganization(t *testing.T) {
+func TestOrganizationRepository_GetOrganizationByMemberID(t *testing.T) {
 	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
 	mockDB.AutoMigrate(&models.Organization{}, &models.OrganizationPermission{})
 
@@ -158,4 +158,32 @@ func TestOrganizationRepository_GetOrganization(t *testing.T) {
 
 	assert.Equal(t, orgs[0].Title, "org title")
 	fmt.Println(orgs)
+}
+
+func TestOrganizationRepository_GetOrganizationByMemberIDAndOrgID(t *testing.T) {
+	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
+	mockDB.AutoMigrate(&models.Organization{}, &models.OrganizationPermission{})
+	repo := NewOrganizationRepository(mockDB)
+
+	org := models.Organization{
+		Id:             "1",
+		Title:          "org title",
+		Order:          1,
+		SourceLanguage: "en",
+		TargetLanguage: "es",
+		Publish:        1,
+		CreaterId:      "1",
+	}
+	org_perm := models.OrganizationPermission{
+		MemberId: "1",
+		EntityId: "1",
+		Role:     1,
+	}
+	mockDB.Create(&org)
+	mockDB.Create(&org_perm)
+
+	organization, err := repo.GetOrganizationByMemberIDAndOrgID("1", "1")
+	assert.Nil(t, err)
+	assert.Equal(t, org.Id, organization.Id)
+	assert.Equal(t, org.Title, organization.Title)
 }

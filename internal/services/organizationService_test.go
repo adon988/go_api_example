@@ -101,3 +101,31 @@ func TestOrganizationService_DeleteOrganization(t *testing.T) {
 	assert.Nil(t, err)
 
 }
+
+func TestOrganizationService_GetorganizationByMemberIDAndOrganizationID(t *testing.T) {
+	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
+	mockDB.AutoMigrate(&models.Organization{}, &models.OrganizationPermission{})
+
+	org := models.Organization{
+		Id:             "1",
+		Title:          "org title",
+		Order:          1,
+		SourceLanguage: "en",
+		TargetLanguage: "es",
+		Publish:        1,
+		CreaterId:      "1",
+	}
+	org_perm := models.OrganizationPermission{
+		MemberId: "1",
+		EntityId: "1",
+		Role:     1,
+	}
+	mockDB.Create(&org)
+	mockDB.Create(&org_perm)
+
+	service := NewOrganizationService(mockDB)
+	organization, err := service.GetOrganizationByMemberIDAndOrganizationID("1", "1")
+	assert.Nil(t, err)
+	assert.Equal(t, org.Id, organization.Id)
+	assert.Equal(t, org.Title, organization.Title)
+}
