@@ -185,6 +185,51 @@ definitions:
     required:
     - id
     type: object
+  requests.QuizCreateRequest:
+    properties:
+      course_id:
+        example: "1"
+        type: string
+      exam_date:
+        example: "30"
+        type: string
+      members_id:
+        description: --/info
+        example:
+        - "1"
+        - ' 2'
+        - ' 3'
+        items:
+          type: string
+        type: array
+      organization_id:
+        example: "1"
+        type: string
+      question_type:
+        example:
+        - multiple_choice
+        - ' true_false'
+        - ' full_in_blank'
+        items:
+          type: string
+        type: array
+      quiz_count:
+        description: Info
+        example: 10
+        type: integer
+      topic:
+        example: 1
+        type: integer
+      unit_id:
+        example: "1"
+        type: string
+    required:
+    - course_id
+    - organization_id
+    - question_type
+    - quiz_count
+    - topic
+    type: object
   requests.UnitCreateRequest:
     properties:
       course_id:
@@ -488,7 +533,7 @@ paths:
           schema:
             $ref: '#/definitions/responses.LoginResonse'
         "400":
-          description: 'msg: account not exists'
+          description: '{"code": 100002, "msg":"", "data": {}}'
           schema:
             $ref: '#/definitions/responses.ResponseFail'
       summary: Login
@@ -888,6 +933,34 @@ paths:
       summary: Assign Organization Permission
       tags:
       - Organization
+  /my/quiz:
+    post:
+      consumes:
+      - application/json
+      description: Create a quiz
+      parameters:
+      - description: Quiz object that needs to be created
+        in: body
+        name: title
+        required: true
+        schema:
+          $ref: '#/definitions/requests.QuizCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Create Quiz
+      tags:
+      - Quiz
   /my/unit:
     delete:
       consumes:

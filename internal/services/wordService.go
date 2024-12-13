@@ -53,9 +53,10 @@ func (service WordService) DeleteWord(word_id string) error {
 }
 
 func (service WordService) GetWordByMemberIDAndUnitID(member_id string, unit_id string) ([]models.Word, error) {
+	var words []models.Word
 	words, err := service.word.GetWordByMemberIDAndUnitID(member_id, unit_id)
 	if err != nil {
-		return nil, err
+		return []models.Word{}, err
 	}
 
 	return words, nil

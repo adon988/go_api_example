@@ -8,6 +8,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestCheckQuestionTypes(t *testing.T) {
+	questionType := []string{"full_in_blank", "multiple_choice", "true_false"}
+	err := CheckQuestionTypes(questionType)
+	assert.Nil(t, err)
+}
+
 func TestGetBlankCount(t *testing.T) {
 	expsNum := 3
 	wordCount := 10

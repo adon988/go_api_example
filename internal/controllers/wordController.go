@@ -2,10 +2,10 @@ package controllers
 
 import (
 	models "github.com/adon988/go_api_example/internal/models"
+	"github.com/adon988/go_api_example/internal/requests"
+	"github.com/adon988/go_api_example/internal/responses"
 	"github.com/adon988/go_api_example/internal/services"
 	"github.com/adon988/go_api_example/internal/utils"
-	"github.com/adon988/go_api_example/internal/utils/requests"
-	"github.com/adon988/go_api_example/internal/utils/responses"
 	"github.com/gin-gonic/gin"
 )
 
@@ -129,6 +129,10 @@ func (c WordController) DeleteWord(ctx *gin.Context) {
 
 	//check word's unit premission
 	word, err := wordService.CheckWordPermissionByMemberIDAndWordID(memberId.(string), word_id)
+	if err != nil {
+		responses.FailWithMessage("Permission Denied! Cannot delete word from unit", ctx)
+		return
+	}
 	unitService := services.NewUnitService(Db)
 	_, err = unitService.IsMemberWithEditorPermissionOnUnit(memberId.(string), word.UnitId)
 	if err != nil {

@@ -45,7 +45,6 @@ func NullableDate(t *time.Time) string {
 }
 
 const (
-	ERROR           = -1
 	SUCCESS         = 0
 	SUCCESS_MESSAGE = "success"
 )
@@ -88,4 +87,8 @@ func FailWithMessage(message string, c *gin.Context) {
 
 func FailWithDetailed(data interface{}, message string, c *gin.Context) {
 	Result(ERROR, data, message, c)
+}
+
+func FailWithErrorCode(ErrorCode int, c *gin.Context) {
+	Result(ErrorCode, map[string]interface{}{}, "", c)
 }

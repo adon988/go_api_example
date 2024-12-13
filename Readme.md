@@ -81,6 +81,8 @@ curl --location 'localhost:8080/member/11' \
 
 ### Swagger
 
+doc path: http://localhost:8080/swagger/index.html
+
 Reference https://github.com/swaggo/swag
 
 Local install the swag

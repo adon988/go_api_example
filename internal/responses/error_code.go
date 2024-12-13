@@ -1,0 +1,24 @@
+package responses
+
+const (
+	ERROR = -1
+
+	//member 1
+	ACCOUNT_NOT_EXISTS         = 100001
+	USERNAME_OR_PASSWORD_ERROR = 100002
+
+	//organization 2
+	ORGANIZATION_NOT_FOUND = 200001
+
+	//course 3
+	NO_WORDS_FOUND_FOR_THE_COURSE = 300001
+	//unit 4
+	NOT_FOUND_UNIT              = 400001
+	NO_WORDS_FOUND_FOR_THE_UNIT = 400002
+
+	//word 5
+	SHOULD_HAVE_AT_LEST_2_WORDS = 500002
+
+	//quiz 6
+	INVALID_QUESTION_TYPE = 600001
+)

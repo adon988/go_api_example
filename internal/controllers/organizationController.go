@@ -2,10 +2,10 @@ package controllers
 
 import (
 	models "github.com/adon988/go_api_example/internal/models"
+	"github.com/adon988/go_api_example/internal/requests"
+	"github.com/adon988/go_api_example/internal/responses"
 	"github.com/adon988/go_api_example/internal/services"
 	"github.com/adon988/go_api_example/internal/utils"
-	"github.com/adon988/go_api_example/internal/utils/requests"
-	"github.com/adon988/go_api_example/internal/utils/responses"
 	"github.com/gin-gonic/gin"
 )
 

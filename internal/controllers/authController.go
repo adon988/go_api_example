@@ -3,10 +3,10 @@ package controllers
 import (
 	"github.com/adon988/go_api_example/internal/middleware"
 	models "github.com/adon988/go_api_example/internal/models"
+	"github.com/adon988/go_api_example/internal/requests"
+	"github.com/adon988/go_api_example/internal/responses"
 	"github.com/adon988/go_api_example/internal/services"
 	"github.com/adon988/go_api_example/internal/utils"
-	"github.com/adon988/go_api_example/internal/utils/requests"
-	"github.com/adon988/go_api_example/internal/utils/responses"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/plugin/dbresolver"
@@ -22,8 +22,8 @@ type AuthController struct {
 // @Accept  json
 // @Produce  json
 // @param req body requests.LoginRequeset true "req"
-// @Failure 400 {object} responses.ResponseFail "msg: username or password error"
-// @Failure 400 {object} responses.ResponseFail "msg: account not exists"
+// @Failure 400 {object} responses.ResponseFail "{"code": 100001, "msg":"", "data": {}}"
+// @Failure 400 {object} responses.ResponseFail "{"code": 100002, "msg":"", "data": {}}"
 // @success 200 {object} responses.LoginResonse    "{"code":0,"data":{"token":"token"},msg":"success"}"
 // @Router /auth/login [post]
 func (c AuthController) Login(ctx *gin.Context) {
@@ -37,12 +37,12 @@ func (c AuthController) Login(ctx *gin.Context) {
 	result := Db.Where("username = ?", req.Username).First(&auth)
 
 	if result.RowsAffected == 0 {
-		responses.FailWithMessage("account not exists", ctx)
+		responses.FailWithErrorCode(responses.ACCOUNT_NOT_EXISTS, ctx)
 		return
 	}
 	err := bcrypt.CompareHashAndPassword(auth.Password, []byte(req.Password))
 	if err != nil {
-		responses.FailWithMessage("username or password error", ctx)
+		responses.FailWithErrorCode(responses.USERNAME_OR_PASSWORD_ERROR, ctx)
 		return
 	}
 

@@ -4,10 +4,10 @@ import (
 	"strings"
 
 	"github.com/adon988/go_api_example/internal/models"
+	"github.com/adon988/go_api_example/internal/requests"
+	"github.com/adon988/go_api_example/internal/responses"
 	"github.com/adon988/go_api_example/internal/services"
 	"github.com/adon988/go_api_example/internal/utils"
-	"github.com/adon988/go_api_example/internal/utils/requests"
-	"github.com/adon988/go_api_example/internal/utils/responses"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,6 +15,16 @@ type QuizController struct {
 	InfoDb utils.InfoDb
 }
 
+// @Summary Create Quiz
+// @Description Create a quiz
+// @Tags Quiz
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Param title body requests.QuizCreateRequest true "Quiz object that needs to be created"
+// @Success 200 {string} string "ok"
+// @Failure 400 {string} string '{"code":-1,"data":{},"msg":""}'
+// @Router /my/quiz [post]
 func (c QuizController) CreateQuiz(ctx *gin.Context) {
 	var req requests.QuizCreateRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -24,7 +34,7 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 
 	err := utils.CheckQuestionTypes(req.QuestionTypes)
 	if err != nil {
-		responses.FailWithMessage(err.Error(), ctx)
+		responses.FailWithErrorCode(responses.INVALID_QUESTION_TYPE, ctx)
 		return
 	}
 
@@ -46,7 +56,7 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 	organizationService := services.NewOrganizationService(Db)
 	organization, err := organizationService.GetOrganizationByMemberIDAndOrganizationID(memberId.(string), req.OrganizationId)
 	if err != nil {
-		responses.FailWithMessage("organiztion not found", ctx)
+		responses.FailWithErrorCode(responses.ORGANIZATION_NOT_FOUND, ctx)
 		return
 	}
 	OrganizationInfo := models.ClassInfo{
@@ -81,19 +91,14 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 	}
 
 	// get words
-	words := []models.Word{}
+	var words []models.Word
+	words = []models.Word{}
+
 	// check UnitInfo is empty
 	wordService := services.NewWordService(Db)
 	if UnitInfo.Id != "" {
-		words, err := wordService.GetWordByMemberIDAndUnitID(memberId.(string), UnitInfo.Id)
-		if err != nil {
-			responses.FailWithMessage(err.Error(), ctx)
-			return
-		}
-		if len(words) == 0 {
-			responses.FailWithMessage("no words found for the unit", ctx)
-			return
-		}
+		words, _ = wordService.GetWordByMemberIDAndUnitID(memberId.(string), UnitInfo.Id)
+
 	}
 
 	if UnitInfo.Id == "" && CourseInfo.Id != "" {
@@ -103,14 +108,9 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 			return
 		}
 		if len(words) == 0 {
-			responses.FailWithMessage("no words found for the course", ctx)
+			responses.FailWithErrorCode(responses.NO_WORDS_FOUND_FOR_THE_COURSE, ctx)
 			return
 		}
-	}
-
-	if err != nil {
-		responses.FailWithMessage(err.Error(), ctx)
-		return
 	}
 
 	// enstablish info
@@ -126,12 +126,12 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 	// verify the words length
 
 	if len(words) == 0 {
-		responses.FailWithMessage("no words found for the unit", ctx)
+		responses.FailWithErrorCode(responses.NO_WORDS_FOUND_FOR_THE_UNIT, ctx)
 		return
 	}
 
 	if len(words) <= 2 {
-		responses.FailWithMessage("should have at lest 2 words", ctx)
+		responses.FailWithErrorCode(responses.SHOULD_HAVE_AT_LEST_2_WORDS, ctx)
 		return
 	}
 
