@@ -8,16 +8,19 @@ import (
 )
 
 type Quiz struct {
-	Id           string           `gorm:"primaryKey;size:24"`
-	CreaterId    string           `gorm:"size:24;index;comment:'only note the creater id, not the permission'"`
-	QuestionType string           `gorm:"size:255; comment:'type: multiple_choice, true_false, fill_in_the_blank'"`
-	Topic        int32            `gorm:"type:tinyint(2); comment:'1:source, 2:target';default:1"`
-	Type         int32            `gorm:"type:tinyint(2); comment:'1:quiz, 2:challenge';default:1"`
-	Info         *json.RawMessage `gorm:"type:json;comment:'quiz info: exam date, retry times, org, course, unit...info'"`
-	Content      *json.RawMessage `gorm:"type:json;comment:'quiz and anser info'"`
-	CreatedAt    time.Time        // Automatically managed by GORM for creation time
-	UpdatedAt    time.Time        // Automatically managed by GORM for update time
-	DeletedAt    gorm.DeletedAt   `gorm:"index"`
+	Id             string           `gorm:"primaryKey;size:255"`
+	CreaterId      string           `gorm:"size:24;index;comment:'only note the creater id, not the permission'"`
+	QuestionType   string           `gorm:"size:255; comment:'type: multiple_choice, true_false, fill_in_the_blank'"`
+	Topic          int32            `gorm:"type:tinyint(2); comment:'1:source, 2:target';default:1"`
+	Type           int32            `gorm:"type:tinyint(2); comment:'1:quiz, 2:challenge';default:1"`
+	OrganizationId *string          `gorm:"size:24"`
+	CourseId       *string          `gorm:"size:24"`
+	UnitId         *string          `gorm:"size:24"`
+	Info           *json.RawMessage `gorm:"type:json;comment:'quiz info: exam date, retry times, org, course, unit...info'"`
+	Content        *json.RawMessage `gorm:"type:json;comment:'quiz and anser info'"`
+	CreatedAt      time.Time        // Automatically managed by GORM for creation time
+	UpdatedAt      time.Time        // Automatically managed by GORM for update time
+	DeletedAt      gorm.DeletedAt   `gorm:"index"`
 }
 
 // 自定義結構體，用於查詢帶有答案的問卷

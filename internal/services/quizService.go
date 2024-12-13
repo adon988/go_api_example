@@ -8,6 +8,7 @@ import (
 
 type QiuzServiceInterface interface {
 	CreateQuiz(quiz models.Quiz) error
+	CheckQuizExist(quiz_id string) bool
 	CreateQuizAnswerRecord(quizAnswerRecord models.QuizAnswerRecord) error
 	UpdateQuizAnswerRecord(quizAnswerRecord models.QuizAnswerRecord) error
 	GetQuizByMember(quiz_id string, member_id string) (models.QuizWithAnswer, error)
@@ -33,6 +34,10 @@ func (service QuizService) CreateQuiz(quiz models.Quiz) error {
 	}
 
 	return nil
+}
+
+func (service QuizService) CheckQuizExist(quiz_id string) bool {
+	return service.quiz.CheckQuizExist(quiz_id)
 }
 
 func (service QuizService) CreateQuizAnswerRecord(quizAnswerRecord models.QuizAnswerRecord) error {

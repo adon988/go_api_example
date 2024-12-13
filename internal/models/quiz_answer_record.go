@@ -9,7 +9,7 @@ import (
 
 type QuizAnswerRecord struct {
 	Id                 string           `gorm:"primaryKey;size:24"`
-	QuizId             string           `gorm:"size:24;index;comment:'quiz id'"`
+	QuizId             string           `gorm:"size:255;index;comment:'quiz id'"`
 	MemberId           string           `gorm:"size:24;index;comment:'member id'"`
 	AnswerQuestion     *json.RawMessage `gorm:"type:json;comment:'answer question'"`
 	Status             int32            `gorm:"type:tinyint;comment:'status 1: unstart, 2: progress, 3: finish, 4: failed';default:1"`

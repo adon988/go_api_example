@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"strings"
 
 	"github.com/adon988/go_api_example/internal/models"
@@ -40,6 +41,18 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 
 	Db, _ := c.InfoDb.InitDB()
 	memberId, _ := ctx.Get("account")
+
+	reqJson, _ := json.Marshal(req)
+	hashInfos := []string{memberId.(string), string(reqJson)}
+	quizId := utils.GenSha256IdempotentId(hashInfos)
+
+	//check quiz exist
+	quizService := services.NewQuizService(Db)
+	quizExist := quizService.CheckQuizExist(quizId)
+	if quizExist {
+		responses.OkWithMessage("quiz exist", ctx)
+		return
+	}
 
 	memberService := services.NewMemberService(Db)
 
@@ -148,19 +161,21 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 	contentItems = append(contentItems, fullInBlankContent.ContentItems...)
 
 	questionTypes := strings.Join(req.QuestionTypes, ",")
-	quizId, _ := utils.GenId()
+
 	// create quiz
 	quiz := models.Quiz{
-		Id:           quizId,
-		CreaterId:    memberId.(string),
-		QuestionType: questionTypes,
-		Topic:        req.Topic,
-		Type:         1,
-		Info:         utils.MarshalJSONToRaw(quizInfo),
-		Content:      utils.MarshalJSONToRaw(contentItems),
+		Id:             quizId,
+		CreaterId:      memberId.(string),
+		QuestionType:   questionTypes,
+		OrganizationId: &OrganizationInfo.Id,
+		CourseId:       &CourseInfo.Id,
+		UnitId:         &UnitInfo.Id,
+		Topic:          req.Topic,
+		Type:           1,
+		Info:           utils.MarshalJSONToRaw(quizInfo),
+		Content:        utils.MarshalJSONToRaw(contentItems),
 	}
 
-	quizService := services.NewQuizService(Db)
 	err = quizService.CreateQuiz(quiz)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
