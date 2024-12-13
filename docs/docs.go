@@ -48,7 +48,7 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "msg: account not exists",
+                        "description": "{\"code\": 100002, \"msg\":\"\", \"data\": {}}",
                         "schema": {
                             "$ref": "#/definitions/responses.ResponseFail"
                         }
@@ -667,6 +667,51 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": "{\"code\":0,\"data\":{},\"msg\":\"success\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/my/quiz": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create a quiz",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quiz"
+                ],
+                "summary": "Create Quiz",
+                "parameters": [
+                    {
+                        "description": "Quiz object that needs to be created",
+                        "name": "title",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.QuizCreateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
                         "schema": {
                             "type": "string"
                         }
@@ -1306,6 +1351,66 @@ const docTemplate = `{
                 "title": {
                     "type": "string",
                     "example": "organization title update"
+                }
+            }
+        },
+        "requests.QuizCreateRequest": {
+            "type": "object",
+            "required": [
+                "course_id",
+                "organization_id",
+                "question_type",
+                "quiz_count",
+                "topic"
+            ],
+            "properties": {
+                "course_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "exam_date": {
+                    "type": "string",
+                    "example": "30"
+                },
+                "members_id": {
+                    "description": "--/info",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "1",
+                        " 2",
+                        " 3"
+                    ]
+                },
+                "organization_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "question_type": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "multiple_choice",
+                        " true_false",
+                        " full_in_blank"
+                    ]
+                },
+                "quiz_count": {
+                    "description": "Info",
+                    "type": "integer",
+                    "example": 10
+                },
+                "topic": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "unit_id": {
+                    "type": "string",
+                    "example": "1"
                 }
             }
         },

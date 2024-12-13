@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"math"
 	"math/rand"
 	"strings"
@@ -11,6 +12,21 @@ import (
 func GenerateQuizContent(words []models.Word) (content string, err error) {
 
 	return "quiz content", nil
+}
+
+var allowQuestionTypes = map[string]bool{
+	"multiple_choice": true,
+	"true_false":      true,
+	"full_in_blank":   true,
+}
+
+func CheckQuestionTypes(questionType []string) error {
+	for _, qt := range questionType {
+		if _, ok := allowQuestionTypes[qt]; !ok {
+			return fmt.Errorf("invalid question type")
+		}
+	}
+	return nil
 }
 
 func GenerateMutipleChoiceContent(words []models.Word) (contentItems models.ContentItems) {
