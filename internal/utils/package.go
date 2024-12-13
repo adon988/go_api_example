@@ -1,7 +1,10 @@
 package utils
 
 import (
+	"crypto/sha256"
 	"encoding/json"
+	"fmt"
+	"strings"
 
 	"github.com/bwmarrin/snowflake"
 )
@@ -14,6 +17,12 @@ func GenId() (string, error) {
 	id := node.Generate().String()
 
 	return id, nil
+}
+
+func GenSha256IdempotentId(hashInfos []string) (idempotentId string) {
+	hash := sha256.Sum256([]byte(strings.Join(hashInfos, "")))
+	idempotentId = fmt.Sprintf("%x", hash)
+	return idempotentId
 }
 
 func MarshalJSONToRaw(v any) *json.RawMessage {
