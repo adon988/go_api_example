@@ -8,6 +8,7 @@ import (
 
 type QuizRepository interface {
 	CreateQuiz(data models.Quiz) error
+	CheckQuizExist(quiz_id string) bool
 	GetQuizByMember(quiz_id string, member_id string) (models.QuizWithAnswer, error)
 	GetQuizsListWithAnswersByMember(member_id string, page int32) ([]models.QuizWithAnswers, int32, error)
 }
@@ -22,6 +23,12 @@ func NewQuizRepository(db *gorm.DB) QuizRepository {
 
 func (r *quizRepositoryImpl) CreateQuiz(data models.Quiz) error {
 	return r.db.Create(&data).Error
+}
+
+func (r *quizRepositoryImpl) CheckQuizExist(quiz_id string) bool {
+	var quiz models.Quiz
+	err := r.db.Table("quizzes").Where("id = ?", quiz_id).First(&quiz).Error
+	return err == nil
 }
 
 func (r *quizRepositoryImpl) GetQuizByMember(quiz_id string, member_id string) (models.QuizWithAnswer, error) {

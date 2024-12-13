@@ -41,6 +41,32 @@ func TestQuizRepository_CreateQuiz(t *testing.T) {
 	fmt.Println(quizzes)
 }
 
+func TestQuizRepository_CheckQuizExist(t *testing.T) {
+	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
+	mockDB.AutoMigrate(&models.Quiz{}, &models.QuizAnswerRecord{})
+
+	repo := NewQuizRepository(mockDB)
+
+	quiz := models.Quiz{
+		Id:           "1",
+		CreaterId:    "1",
+		QuestionType: "multiple_choice, true_false, full_in_blank",
+		Topic:        1,
+		Type:         1,
+		Info:         nil,
+		Content:      nil,
+	}
+	err := repo.CreateQuiz(quiz)
+	assert.Nil(t, err)
+
+	// 檢查 quiz 是否存在
+	exist := repo.CheckQuizExist(quiz.Id)
+	assert.Equal(t, true, exist)
+
+	fmt.Println("Result:")
+	fmt.Println(exist)
+}
+
 func TestQuizRepository_GetQuizByMember(t *testing.T) {
 	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
 	mockDB.AutoMigrate(&models.Quiz{}, &models.QuizAnswerRecord{})
