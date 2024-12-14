@@ -243,6 +243,6 @@ func TestWordRepository_Fail_GetWordByMemberIDAndCourseID(t *testing.T) {
 	assert.Nil(t, err.Error)
 
 	words, result := repo.GetWordByMemberIDAndCourseID(member_id, "1")
-	assert.Nil(t, result)
+	assert.NotNil(t, result)
 	assert.Equal(t, 0, len(words))
 }

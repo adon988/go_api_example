@@ -61,7 +61,7 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 	// check members id is valid
 	_, err = memberService.GetValidMembers(memberIDs)
 	if err != nil {
-		responses.FailWithMessage(err.Error(), ctx)
+		responses.FailWithErrorCode(responses.ACCOUNT_NOT_EXISTS, ctx)
 		return
 	}
 
@@ -83,7 +83,7 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 		courseService := services.NewCourseSerive(Db)
 		course, err := courseService.GetCourseByMemberIDAndCourseID(memberId.(string), req.CourseId)
 		if err != nil {
-			responses.FailWithMessage(err.Error(), ctx)
+			responses.FailWithErrorCode(responses.COURSE_NOT_FOUND, ctx)
 			return
 		}
 		CourseInfo.Id = course.Id
@@ -96,7 +96,7 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 		unitService := services.NewUnitService(Db)
 		unit, err := unitService.GetUnitByMemberIDAndUnitID(memberId.(string), req.UnitId)
 		if err != nil {
-			responses.FailWithMessage(err.Error(), ctx)
+			responses.FailWithErrorCode(responses.UNIT_NOT_FOUND, ctx)
 			return
 		}
 		UnitInfo.Id = unit.Id
@@ -117,11 +117,11 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 	if UnitInfo.Id == "" && CourseInfo.Id != "" {
 		words, err := wordService.GetWordByMemberIDAndCourseID(memberId.(string), CourseInfo.Id)
 		if err != nil {
-			responses.FailWithMessage(err.Error(), ctx)
+			responses.FailWithErrorCode(responses.COURSE_NOT_FOUND, ctx)
 			return
 		}
 		if len(words) == 0 {
-			responses.FailWithErrorCode(responses.NO_WORDS_FOUND_FOR_THE_COURSE, ctx)
+			responses.FailWithErrorCode(responses.WORDS_NOT_FOUND_ON_COURSE, ctx)
 			return
 		}
 	}
@@ -139,7 +139,7 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 	// verify the words length
 
 	if len(words) == 0 {
-		responses.FailWithErrorCode(responses.NO_WORDS_FOUND_FOR_THE_UNIT, ctx)
+		responses.FailWithErrorCode(responses.WORDS_NOT_FOUND_ON_UNIT, ctx)
 		return
 	}
 
@@ -148,17 +148,12 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 		return
 	}
 
-	//generate quiz content
-	contentItems := []models.ContentItem{}
-
-	mutipleChoiceContent := utils.GenerateMutipleChoiceContent(words)
-	contentItems = append(contentItems, mutipleChoiceContent.ContentItems...)
-
-	trueFalseContent := utils.GenerateTrueFalseContent(words)
-	contentItems = append(contentItems, trueFalseContent.ContentItems...)
-
-	fullInBlankContent := utils.GenerateFullInBlankContent(words)
-	contentItems = append(contentItems, fullInBlankContent.ContentItems...)
+	//generate quiz content by factory
+	contentItems, errCode := utils.GetQuizContent(req.QuestionTypes, words)
+	if errCode != responses.SUCCESS {
+		responses.FailWithErrorCode(errCode, ctx)
+		return
+	}
 
 	questionTypes := strings.Join(req.QuestionTypes, ",")
 
@@ -176,9 +171,18 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 		Content:        utils.MarshalJSONToRaw(contentItems),
 	}
 
-	err = quizService.CreateQuiz(quiz)
+	var QuizAnswerRecordUnstart int32 = 1
+	quizAnswerRecordId, _ := utils.GenId()
+	initQuizAnswerRecord := models.QuizAnswerRecord{
+		Id:       quizAnswerRecordId,
+		QuizId:   quizId,
+		MemberId: memberId.(string),
+		Status:   QuizAnswerRecordUnstart,
+	}
+
+	err = quizService.InitQuizWithTx(quiz, initQuizAnswerRecord)
 	if err != nil {
-		responses.FailWithMessage(err.Error(), ctx)
+		responses.FailWithErrorCode(responses.FAILED_TO_CREATE_QUIZ, ctx)
 		return
 	}
 	// create quiz answer record

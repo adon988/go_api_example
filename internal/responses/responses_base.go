@@ -51,7 +51,7 @@ const (
 
 func Result(code int, data interface{}, msg string, c *gin.Context) {
 	httpStatus := http.StatusOK
-	if code != 0 {
+	if code < 0 {
 		httpStatus = http.StatusBadRequest
 	}
 	c.JSON(httpStatus, Response{
@@ -62,7 +62,7 @@ func Result(code int, data interface{}, msg string, c *gin.Context) {
 }
 
 func Ok(c *gin.Context) {
-	Result(SUCCESS, map[string]interface{}{}, "success", c)
+	Result(SUCCESS, map[string]interface{}{}, SUCCESS_MESSAGE, c)
 }
 
 func OkWithMessage(message string, c *gin.Context) {
@@ -70,7 +70,7 @@ func OkWithMessage(message string, c *gin.Context) {
 }
 
 func OkWithData(data interface{}, c *gin.Context) {
-	Result(SUCCESS, data, "success", c)
+	Result(SUCCESS, data, SUCCESS_MESSAGE, c)
 }
 
 func OkWithDetailed(data interface{}, message string, c *gin.Context) {
@@ -78,7 +78,7 @@ func OkWithDetailed(data interface{}, message string, c *gin.Context) {
 }
 
 func Fail(c *gin.Context) {
-	Result(ERROR, map[string]interface{}{}, "failed", c)
+	Result(ERROR, map[string]interface{}{}, ERROR_MESSAGE, c)
 }
 
 func FailWithMessage(message string, c *gin.Context) {
@@ -90,5 +90,5 @@ func FailWithDetailed(data interface{}, message string, c *gin.Context) {
 }
 
 func FailWithErrorCode(ErrorCode int, c *gin.Context) {
-	Result(ErrorCode, map[string]interface{}{}, "", c)
+	Result(ErrorCode, map[string]interface{}{}, ERROR_MESSAGE, c)
 }

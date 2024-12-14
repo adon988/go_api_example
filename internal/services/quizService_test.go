@@ -11,6 +11,38 @@ import (
 	"gorm.io/gorm"
 )
 
+func TestInitQuiz(t *testing.T) {
+	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
+	mockDB.AutoMigrate(&models.Quiz{}, &models.QuizAnswerRecord{})
+
+	quiz := models.Quiz{
+		Id:           "1",
+		CreaterId:    "1",
+		QuestionType: "multiple_choice",
+		Topic:        1,
+		Type:         1,
+		Info:         nil,
+		Content:      nil,
+	}
+
+	quizAnswerRecord := models.QuizAnswerRecord{
+		Id:                 "1",
+		QuizId:             "1",
+		MemberId:           "1",
+		AnswerQuestion:     &json.RawMessage{},
+		Status:             1,
+		DueDate:            func() *time.Time { t := time.Now().AddDate(0, 0, 30); return &t }(),
+		CorrectAnswerCount: func(i int32) *int32 { return &i }(10),
+		TotalQuestionCount: func(i int32) *int32 { return &i }(20),
+		FailedLogs:         &json.RawMessage{},
+		Scope:              func(i int32) *int32 { return &i }(50),
+	}
+	service := NewQuizService(mockDB)
+	err := service.InitQuizWithTx(quiz, quizAnswerRecord)
+	assert.Nil(t, err)
+
+}
+
 func TestQuizService_CreateQuiz(t *testing.T) {
 	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
 	mockDB.AutoMigrate(&models.Quiz{})

@@ -53,7 +53,9 @@ func (r *CourseRepositoryImpl) DeleteCourse(id string) error {
 	if result.RowsAffected == 0 {
 		return fmt.Errorf("no course found with id: %s", id)
 	}
-
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("no course found with id: %s", id)
+	}
 	return nil
 }
 
@@ -64,6 +66,9 @@ func (r *CourseRepositoryImpl) GetCourseByMemberID(member_id string) ([]models.C
 	if err.Error != nil {
 		return nil, err.Error
 	}
+	if err.RowsAffected == 0 {
+		return nil, fmt.Errorf("no course found with member id: %s", member_id)
+	}
 	return courses, nil
 }
 
@@ -73,5 +78,9 @@ func (r *CourseRepositoryImpl) GetCourseByMemberIDAndCourseID(member_id string, 
 	if err.Error != nil {
 		return models.Course{}, err.Error
 	}
+	if err.RowsAffected == 0 {
+		return models.Course{}, fmt.Errorf("no course found with member id: %s and course id: %s", member_id, course_id)
+	}
+
 	return course, nil
 }
