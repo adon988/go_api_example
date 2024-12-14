@@ -55,7 +55,9 @@ func (r *OrganizationRepositoryImpl) DeleteOrganization(id string) error {
 	if result.RowsAffected == 0 {
 		return fmt.Errorf("no organization found with id: %s", id)
 	}
-
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("no organization found with id: %s", id)
+	}
 	return nil
 }
 
@@ -66,7 +68,9 @@ func (r *OrganizationRepositoryImpl) GetOrganizationByMemberID(member_id string)
 	if err.Error != nil {
 		return nil, err.Error
 	}
-
+	if err.RowsAffected == 0 {
+		return nil, fmt.Errorf("no organization found with member id: %s", member_id)
+	}
 	return orgs, nil
 }
 
@@ -75,6 +79,9 @@ func (r *OrganizationRepositoryImpl) GetOrganizationByMemberIDAndOrgID(member_id
 	err := r.DB.Model(&models.Organization{}).Joins("JOIN organization_permissions ON organizations.id = organization_permissions.entity_id").Where("organization_permissions.member_id = ? AND organizations.id = ?", member_id, organization_id).Find(&organization)
 	if err.Error != nil {
 		return models.Organization{}, err.Error
+	}
+	if err.RowsAffected == 0 {
+		return models.Organization{}, fmt.Errorf("no organization found with member id: %s and organization id: %s", member_id, organization_id)
 	}
 	return organization, nil
 }

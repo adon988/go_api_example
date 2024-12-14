@@ -9,6 +9,7 @@ import (
 type QiuzServiceInterface interface {
 	CreateQuiz(quiz models.Quiz) error
 	CheckQuizExist(quiz_id string) bool
+	InitQuizWithTx(quiz models.Quiz, quizAnswerRecord models.QuizAnswerRecord) error
 	CreateQuizAnswerRecord(quizAnswerRecord models.QuizAnswerRecord) error
 	UpdateQuizAnswerRecord(quizAnswerRecord models.QuizAnswerRecord) error
 	GetQuizByMember(quiz_id string, member_id string) (models.QuizWithAnswer, error)
@@ -16,15 +17,36 @@ type QiuzServiceInterface interface {
 }
 
 type QuizService struct {
+	db               *gorm.DB
 	quiz             repository.QuizRepository
 	quizAnswerRecord repository.QuizAnswerRecordRepository
 }
 
 func NewQuizService(db *gorm.DB) QiuzServiceInterface {
 	return &QuizService{
+		db:               db,
 		quiz:             repository.NewQuizRepository(db),
 		quizAnswerRecord: repository.NewQuizAnswerRecordRepository(db),
 	}
+}
+
+func (service QuizService) InitQuizWithTx(quiz models.Quiz, quizAnswerRecord models.QuizAnswerRecord) error {
+	tx := service.db.Begin()
+	NewTransactionQuizService := NewQuizService(tx)
+	//grorm transaction
+	err := NewTransactionQuizService.CreateQuiz(quiz)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	err = NewTransactionQuizService.CreateQuizAnswerRecord(quizAnswerRecord)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	tx.Commit()
+	return nil
+
 }
 
 func (service QuizService) CreateQuiz(quiz models.Quiz) error {

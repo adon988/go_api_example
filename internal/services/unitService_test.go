@@ -159,7 +159,7 @@ func TestUnitSerivce_DeleteUnit(t *testing.T) {
 	assert.Nil(t, err)
 
 	units, err := service.GetUnit(memberId)
-	assert.Nil(t, err)
+	assert.NotNil(t, err)
 	assert.Equal(t, 0, len(units))
 }
 

@@ -66,7 +66,9 @@ func (r *WordRepositoryImpl) GetWordByMemberIDAndUnitID(member_id string, unit_i
 	if err.Error != nil {
 		return nil, err.Error
 	}
-
+	if err.RowsAffected == 0 {
+		return nil, fmt.Errorf("no word found with member id: %s and unit id: %s", member_id, unit_id)
+	}
 	return words, nil
 }
 
@@ -77,7 +79,9 @@ func (r *WordRepositoryImpl) GetWordByMemberIDAndCourseID(member_id string, cour
 	if err.Error != nil {
 		return nil, err.Error
 	}
-
+	if err.RowsAffected == 0 {
+		return nil, fmt.Errorf("no word found with member id: %s and course id: %s", member_id, course_id)
+	}
 	return words, nil
 
 }
@@ -88,6 +92,8 @@ func (r *WordRepositoryImpl) CheckWordPermissionByMemberIDAndWordID(member_id st
 	if err.Error != nil {
 		return models.Word{}, err.Error
 	}
-
+	if err.RowsAffected == 0 {
+		return models.Word{}, fmt.Errorf("no word found with member id: %s and word id: %s", member_id, word_id)
+	}
 	return word, nil
 }

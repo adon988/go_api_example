@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/adon988/go_api_example/internal/models"
+	"github.com/adon988/go_api_example/internal/responses"
 )
 
 func GenerateQuizContent(words []models.Word) (content string, err error) {
@@ -18,6 +19,35 @@ var allowQuestionTypes = map[string]bool{
 	"multiple_choice": true,
 	"true_false":      true,
 	"full_in_blank":   true,
+}
+
+func GetQuizContent(QuestionTypes []string, words []models.Word) (contentItems models.ContentItems, errCode int) {
+	contentItems = models.ContentItems{}
+
+	err := CheckQuestionTypes(QuestionTypes)
+	if err != nil {
+		return contentItems, responses.INVALID_QUESTION_TYPE
+	}
+
+	for _, qt := range QuestionTypes {
+		quizContent := QuizContentFactory[qt](words)
+		if len(quizContent.ContentItems) == 0 {
+			continue
+		}
+		contentItems.ContentItems = append(contentItems.ContentItems, quizContent.ContentItems...)
+	}
+
+	if len(contentItems.ContentItems) == 0 {
+		return contentItems, responses.NO_CONTENT_GENERATED
+	}
+
+	return contentItems, responses.SUCCESS
+}
+
+var QuizContentFactory = map[string]func(words []models.Word) models.ContentItems{
+	"multiple_choice": GenerateMutipleChoiceContent,
+	"true_false":      GenerateTrueFalseContent,
+	"full_in_blank":   GenerateFullInBlankContent,
 }
 
 func CheckQuestionTypes(questionType []string) error {

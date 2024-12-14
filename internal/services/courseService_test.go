@@ -119,7 +119,7 @@ func TestCourseService_DeleteCourse(t *testing.T) {
 	assert.Nil(t, err)
 
 	courses, err := service.GetCourse(memberId)
-	assert.Nil(t, err)
+	assert.NotNil(t, err)
 	assert.Equal(t, 0, len(courses))
 }
 

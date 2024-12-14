@@ -65,6 +65,9 @@ func (r *UnitRepositoryImpl) GetUnitByMemberID(member_id string) ([]models.Unit,
 	if err.Error != nil {
 		return nil, err.Error
 	}
+	if err.RowsAffected == 0 {
+		return nil, fmt.Errorf("no unit found with member id: %s", member_id)
+	}
 
 	return units, nil
 }
@@ -74,6 +77,9 @@ func (r *UnitRepositoryImpl) GetUnitsByCourseID(course_id string) ([]models.Unit
 	err := r.DB.Model(&models.Unit{}).Where("course_id = ?", course_id).Find(&units)
 	if err.Error != nil {
 		return nil, err.Error
+	}
+	if err.RowsAffected == 0 {
+		return nil, fmt.Errorf("no unit found with course id: %s", course_id)
 	}
 
 	return units, nil
@@ -85,5 +91,10 @@ func (r *UnitRepositoryImpl) GetUnitByMemberIDAndUnitID(member_id string, unit_i
 	if err.Error != nil {
 		return models.Unit{}, err.Error
 	}
+	//if no record found return error
+	if err.RowsAffected == 0 {
+		return models.Unit{}, fmt.Errorf("no unit found with id: %s", unit_id)
+	}
+
 	return unit, nil
 }
