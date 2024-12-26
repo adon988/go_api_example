@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"strconv"
 	"strings"
 
 	"github.com/adon988/go_api_example/internal/models"
@@ -187,4 +188,42 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 	}
 	// create quiz answer record
 	responses.Ok(ctx)
+}
+
+// @Summary Get Quiz List With Answers By Member
+// @Description Get Quiz List With Answers By Member
+// @Tags Quiz
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Param req body requests.QuizListRequest true "Quiz object page list"
+// @Success 200 {object} responses.QuizListResponse
+// @Router /my/quiz_list [get]
+func (c QuizController) GetQuizsListWithAnswersByMember(ctx *gin.Context) {
+	var req requests.QuizListRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		responses.FailWithMessage(err.Error(), ctx)
+		return
+	}
+
+	memberId, _ := ctx.Get("account")
+	var reqPage string = ctx.DefaultQuery("page", "1")
+	pageInt, _ := strconv.Atoi(reqPage)
+	page := int32(pageInt)
+
+	Db, _ := c.InfoDb.InitDB()
+
+	quizServices := services.NewQuizService(Db)
+	quizList, total, err := quizServices.GetQuizsListWithAnswersByMember(memberId.(string), page)
+	if err != nil {
+		responses.FailWithErrorCode(responses.FAILED_TO_GET_QUIZ_LIST, ctx)
+		return
+	}
+
+	data := responses.QuizListResponse{
+		QuizList: quizList,
+		Total:    total,
+	}
+
+	responses.OkWithData(data, ctx)
 }

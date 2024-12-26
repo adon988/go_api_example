@@ -1,6 +1,8 @@
 package responses
 
-import "time"
+import (
+	"time"
+)
 
 type WordResponse struct {
 	Id            string `json:"id"`
@@ -70,4 +72,26 @@ type LoginResonse struct {
 	Code int `json:"code" example:"0"`
 	Data TokenResponse
 	Msg  string `json:"msg" example:"success"`
+}
+
+type QuizListResponse struct {
+	QuizList []QuizWithAnswers
+	Total    int32 `json:"total" example:"100"`
+}
+
+
+type QuizWithAnswers struct {
+	QuizId             string    `json:"quiz_id" example:"1"`
+	QuizAnswerRecordId string    `json:"quiz_answer_record_id" example:"1"`
+	CreaterID          string    `json:"creater_id" example:"1"`
+	QuestionType       string    `json:"question_type" example:"mutiple_choice"`
+	Topic              int32     `json:"topic" example:"1"`
+	Type               int32     `json:"type" example:"1"`
+	Info               string    `json:"info" example:"{}"`
+	Status             int32     `json:"status" example:"1"`
+	DueDate            time.Time `json:"due_date" example:"2021-01-01 00:00:00"`
+	CorrectAnswerCount int32     `json:"correct_answer_count" example:"10"`
+	TotalQuestionCount int32     `json:"total_question_count" example:"20"`
+	FailedLogs         string    `json:"failed_logs" example:"{}"`
+	Scope              int32     `json:"scope" example:"50"`
 }

@@ -3,6 +3,7 @@ package services
 import (
 	"github.com/adon988/go_api_example/internal/models"
 	"github.com/adon988/go_api_example/internal/repository"
+	"github.com/adon988/go_api_example/internal/responses"
 	"gorm.io/gorm"
 )
 
@@ -13,7 +14,7 @@ type QiuzServiceInterface interface {
 	CreateQuizAnswerRecord(quizAnswerRecord models.QuizAnswerRecord) error
 	UpdateQuizAnswerRecord(quizAnswerRecord models.QuizAnswerRecord) error
 	GetQuizByMember(quiz_id string, member_id string) (models.QuizWithAnswer, error)
-	GetQuizsListWithAnswersByMember(member_id string, page int32) ([]models.QuizWithAnswers, int32, error)
+	GetQuizsListWithAnswersByMember(member_id string, page int32) ([]responses.QuizWithAnswers, int32, error)
 }
 
 type QuizService struct {
@@ -89,11 +90,29 @@ func (service QuizService) GetQuizByMember(quiz_id string, member_id string) (mo
 	return quiz, nil
 }
 
-func (service QuizService) GetQuizsListWithAnswersByMember(member_id string, page int32) ([]models.QuizWithAnswers, int32, error) {
+func (service QuizService) GetQuizsListWithAnswersByMember(member_id string, page int32) ([]responses.QuizWithAnswers, int32, error) {
 	quizzes, count, err := service.quiz.GetQuizsListWithAnswersByMember(member_id, page)
-	if err != nil {
+	if err != nil || count == 0 {
 		return nil, 0, err
 	}
 
-	return quizzes, count, nil
+	quizList := make([]responses.QuizWithAnswers, len(quizzes))
+	for i, quiz := range quizzes {
+		quizList[i] = responses.QuizWithAnswers{
+			QuizId:             quiz.QuizId,
+			QuizAnswerRecordId: quiz.QuizAnswerRecordId,
+			CreaterID:          quiz.CreaterID,
+			QuestionType:       quiz.QuestionType,
+			Topic:              quiz.Topic,
+			Type:               quiz.Type,
+			Info:               quiz.Info,
+			Status:             quiz.Status,
+			DueDate:            quiz.DueDate,
+			CorrectAnswerCount: quiz.CorrectAnswerCount,
+			TotalQuestionCount: quiz.TotalQuestionCount,
+			FailedLogs:         quiz.FailedLogs,
+			Scope:              quiz.Scope,
+		}
+	}
+	return quizList, count, nil
 }

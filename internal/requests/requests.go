@@ -160,3 +160,7 @@ type QuizChallengesRequest struct {
 	// --/info
 	MembersId []string `json:"members_id" example:"1,2,3"`
 }
+
+type QuizListRequest struct {
+	Page int32 `json:"page" example:"1"`
+}

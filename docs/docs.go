@@ -725,6 +725,45 @@ const docTemplate = `{
                 }
             }
         },
+        "/my/quiz_list": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get Quiz List With Answers By Member",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quiz"
+                ],
+                "summary": "Get Quiz List With Answers By Member",
+                "parameters": [
+                    {
+                        "description": "Quiz object page list",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.QuizListRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.QuizListResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/my/unit": {
             "get": {
                 "security": [
@@ -1097,6 +1136,63 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.QuizWithAnswers": {
+            "type": "object",
+            "properties": {
+                "correct_answer_count": {
+                    "type": "integer",
+                    "example": 10
+                },
+                "creater_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "due_date": {
+                    "type": "string",
+                    "example": "2021-01-01 00:00:00"
+                },
+                "failed_logs": {
+                    "type": "string",
+                    "example": "{}"
+                },
+                "info": {
+                    "type": "string",
+                    "example": "{}"
+                },
+                "question_type": {
+                    "type": "string",
+                    "example": "mutiple_choice"
+                },
+                "quiz_answer_record_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "quiz_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "scope": {
+                    "type": "integer",
+                    "example": 50
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "topic": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "total_question_count": {
+                    "type": "integer",
+                    "example": 20
+                },
+                "type": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
         "requests.AssignCourseRequest": {
             "type": "object",
             "required": [
@@ -1414,6 +1510,15 @@ const docTemplate = `{
                 }
             }
         },
+        "requests.QuizListRequest": {
+            "type": "object",
+            "properties": {
+                "page": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
         "requests.UnitCreateRequest": {
             "type": "object",
             "required": [
@@ -1707,6 +1812,21 @@ const docTemplate = `{
                 },
                 "updated_at": {
                     "type": "string"
+                }
+            }
+        },
+        "responses.QuizListResponse": {
+            "type": "object",
+            "properties": {
+                "quizList": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.QuizWithAnswers"
+                    }
+                },
+                "total": {
+                    "type": "integer",
+                    "example": 100
                 }
             }
         },

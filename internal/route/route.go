@@ -71,6 +71,7 @@ func GetRouter(r *gin.Engine) {
 		myGroup.DELETE("/word", wordController.DeleteWord)
 
 		myGroup.POST("/quiz", quizController.CreateQuiz)
+		myGroup.GET("/quiz_list", quizController.GetQuizsListWithAnswersByMember)
 	}
 
 }

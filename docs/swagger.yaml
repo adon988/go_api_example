@@ -1,4 +1,46 @@
 definitions:
+  models.QuizWithAnswers:
+    properties:
+      correct_answer_count:
+        example: 10
+        type: integer
+      creater_id:
+        example: "1"
+        type: string
+      due_date:
+        example: "2021-01-01 00:00:00"
+        type: string
+      failed_logs:
+        example: '{}'
+        type: string
+      info:
+        example: '{}'
+        type: string
+      question_type:
+        example: mutiple_choice
+        type: string
+      quiz_answer_record_id:
+        example: "1"
+        type: string
+      quiz_id:
+        example: "1"
+        type: string
+      scope:
+        example: 50
+        type: integer
+      status:
+        example: 1
+        type: integer
+      topic:
+        example: 1
+        type: integer
+      total_question_count:
+        example: 20
+        type: integer
+      type:
+        example: 1
+        type: integer
+    type: object
   requests.AssignCourseRequest:
     properties:
       course_id:
@@ -230,6 +272,12 @@ definitions:
     - quiz_count
     - topic
     type: object
+  requests.QuizListRequest:
+    properties:
+      page:
+        example: 1
+        type: integer
+    type: object
   requests.UnitCreateRequest:
     properties:
       course_id:
@@ -439,6 +487,16 @@ definitions:
         type: string
       updated_at:
         type: string
+    type: object
+  responses.QuizListResponse:
+    properties:
+      quizList:
+        items:
+          $ref: '#/definitions/models.QuizWithAnswers'
+        type: array
+      total:
+        example: 100
+        type: integer
     type: object
   responses.ResponseFail:
     properties:
@@ -959,6 +1017,30 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Create Quiz
+      tags:
+      - Quiz
+  /my/quiz_list:
+    get:
+      consumes:
+      - application/json
+      description: Get Quiz List With Answers By Member
+      parameters:
+      - description: Quiz object page list
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/requests.QuizListRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.QuizListResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Quiz List With Answers By Member
       tags:
       - Quiz
   /my/unit:

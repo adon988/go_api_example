@@ -49,11 +49,12 @@ func (r *quizRepositoryImpl) GetQuizByMember(quiz_id string, member_id string) (
 func (r *quizRepositoryImpl) GetQuizsListWithAnswersByMember(member_id string, page int32) ([]models.QuizWithAnswers, int32, error) {
 
 	var quizzes []models.QuizWithAnswers
+	var offset int = (int(page) - 1) * utils.Configs.Service.Page_Items
 	err := r.db.Table("quizzes").
 		Select("quizzes.id as quiz_id, quiz_answer_records.id as quiz_answer_record_id, quizzes.creater_id, quizzes.question_type, quizzes.topic, quizzes.type, quizzes.info, quiz_answer_records.status, quiz_answer_records.due_date, quiz_answer_records.correct_answer_count, quiz_answer_records.total_question_count, quiz_answer_records.failed_logs, quiz_answer_records.scope").
 		Joins("left join quiz_answer_records on quizzes.id = quiz_answer_records.quiz_id").
 		Where("quiz_answer_records.member_id = ?", member_id).
-		Offset(int(page) * utils.Configs.Service.Page_Items).
+		Offset(offset).
 		Limit(10).
 		Find(&quizzes).Error
 
