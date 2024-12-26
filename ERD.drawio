@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="R2lEEEUBdFMjLlhIrx00" name="Page-1">
-        <mxGraphModel dx="1818" dy="1006" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0" extFonts="Permanent Marker^https://fonts.googleapis.com/css?family=Permanent+Marker">
+        <mxGraphModel dx="1272" dy="1006" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0" extFonts="Permanent Marker^https://fonts.googleapis.com/css?family=Permanent+Marker">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -2037,7 +2037,7 @@
         </mxGraphModel>
     </diagram>
     <diagram id="wRD3eaD8lpUoidSQcYwv" name="Quiz">
-        <mxGraphModel dx="671" dy="1006" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="445" dy="1006" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -2085,6 +2085,14 @@
                         <Array as="points">
                             <mxPoint x="860" y="727"/>
                             <mxPoint x="860" y="1695"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="97MbMxL7iShEk_d7G1pb-4" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="uS4cdBx8EObtaOTYz5R--5" target="97MbMxL7iShEk_d7G1pb-3">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="860" y="727"/>
+                            <mxPoint x="860" y="1765"/>
                         </Array>
                     </mxGeometry>
                 </mxCell>
@@ -2406,6 +2414,21 @@
                 </mxCell>
                 <mxCell id="ST2ODNiadLtcRBMYJsvo-3" value="GetQuizsListWithAnswersByMember" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
                     <mxGeometry x="1030" y="1670" width="211" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="97MbMxL7iShEk_d7G1pb-1" value="GetQuizByMember" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="1605" y="1740" width="130" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="97MbMxL7iShEk_d7G1pb-7" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="97MbMxL7iShEk_d7G1pb-2" target="97MbMxL7iShEk_d7G1pb-1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="97MbMxL7iShEk_d7G1pb-2" value="GetQuizByMember" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="1294" y="1740" width="130" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="97MbMxL7iShEk_d7G1pb-6" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="97MbMxL7iShEk_d7G1pb-3" target="97MbMxL7iShEk_d7G1pb-2">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="97MbMxL7iShEk_d7G1pb-3" value="GetQuizByMember" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="1109" y="1740" width="130" height="50" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

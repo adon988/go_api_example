@@ -72,6 +72,7 @@ func GetRouter(r *gin.Engine) {
 
 		myGroup.POST("/quiz", quizController.CreateQuiz)
 		myGroup.GET("/quiz_list", quizController.GetQuizsListWithAnswersByMember)
+		myGroup.GET("/quiz/:quiz_id", quizController.GetQuizByMember)
 	}
 
 }

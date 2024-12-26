@@ -13,7 +13,7 @@ type QiuzServiceInterface interface {
 	InitQuizWithTx(quiz models.Quiz, quizAnswerRecord models.QuizAnswerRecord) error
 	CreateQuizAnswerRecord(quizAnswerRecord models.QuizAnswerRecord) error
 	UpdateQuizAnswerRecord(quizAnswerRecord models.QuizAnswerRecord) error
-	GetQuizByMember(quiz_id string, member_id string) (models.QuizWithAnswer, error)
+	GetQuizByMember(quiz_id string, member_id string) (responses.QuizWithAnswer, error)
 	GetQuizsListWithAnswersByMember(member_id string, page int32) ([]responses.QuizWithAnswers, int32, error)
 }
 
@@ -81,13 +81,31 @@ func (service QuizService) UpdateQuizAnswerRecord(quizAnswerRecord models.QuizAn
 	return nil
 }
 
-func (service QuizService) GetQuizByMember(quiz_id string, member_id string) (models.QuizWithAnswer, error) {
+func (service QuizService) GetQuizByMember(quiz_id string, member_id string) (responses.QuizWithAnswer, error) {
 	quiz, err := service.quiz.GetQuizByMember(quiz_id, member_id)
 	if err != nil {
-		return models.QuizWithAnswer{}, err
+		return responses.QuizWithAnswer{}, err
 	}
 
-	return quiz, nil
+	data := responses.QuizWithAnswer{
+		QuizId:             quiz.QuizId,
+		QuizAnswerRecordId: quiz.QuizAnswerRecordId,
+		CreaterID:          quiz.CreaterID,
+		QuestionType:       quiz.QuestionType,
+		Topic:              quiz.Topic,
+		Type:               quiz.Type,
+		Info:               quiz.Info,
+		Content:            quiz.Content,
+		AnswerQuestion:     quiz.AnswerQuestion,
+		Status:             quiz.Status,
+		DueDate:            quiz.DueDate,
+		CorrectAnswerCount: quiz.CorrectAnswerCount,
+		TotalQuestionCount: quiz.TotalQuestionCount,
+		FailedLogs:         quiz.FailedLogs,
+		Scope:              quiz.Scope,
+	}
+
+	return data, nil
 }
 
 func (service QuizService) GetQuizsListWithAnswersByMember(member_id string, page int32) ([]responses.QuizWithAnswers, int32, error) {

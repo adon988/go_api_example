@@ -227,3 +227,26 @@ func (c QuizController) GetQuizsListWithAnswersByMember(ctx *gin.Context) {
 
 	responses.OkWithData(data, ctx)
 }
+
+// @Summary Get Quiz By Member
+// @Description Get Quiz By Member
+// @Tags Quiz
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Param quiz_id path string true "Quiz ID"
+// @Success 200 {object} responses.QuizWithAnswer
+// @Failure 400 {string} string '{"code":620000,"data":{},"msg":"fail"}'
+// @Router /my/quiz/{quiz_id} [get]
+func (c QuizController) GetQuizByMember(ctx *gin.Context) {
+	quizId := ctx.Param("quiz_id")
+	memberId := ctx.GetString("account")
+	Db, _ := c.InfoDb.InitDB()
+	quizService := services.NewQuizService(Db)
+	quiz, err := quizService.GetQuizByMember(quizId, memberId)
+	if err != nil {
+		responses.FailWithErrorCode(responses.QUIZ_NOT_FOUND, ctx)
+	}
+
+	responses.OkWithData(quiz, ctx)
+}
