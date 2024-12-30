@@ -23,13 +23,13 @@ type UnitController struct {
 // @Success 200 {array} responses.UnitResponse
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":""}'
 // @Router /my/unit [get]
-func (c UnitController) GetUnits(ctx *gin.Context) {
+func (c UnitController) GetUnitMemberBelongTo(ctx *gin.Context) {
 	Db, _ := c.InfoDb.InitDB()
 	memberId := ctx.GetString("account")
 	unitService := services.NewUnitService(Db)
 	var unitsRes []responses.UnitResponse
 	var err error
-	units, err := unitService.GetUnit(memberId)
+	units, err := unitService.GetUnitMemberBelongTo(memberId)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return

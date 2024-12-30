@@ -28,7 +28,7 @@ func TestUnitSerivce_CreateUnitNPermission(t *testing.T) {
 	assert.Nil(t, result)
 }
 
-func TestUnitSerivce_GetUnit(t *testing.T) {
+func TestUnitSerivce_GetUnitMemberBelongTo(t *testing.T) {
 	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
 	mockDB.AutoMigrate(&models.Unit{}, &models.UnitPermission{})
 
@@ -46,7 +46,7 @@ func TestUnitSerivce_GetUnit(t *testing.T) {
 	result := service.CreateUnitNPermission(memberId, role, unit)
 	assert.Nil(t, result)
 
-	units, err := service.GetUnit(memberId)
+	units, err := service.GetUnitMemberBelongTo(memberId)
 	assert.Nil(t, err)
 	assert.Equal(t, 1, len(units))
 }
@@ -131,7 +131,7 @@ func TestUnitSerivce_UpdateUnit(t *testing.T) {
 	err := service.UpdateUnit(unit)
 	assert.Nil(t, err)
 
-	units, err := service.GetUnit(memberId)
+	units, err := service.GetUnitMemberBelongTo(memberId)
 	assert.Nil(t, err)
 	assert.Equal(t, 1, len(units))
 	assert.Equal(t, "new title", units[0].Title)
@@ -158,7 +158,7 @@ func TestUnitSerivce_DeleteUnit(t *testing.T) {
 	err := service.DeleteUnit(unit.Id)
 	assert.Nil(t, err)
 
-	units, err := service.GetUnit(memberId)
+	units, err := service.GetUnitMemberBelongTo(memberId)
 	assert.NotNil(t, err)
 	assert.Equal(t, 0, len(units))
 }

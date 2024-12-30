@@ -59,7 +59,7 @@ func GetRouter(r *gin.Engine) {
 		myGroup.POST("/course/assign", courseController.AssignCoursePermission)
 
 		myGroup.GET("course/:course_id/units", unitController.GetUnitsByCourseID)
-		myGroup.GET("/units", unitController.GetUnits)
+		myGroup.GET("/units", unitController.GetUnitMemberBelongTo)
 		myGroup.POST("/unit", unitController.CreateUnit)
 		myGroup.PATCH("/unit", unitController.UpdateUnit)
 		myGroup.DELETE("/unit", unitController.DeleteUnit)

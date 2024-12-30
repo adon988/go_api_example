@@ -9,7 +9,7 @@ import (
 
 type UnitServiceInterface interface {
 	CreateUnitNPermission(member_id string, role int32, unit models.Unit) error
-	GetUnit(member_id string) ([]models.Unit, error)
+	GetUnitMemberBelongTo(member_id string) ([]models.Unit, error)
 	UpdateUnit(unit models.Unit) error
 	DeleteUnit(id string) error
 	GetUnitByMemberIDAndUnitID(member_id string, unit_id string) (models.Unit, error)
@@ -63,8 +63,8 @@ func (service UnitService) CreateUnitNPermission(member_id string, role int32, u
 	return nil
 }
 
-func (service UnitService) GetUnit(member_id string) ([]models.Unit, error) {
-	return service.unit.GetUnitByMemberID(member_id)
+func (service UnitService) GetUnitMemberBelongTo(member_id string) ([]models.Unit, error) {
+	return service.unit.GetUnitMemberBelongTo(member_id)
 }
 
 func (service UnitService) UpdateUnit(unit models.Unit) error {

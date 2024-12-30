@@ -78,7 +78,7 @@ func TestUnitRepsitory_DeleteUnit(t *testing.T) {
 	mockDB.Find(&units)
 	assert.Equal(t, 0, len(units))
 }
-func TestUnitRepsitory_GetUnitByMemberID(t *testing.T) {
+func TestUnitRepsitory_GetUnitMemberBelongTo(t *testing.T) {
 	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
 	mockDB.AutoMigrate(&models.Unit{}, &models.UnitPermission{})
 	repo := NewUnitRepository(mockDB)
@@ -102,7 +102,7 @@ func TestUnitRepsitory_GetUnitByMemberID(t *testing.T) {
 	}
 	mockDB.Create(&unit_perm)
 
-	units, err := repo.GetUnitByMemberID(memberId)
+	units, err := repo.GetUnitMemberBelongTo(memberId)
 	assert.Nil(t, err)
 	assert.Equal(t, 1, len(units))
 	assert.Equal(t, "unit title", units[0].Title)
