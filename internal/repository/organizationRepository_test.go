@@ -162,25 +162,53 @@ func TestOrganizationRepository_GetOrganizationByMemberIDAndOrgID(t *testing.T) 
 	mockDB.AutoMigrate(&models.Organization{}, &models.OrganizationPermission{})
 	repo := NewOrganizationRepository(mockDB)
 
+	memberId := "1"
+	unAuthMemberId := "2"
+	entityId := "1"
+	public := int32(1)
+	unPublish := int32(0)
 	org := models.Organization{
 		Id:             "1",
 		Title:          "org title",
 		Order:          1,
 		SourceLanguage: "en",
 		TargetLanguage: "es",
-		Publish:        1,
-		CreaterId:      "1",
+		Publish:        public,
+		CreaterId:      memberId,
 	}
 	org_perm := models.OrganizationPermission{
-		MemberId: "1",
+		MemberId: memberId,
 		EntityId: "1",
 		Role:     1,
 	}
 	mockDB.Create(&org)
 	mockDB.Create(&org_perm)
 
-	organization, err := repo.GetOrganizationByMemberIDAndOrgID("1", "1")
+	//check public scenario by auth member
+	organization, err := repo.GetOrganizationByMemberIDAndOrgID(memberId, entityId)
 	assert.Nil(t, err)
 	assert.Equal(t, org.Id, organization.Id)
 	assert.Equal(t, org.Title, organization.Title)
+
+	//check public scenario by un-auth member
+	organization, err = repo.GetOrganizationByMemberIDAndOrgID(unAuthMemberId, entityId)
+	assert.Nil(t, err)
+	assert.Equal(t, org.Id, organization.Id)
+	assert.Equal(t, org.Title, organization.Title)
+
+	// change public status to un-publish
+	org.Publish = unPublish
+	mockDB.Save(&org)
+
+	// check private status by auth member
+	organization, err = repo.GetOrganizationByMemberIDAndOrgID(memberId, entityId)
+	assert.Nil(t, err)
+	assert.Equal(t, org.Id, organization.Id)
+	assert.Equal(t, org.Title, organization.Title)
+
+	//check non-public scenario by un-auth member
+	organization, err = repo.GetOrganizationByMemberIDAndOrgID(unAuthMemberId, entityId)
+	assert.Error(t, err)
+	assert.Equal(t, organization, models.Organization{})
+
 }

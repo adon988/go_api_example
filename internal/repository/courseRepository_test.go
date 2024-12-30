@@ -111,24 +111,51 @@ func TestCourseRepository_GetCourseByMemberIDAndCourseID(t *testing.T) {
 	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
 	mockDB.AutoMigrate(&models.Course{}, &models.CoursePermission{})
 	repo := NewCourseRepository(mockDB)
-
+	memberId := "1"
+	unAuthMemberId := "2"
+	entityId := "1"
+	public := int32(1)
+	unPublish := int32(0)
 	course := models.Course{
-		Id:        "1",
+		Id:        entityId,
 		Title:     "course title",
 		Order:     1,
-		Publish:   1,
-		CreaterId: "1",
+		Publish:   public,
+		CreaterId: memberId,
 	}
 
 	mockDB.Create(&course)
 	course_perm := models.CoursePermission{
-		MemberId: "1",
-		EntityId: "1",
+		MemberId: memberId,
+		EntityId: entityId,
 		Role:     1,
 	}
 	mockDB.Create(&course_perm)
-	courseData, err := repo.GetCourseByMemberIDAndCourseID("1", "1")
+
+	//check public scenario by auth member
+	courseData, err := repo.GetCourseByMemberIDAndCourseID(memberId, entityId)
 	assert.Nil(t, err)
 	assert.Equal(t, course.Id, courseData.Id)
 	assert.Equal(t, course.Title, courseData.Title)
+
+	//check public scenario by un-auth member
+	courseData, err = repo.GetCourseByMemberIDAndCourseID(unAuthMemberId, entityId)
+	assert.Nil(t, err)
+	assert.Equal(t, course.Id, courseData.Id)
+	assert.Equal(t, course.Title, courseData.Title)
+
+	// change public status to un-publish
+	course.Publish = unPublish
+	mockDB.Save(&course)
+
+	// check private status by auth member
+	courseData, err = repo.GetCourseByMemberIDAndCourseID(memberId, entityId)
+	assert.Nil(t, err)
+	assert.Equal(t, course.Id, courseData.Id)
+	assert.Equal(t, course.Title, courseData.Title)
+
+	//check non-public scenario by un-auth member
+	courseData, err = repo.GetCourseByMemberIDAndCourseID(unAuthMemberId, entityId)
+	assert.Error(t, err)
+	assert.Equal(t, courseData, models.Course{})
 }

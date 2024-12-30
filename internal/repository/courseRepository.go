@@ -74,7 +74,9 @@ func (r *CourseRepositoryImpl) GetCourseByMemberID(member_id string) ([]models.C
 
 func (r *CourseRepositoryImpl) GetCourseByMemberIDAndCourseID(member_id string, course_id string) (models.Course, error) {
 	var course models.Course
-	err := r.DB.Model(&models.Course{}).Joins("JOIN course_permissions ON courses.id = course_permissions.entity_id").Where("course_permissions.member_id = ? AND courses.id = ?", member_id, course_id).Find(&course)
+
+	//Member should with eitity permission or entity is publis
+	err := r.DB.Model(&models.Course{}).Joins("JOIN course_permissions ON courses.id = course_permissions.entity_id").Where("(course_permissions.member_id = ? OR courses.publish = 1) AND courses.id = ?", member_id, course_id).Find(&course)
 	if err.Error != nil {
 		return models.Course{}, err.Error
 	}

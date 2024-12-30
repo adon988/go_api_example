@@ -76,7 +76,9 @@ func (r *OrganizationRepositoryImpl) GetOrganizationByMemberID(member_id string)
 
 func (r *OrganizationRepositoryImpl) GetOrganizationByMemberIDAndOrgID(member_id string, organization_id string) (models.Organization, error) {
 	var organization models.Organization
-	err := r.DB.Model(&models.Organization{}).Joins("JOIN organization_permissions ON organizations.id = organization_permissions.entity_id").Where("organization_permissions.member_id = ? AND organizations.id = ?", member_id, organization_id).Find(&organization)
+
+	//Member should with eitity permission or entity is publis
+	err := r.DB.Model(&models.Organization{}).Joins("JOIN organization_permissions ON organizations.id = organization_permissions.entity_id").Where("(organization_permissions.member_id = ? OR organizations.publish = 1) AND organizations.id = ?", member_id, organization_id).Find(&organization)
 	if err.Error != nil {
 		return models.Organization{}, err.Error
 	}

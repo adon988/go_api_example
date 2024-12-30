@@ -137,12 +137,15 @@ func TestUnitRepository_GetUnitByMemberIDAndUnitID(t *testing.T) {
 	mockDB.AutoMigrate(&models.Unit{}, &models.UnitPermission{})
 	repo := NewUnitRepository(mockDB)
 	memberId := "1"
-
+	unAuthMemberId := "2"
+	entityId := "1"
+	public := int32(1)
+	unPublish := int32(0)
 	unit := models.Unit{
 		Id:        "1",
 		Title:     "unit title",
 		Order:     1,
-		Publish:   1,
+		Publish:   public,
 		CourseId:  "1",
 		CreaterId: memberId,
 	}
@@ -154,8 +157,32 @@ func TestUnitRepository_GetUnitByMemberIDAndUnitID(t *testing.T) {
 	}
 	mockDB.Create(&unit_perm)
 	mockDB.Create(&unit)
-	unitData, err := repo.GetUnitByMemberIDAndUnitID("1", "1")
+
+	//check public scenario by auth member
+	unitData, err := repo.GetUnitByMemberIDAndUnitID(memberId, entityId)
 	assert.Nil(t, err)
 	assert.Equal(t, unit.Id, unitData.Id)
 	assert.Equal(t, unit.Title, unitData.Title)
+
+	//check public scenario by un-auth member
+	unitData, err = repo.GetUnitByMemberIDAndUnitID(unAuthMemberId, entityId)
+	assert.Nil(t, err)
+	assert.Equal(t, unit.Id, unitData.Id)
+	assert.Equal(t, unit.Title, unitData.Title)
+
+	// change public status to un-publish
+	unit.Publish = unPublish
+	mockDB.Save(&unit)
+
+	// check private status by auth member
+	unitData, err = repo.GetUnitByMemberIDAndUnitID(memberId, entityId)
+	assert.Nil(t, err)
+	assert.Equal(t, unitData.Id, unit.Id)
+	assert.Equal(t, unitData.Title, unit.Title)
+
+	//check non-public scenario by un-auth member
+	unitData, err = repo.GetUnitByMemberIDAndUnitID(unAuthMemberId, entityId)
+	assert.Error(t, err)
+	assert.Equal(t, unitData, models.Unit{})
+
 }

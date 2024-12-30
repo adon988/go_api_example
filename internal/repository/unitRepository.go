@@ -87,7 +87,9 @@ func (r *UnitRepositoryImpl) GetUnitsByCourseID(course_id string) ([]models.Unit
 
 func (r *UnitRepositoryImpl) GetUnitByMemberIDAndUnitID(member_id string, unit_id string) (models.Unit, error) {
 	var unit models.Unit
-	err := r.DB.Model(&models.Unit{}).Joins("JOIN unit_permissions ON units.id = unit_permissions.entity_id").Where("unit_permissions.member_id = ? AND units.id = ?", member_id, unit_id).Find(&unit)
+
+	//Member should with eitity permission or entity is publis
+	err := r.DB.Model(&models.Unit{}).Joins("JOIN unit_permissions ON units.id = unit_permissions.entity_id").Where("(unit_permissions.member_id = ? OR units.publish = 1) AND units.id = ?", member_id, unit_id).Find(&unit)
 	if err.Error != nil {
 		return models.Unit{}, err.Error
 	}
