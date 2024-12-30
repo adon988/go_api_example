@@ -9,7 +9,7 @@ import (
 
 type CourseServiceInterface interface {
 	CreateCourseNPermission(member_id string, role int32, course models.Course) error
-	GetCourse(member_id string) ([]models.Course, error)
+	GetCourseMmeberBelongTo(member_id string) ([]models.Course, error)
 	UpdateCourse(course models.Course) error
 	DeleteCourse(id string) error
 	GetCourseByMemberIDAndCourseID(member_id string, course_id string) (models.Course, error)
@@ -62,7 +62,7 @@ func (service CourseService) CreateCourseNPermission(member_id string, role int3
 	return nil
 }
 
-func (service CourseService) GetCourse(member_id string) ([]models.Course, error) {
+func (service CourseService) GetCourseMmeberBelongTo(member_id string) ([]models.Course, error) {
 	return service.course.GetCourseByMemberID(member_id)
 }
 

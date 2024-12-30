@@ -28,7 +28,7 @@ func TestCourseService_CreateCourseNPermission(t *testing.T) {
 
 }
 
-func TestCourseService_GetCourse(t *testing.T) {
+func TestCourseService_GetCourseMmeberBelongTo(t *testing.T) {
 	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
 	mockDB.AutoMigrate(&models.Course{}, &models.CoursePermission{})
 
@@ -45,7 +45,7 @@ func TestCourseService_GetCourse(t *testing.T) {
 	result := service.CreateCourseNPermission(memberId, role, course)
 	assert.Nil(t, result)
 
-	courses, err := service.GetCourse(memberId)
+	courses, err := service.GetCourseMmeberBelongTo(memberId)
 	assert.Nil(t, err)
 	assert.Equal(t, 1, len(courses))
 }
@@ -93,7 +93,7 @@ func TestCourseService_UpdateCourse(t *testing.T) {
 	err := service.UpdateCourse(course)
 	assert.Nil(t, err)
 
-	courses, err := service.GetCourse(memberId)
+	courses, err := service.GetCourseMmeberBelongTo(memberId)
 	assert.Nil(t, err)
 	assert.Equal(t, "new course title", courses[0].Title)
 }
@@ -118,7 +118,7 @@ func TestCourseService_DeleteCourse(t *testing.T) {
 	err := service.DeleteCourse(course.Id)
 	assert.Nil(t, err)
 
-	courses, err := service.GetCourse(memberId)
+	courses, err := service.GetCourseMmeberBelongTo(memberId)
 	assert.NotNil(t, err)
 	assert.Equal(t, 0, len(courses))
 }

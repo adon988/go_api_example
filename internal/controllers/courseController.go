@@ -22,13 +22,13 @@ type CourseController struct {
 // @Success 200 {array} responses.CourseResponse
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":""}'
 // @Router /my/course [get]
-func (c CourseController) GetCourse(ctx *gin.Context) {
+func (c CourseController) GetCourseMmeberBelongTo(ctx *gin.Context) {
 	Db, _ := c.InfoDb.InitDB()
 	memberId := ctx.GetString("account")
 	courseService := services.NewCourseSerive(Db)
 	var coursesRes []responses.CourseResponse
 	var err error
-	courses, err := courseService.GetCourse(memberId)
+	courses, err := courseService.GetCourseMmeberBelongTo(memberId)
 
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)

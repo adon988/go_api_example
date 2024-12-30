@@ -52,7 +52,7 @@ func GetRouter(r *gin.Engine) {
 		myGroup.DELETE("/organization", organizationController.DeleteOrganization)
 		myGroup.POST("/organization/assign", organizationController.AssignOrganizationPermission)
 
-		myGroup.GET("/course", courseController.GetCourse)
+		myGroup.GET("/course", courseController.GetCourseMmeberBelongTo)
 		myGroup.POST("/course", courseController.CreateCourse)
 		myGroup.PATCH("/course", courseController.UpdateCourse)
 		myGroup.DELETE("/course", courseController.DeleteCourse)

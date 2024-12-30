@@ -77,7 +77,7 @@ func TestCourseRepository_DeleteCourse(t *testing.T) {
 	assert.Equal(t, 0, len(courses))
 }
 
-func TestCourseRepository_GetCourse(t *testing.T) {
+func TestCourseRepository_GetCourseMmeberBelongTo(t *testing.T) {
 	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
 	mockDB.AutoMigrate(&models.Course{}, &models.CoursePermission{})
 	repo := NewCourseRepository(mockDB)
