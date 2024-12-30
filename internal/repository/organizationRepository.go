@@ -11,7 +11,7 @@ type OrganizationRepository interface {
 	CreateOrganization(organization models.Organization) error
 	UpdateOrganization(organization models.Organization) error
 	DeleteOrganization(id string) error
-	GetOrganizationByMemberID(member_id string) ([]models.Organization, error)
+	GetOrganizationMemberBelongTo(member_id string) ([]models.Organization, error)
 	GetOrganizationByMemberIDAndOrgID(member_id string, organization_id string) (models.Organization, error)
 }
 
@@ -61,7 +61,7 @@ func (r *OrganizationRepositoryImpl) DeleteOrganization(id string) error {
 	return nil
 }
 
-func (r *OrganizationRepositoryImpl) GetOrganizationByMemberID(member_id string) ([]models.Organization, error) {
+func (r *OrganizationRepositoryImpl) GetOrganizationMemberBelongTo(member_id string) ([]models.Organization, error) {
 
 	var orgs []models.Organization
 	err := r.DB.Model(&models.Organization{}).Joins("JOIN organization_permissions ON organizations.id = organization_permissions.entity_id").Where("organization_permissions.member_id = ?", member_id).Find(&orgs)

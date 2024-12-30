@@ -46,7 +46,7 @@ func GetRouter(r *gin.Engine) {
 	myGroup.Use(middleware.JWTAuthMiddleware())
 	myGroup.Use(middleware.CORSMiddleware())
 	{
-		myGroup.GET("/organization", organizationController.GetOrganization)
+		myGroup.GET("/organization", organizationController.GetOrganizationMemberBelongTo)
 		myGroup.POST("/organization", organizationController.CreateOrganization)
 		myGroup.PATCH("/organization", organizationController.UpdateOrganization)
 		myGroup.DELETE("/organization", organizationController.DeleteOrganization)

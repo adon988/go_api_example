@@ -30,7 +30,7 @@ func TestOrganizationService_CreateOrganizationNPermission(t *testing.T) {
 
 }
 
-func TestOrganizationService_GetOrganization(t *testing.T) {
+func TestOrganizationService_GetOrganizationMemberBelongTo(t *testing.T) {
 	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
 	mockDB.AutoMigrate(&models.Organization{}, &models.OrganizationPermission{})
 
@@ -49,7 +49,7 @@ func TestOrganizationService_GetOrganization(t *testing.T) {
 	result := service.CreateOrganizationNPermission(memberId, role, org)
 	assert.Nil(t, result)
 
-	orgs, err := service.GetOrganization(memberId)
+	orgs, err := service.GetOrganizationMemberBelongTo(memberId)
 	assert.Nil(t, err)
 	assert.Equal(t, 1, len(orgs))
 }

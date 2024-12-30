@@ -124,7 +124,7 @@ func TestOrganizationRepository_UpdateOrganization(t *testing.T) {
 	assert.Equal(t, orgUpdate.Title, orgs[0].Title)
 }
 
-func TestOrganizationRepository_GetOrganizationByMemberID(t *testing.T) {
+func TestOrganizationRepository_GetOrganizationMemberBelongTo(t *testing.T) {
 	mockDB, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
 	mockDB.AutoMigrate(&models.Organization{}, &models.OrganizationPermission{})
 
@@ -147,7 +147,7 @@ func TestOrganizationRepository_GetOrganizationByMemberID(t *testing.T) {
 	mockDB.Create(&org)
 	mockDB.Create(&org_perm)
 
-	orgs, err := repo.GetOrganizationByMemberID("1")
+	orgs, err := repo.GetOrganizationMemberBelongTo("1")
 	if err != nil {
 		fmt.Println(err.Error())
 	}

@@ -22,13 +22,13 @@ type OrganizationController struct {
 // @Success 200 {array} responses.OrganizationResponse
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":""}'
 // @Router /my/organization [get]
-func (c OrganizationController) GetOrganization(ctx *gin.Context) {
+func (c OrganizationController) GetOrganizationMemberBelongTo(ctx *gin.Context) {
 	Db, _ := c.InfoDb.InitDB()
 	memberId := ctx.GetString("account")
 	organizationService := services.NewOrganizationService(Db)
 	var organizationsRes []responses.OrganizationResponse
 	var err error
-	organizations, err := organizationService.GetOrganization(memberId)
+	organizations, err := organizationService.GetOrganizationMemberBelongTo(memberId)
 
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)

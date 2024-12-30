@@ -9,7 +9,7 @@ import (
 
 type OrganizationServiceInterface interface {
 	CreateOrganizationNPermission(member_id string, role int32, organization models.Organization) error
-	GetOrganization(member_id string) ([]models.Organization, error)
+	GetOrganizationMemberBelongTo(member_id string) ([]models.Organization, error)
 	GetOrganizationByMemberIDAndOrganizationID(member_id string, organization_id string) (models.Organization, error)
 	UpdateOrganization(organization models.Organization) error
 	DeleteOrganization(id string) error
@@ -65,8 +65,8 @@ func (service OrganizationService) CreateOrganizationNPermission(member_id strin
 func (service OrganizationService) GetOrganizationByMemberIDAndOrganizationID(member_id string, organization_id string) (models.Organization, error) {
 	return service.organization.GetOrganizationByMemberIDAndOrgID(member_id, organization_id)
 }
-func (service OrganizationService) GetOrganization(member_id string) ([]models.Organization, error) {
-	return service.organization.GetOrganizationByMemberID(member_id)
+func (service OrganizationService) GetOrganizationMemberBelongTo(member_id string) ([]models.Organization, error) {
+	return service.organization.GetOrganizationMemberBelongTo(member_id)
 }
 
 func (service OrganizationService) UpdateOrganization(organization models.Organization) error {
