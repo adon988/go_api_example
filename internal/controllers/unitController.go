@@ -25,11 +25,11 @@ type UnitController struct {
 // @Router /my/unit [get]
 func (c UnitController) GetUnits(ctx *gin.Context) {
 	Db, _ := c.InfoDb.InitDB()
-	memberId, _ := ctx.Get("account")
+	memberId := ctx.GetString("account")
 	unitService := services.NewUnitService(Db)
 	var unitsRes []responses.UnitResponse
 	var err error
-	units, err := unitService.GetUnit(memberId.(string))
+	units, err := unitService.GetUnit(memberId)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
@@ -61,7 +61,7 @@ func (c UnitController) GetUnits(ctx *gin.Context) {
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":""}'
 // @Router /my/unit [post]
 func (c UnitController) CreateUnit(ctx *gin.Context) {
-	memberId, _ := ctx.Get("account")
+	memberId := ctx.GetString("account")
 	defaultRole := int32(1)
 	var req requests.UnitCreateRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -85,9 +85,9 @@ func (c UnitController) CreateUnit(ctx *gin.Context) {
 		CourseId:  req.CourseId,
 		Order:     req.Order,
 		Publish:   req.Publish,
-		CreaterId: memberId.(string),
+		CreaterId: memberId,
 	}
-	err = unitService.CreateUnitNPermission(memberId.(string), defaultRole, unitData)
+	err = unitService.CreateUnitNPermission(memberId, defaultRole, unitData)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return

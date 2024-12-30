@@ -30,9 +30,9 @@ func (c WordController) CreateWord(ctx *gin.Context) {
 	}
 
 	Db, _ := c.InfoDb.InitDB()
-	memberId, _ := ctx.Get("account")
+	memberId := ctx.GetString("account")
 	unitService := services.NewUnitService(Db)
-	_, err := unitService.IsMemberWithEditorPermissionOnUnit(memberId.(string), req.UnitId)
+	_, err := unitService.IsMemberWithEditorPermissionOnUnit(memberId, req.UnitId)
 	if err != nil {
 		responses.FailWithMessage("Permission Denied! Cannot create word to unit(1)", ctx)
 		return
@@ -77,9 +77,9 @@ func (c WordController) UpdateWord(ctx *gin.Context) {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
 	}
-	memberId, _ := ctx.Get("account")
+	memberId := ctx.GetString("account")
 	unitService := services.NewUnitService(Db)
-	_, err := unitService.IsMemberWithEditorPermissionOnUnit(memberId.(string), req.UnitId)
+	_, err := unitService.IsMemberWithEditorPermissionOnUnit(memberId, req.UnitId)
 	if err != nil {
 		responses.FailWithMessage("Permission Denied! Cannot create word to unit(2)", ctx)
 		return
@@ -122,19 +122,19 @@ func (c WordController) DeleteWord(ctx *gin.Context) {
 		return
 	}
 
-	memberId, _ := ctx.Get("account")
+	memberId := ctx.GetString("account")
 	word_id := req.Id
 
 	wordService := services.NewWordService(Db)
 
 	//check word's unit premission
-	word, err := wordService.CheckWordPermissionByMemberIDAndWordID(memberId.(string), word_id)
+	word, err := wordService.CheckWordPermissionByMemberIDAndWordID(memberId, word_id)
 	if err != nil {
 		responses.FailWithMessage("Permission Denied! Cannot delete word from unit", ctx)
 		return
 	}
 	unitService := services.NewUnitService(Db)
-	_, err = unitService.IsMemberWithEditorPermissionOnUnit(memberId.(string), word.UnitId)
+	_, err = unitService.IsMemberWithEditorPermissionOnUnit(memberId, word.UnitId)
 	if err != nil {
 		responses.FailWithMessage("Permission Denied! Cannot create word to unit(3)", ctx)
 		return
@@ -160,11 +160,11 @@ func (c WordController) DeleteWord(ctx *gin.Context) {
 func (c WordController) GetWordsByUnitID(ctx *gin.Context) {
 	Db, _ := c.InfoDb.InitDB()
 	unitId := ctx.Param("unit_id")
-	memberId, _ := ctx.Get("account")
+	memberId := ctx.GetString("account")
 	wordService := services.NewWordService(Db)
 	var wordsRes []responses.WordResponse
 	var err error
-	words, err := wordService.GetWordByMemberIDAndUnitID(memberId.(string), unitId)
+	words, err := wordService.GetWordByMemberIDAndUnitID(memberId, unitId)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return

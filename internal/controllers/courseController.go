@@ -24,11 +24,11 @@ type CourseController struct {
 // @Router /my/course [get]
 func (c CourseController) GetCourse(ctx *gin.Context) {
 	Db, _ := c.InfoDb.InitDB()
-	memberId, _ := ctx.Get("account")
+	memberId := ctx.GetString("account")
 	courseService := services.NewCourseSerive(Db)
 	var coursesRes []responses.CourseResponse
 	var err error
-	courses, err := courseService.GetCourse(memberId.(string))
+	courses, err := courseService.GetCourse(memberId)
 
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
@@ -62,7 +62,7 @@ func (c CourseController) GetCourse(ctx *gin.Context) {
 // @Failure 400 {string} string '{"code":-1,"data":{},"msg":""}'
 // @Router /my/course [post]
 func (c CourseController) CreateCourse(ctx *gin.Context) {
-	memberId, _ := ctx.Get("account")
+	memberId := ctx.GetString("account")
 	defaultRole := int32(1)
 	var req requests.CourseCreateRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -72,7 +72,7 @@ func (c CourseController) CreateCourse(ctx *gin.Context) {
 	Db, _ := c.InfoDb.InitDB()
 
 	organizationService := services.NewOrganizationService(Db)
-	_, err := organizationService.IsMemberWithEditorPermissionOnOrganization(memberId.(string), req.OrganizationId)
+	_, err := organizationService.IsMemberWithEditorPermissionOnOrganization(memberId, req.OrganizationId)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
@@ -86,9 +86,9 @@ func (c CourseController) CreateCourse(ctx *gin.Context) {
 		OrganizationId: req.OrganizationId,
 		Order:          req.Order,
 		Publish:        req.Publish,
-		CreaterId:      memberId.(string),
+		CreaterId:      memberId,
 	}
-	err = courseService.CreateCourseNPermission(memberId.(string), defaultRole, courseData)
+	err = courseService.CreateCourseNPermission(memberId, defaultRole, courseData)
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return

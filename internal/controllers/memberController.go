@@ -30,11 +30,11 @@ type MemberController struct {
 // @Router /member [get]
 func (c MemberController) GetMemberInfo(ctx *gin.Context) {
 
-	memberId, _ := ctx.Get("account")
+	memberId := ctx.GetString("account")
 	Db, _ := c.InfoDb.InitDB()
 
 	memberServices := services.NewMemberService(Db)
-	members, err := memberServices.GetMemberInfo(memberId.(string))
+	members, err := memberServices.GetMemberInfo(memberId)
 
 	if err != nil {
 		responses.FailWithMessage("member not found", ctx)
@@ -67,7 +67,7 @@ func (c MemberController) GetMemberInfo(ctx *gin.Context) {
 // @Router /member [patch]
 func (c MemberController) UpdateMember(ctx *gin.Context) {
 
-	memberId, _ := ctx.Get("account")
+	memberId := ctx.GetString("account")
 
 	var req requests.MemberUpdateRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -86,7 +86,7 @@ func (c MemberController) UpdateMember(ctx *gin.Context) {
 	}
 
 	memberService := services.NewMemberService(Db)
-	result := memberService.UpdateMember(memberId.(string), member)
+	result := memberService.UpdateMember(memberId, member)
 
 	if result != nil {
 		responses.FailWithMessage("update member error", ctx)
@@ -108,7 +108,7 @@ func (c MemberController) UpdateMember(ctx *gin.Context) {
 // @Router /member [delete]
 func (c MemberController) DeleteMember(ctx *gin.Context) {
 
-	memberId, _ := ctx.Get("account")
+	memberId := ctx.GetString("account")
 
 	Db, _ := c.InfoDb.InitDB()
 
@@ -116,7 +116,7 @@ func (c MemberController) DeleteMember(ctx *gin.Context) {
 	tx := Db.Clauses(dbresolver.Write).Begin()
 
 	// Delete member and auth
-	err := services.NewMemberService(Db).DeleteMemberAndAuth(memberId.(string))
+	err := services.NewMemberService(Db).DeleteMemberAndAuth(memberId)
 	if err != nil {
 		tx.Rollback()
 		responses.FailWithMessage("failed to delete member", ctx)

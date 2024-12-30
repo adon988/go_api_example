@@ -24,11 +24,11 @@ type OrganizationController struct {
 // @Router /my/organization [get]
 func (c OrganizationController) GetOrganization(ctx *gin.Context) {
 	Db, _ := c.InfoDb.InitDB()
-	memberId, _ := ctx.Get("account")
+	memberId := ctx.GetString("account")
 	organizationService := services.NewOrganizationService(Db)
 	var organizationsRes []responses.OrganizationResponse
 	var err error
-	organizations, err := organizationService.GetOrganization(memberId.(string))
+	organizations, err := organizationService.GetOrganization(memberId)
 
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
@@ -63,7 +63,7 @@ func (c OrganizationController) GetOrganization(ctx *gin.Context) {
 // @Failure 400 {string} string '{"code":-1, "data":{}, "msg":""}'
 // @Router /my/organization [post]
 func (c OrganizationController) CreateOrganization(ctx *gin.Context) {
-	memberId, _ := ctx.Get("account")
+	memberId := ctx.GetString("account")
 	defaultRole := int32(1)
 	var req requests.OrganizationCreateRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -81,9 +81,9 @@ func (c OrganizationController) CreateOrganization(ctx *gin.Context) {
 		SourceLanguage: req.SourceLanguage,
 		TargetLanguage: req.TargetLanguage,
 		Publish:        req.Publish,
-		CreaterId:      memberId.(string),
+		CreaterId:      memberId,
 	}
-	err := organizationService.CreateOrganizationNPermission(memberId.(string), defaultRole, organizationData)
+	err := organizationService.CreateOrganizationNPermission(memberId, defaultRole, organizationData)
 
 	if err != nil {
 		responses.FailWithMessage(err.Error(), ctx)

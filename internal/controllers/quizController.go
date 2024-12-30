@@ -41,10 +41,10 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 	}
 
 	Db, _ := c.InfoDb.InitDB()
-	memberId, _ := ctx.Get("account")
+	memberId := ctx.GetString("account")
 
 	reqJson, _ := json.Marshal(req)
-	hashInfos := []string{memberId.(string), string(reqJson)}
+	hashInfos := []string{memberId, string(reqJson)}
 	quizId := utils.GenSha256IdempotentId(hashInfos)
 
 	//check quiz exist
@@ -58,7 +58,7 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 	memberService := services.NewMemberService(Db)
 
 	// add creater id to member ids
-	memberIDs := append(req.MembersId, memberId.(string))
+	memberIDs := append(req.MembersId, memberId)
 	// check members id is valid
 	_, err = memberService.GetValidMembers(memberIDs)
 	if err != nil {
@@ -68,7 +68,7 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 
 	//get organization name
 	organizationService := services.NewOrganizationService(Db)
-	organization, err := organizationService.GetOrganizationByMemberIDAndOrganizationID(memberId.(string), req.OrganizationId)
+	organization, err := organizationService.GetOrganizationByMemberIDAndOrganizationID(memberId, req.OrganizationId)
 	if err != nil {
 		responses.FailWithErrorCode(responses.ORGANIZATION_NOT_FOUND, ctx)
 		return
@@ -82,7 +82,7 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 	var CourseInfo models.ClassInfo
 	if req.CourseId != "" {
 		courseService := services.NewCourseSerive(Db)
-		course, err := courseService.GetCourseByMemberIDAndCourseID(memberId.(string), req.CourseId)
+		course, err := courseService.GetCourseByMemberIDAndCourseID(memberId, req.CourseId)
 		if err != nil {
 			responses.FailWithErrorCode(responses.COURSE_NOT_FOUND, ctx)
 			return
@@ -95,7 +95,7 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 	var UnitInfo models.ClassInfo
 	if req.UnitId != "" {
 		unitService := services.NewUnitService(Db)
-		unit, err := unitService.GetUnitByMemberIDAndUnitID(memberId.(string), req.UnitId)
+		unit, err := unitService.GetUnitByMemberIDAndUnitID(memberId, req.UnitId)
 		if err != nil {
 			responses.FailWithErrorCode(responses.UNIT_NOT_FOUND, ctx)
 			return
@@ -111,12 +111,12 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 	// check UnitInfo is empty
 	wordService := services.NewWordService(Db)
 	if UnitInfo.Id != "" {
-		words, _ = wordService.GetWordByMemberIDAndUnitID(memberId.(string), UnitInfo.Id)
+		words, _ = wordService.GetWordByMemberIDAndUnitID(memberId, UnitInfo.Id)
 
 	}
 
 	if UnitInfo.Id == "" && CourseInfo.Id != "" {
-		words, err := wordService.GetWordByMemberIDAndCourseID(memberId.(string), CourseInfo.Id)
+		words, err := wordService.GetWordByMemberIDAndCourseID(memberId, CourseInfo.Id)
 		if err != nil {
 			responses.FailWithErrorCode(responses.COURSE_NOT_FOUND, ctx)
 			return
@@ -161,7 +161,7 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 	// create quiz
 	quiz := models.Quiz{
 		Id:             quizId,
-		CreaterId:      memberId.(string),
+		CreaterId:      memberId,
 		QuestionType:   questionTypes,
 		OrganizationId: &OrganizationInfo.Id,
 		CourseId:       &CourseInfo.Id,
@@ -177,7 +177,7 @@ func (c QuizController) CreateQuiz(ctx *gin.Context) {
 	initQuizAnswerRecord := models.QuizAnswerRecord{
 		Id:       quizAnswerRecordId,
 		QuizId:   quizId,
-		MemberId: memberId.(string),
+		MemberId: memberId,
 		Status:   QuizAnswerRecordUnstart,
 	}
 
@@ -206,7 +206,7 @@ func (c QuizController) GetQuizsListWithAnswersByMember(ctx *gin.Context) {
 		return
 	}
 
-	memberId, _ := ctx.Get("account")
+	memberId := ctx.GetString("account")
 	var reqPage string = ctx.DefaultQuery("page", "1")
 	pageInt, _ := strconv.Atoi(reqPage)
 	page := int32(pageInt)
@@ -214,7 +214,7 @@ func (c QuizController) GetQuizsListWithAnswersByMember(ctx *gin.Context) {
 	Db, _ := c.InfoDb.InitDB()
 
 	quizServices := services.NewQuizService(Db)
-	quizList, total, err := quizServices.GetQuizsListWithAnswersByMember(memberId.(string), page)
+	quizList, total, err := quizServices.GetQuizsListWithAnswersByMember(memberId, page)
 	if err != nil {
 		responses.FailWithErrorCode(responses.FAILED_TO_GET_QUIZ_LIST, ctx)
 		return
