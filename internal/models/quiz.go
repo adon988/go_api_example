@@ -92,3 +92,16 @@ type ContentItem struct {
 type ContentItems struct {
 	ContentItems []ContentItem `json:"content_items"`
 }
+
+type AnswerQuestion struct {
+	Answer    string `json:"answer"`
+	TimeSpend int    `json:"time_spend"`
+}
+type AnswerQuestions struct {
+	AnswerQuestion []AnswerQuestion `json:"answer_question"`
+}
+
+type FailedLog struct {
+	UserAnswer  string `json:"user_answer"`
+	ContentItem ContentItem
+}

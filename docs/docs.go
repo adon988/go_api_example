@@ -726,7 +726,59 @@ const docTemplate = `{
             }
         },
         "/my/quiz/{quiz_id}": {
-            "get": {
+            "patch": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update Quiz Answer Record",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quiz"
+                ],
+                "summary": "Update Quiz Answer Record",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Quiz ID",
+                        "name": "quiz_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Quiz object that needs to be updated",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.QuizUpdateQuizAnswerRecordRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/my/quiz_answer_record": {
+            "patch": {
                 "security": [
                     {
                         "ApiKeyAuth": []
@@ -1502,6 +1554,23 @@ const docTemplate = `{
                 "page": {
                     "type": "integer",
                     "example": 1
+                }
+            }
+        },
+        "requests.QuizUpdateQuizAnswerRecordRequest": {
+            "type": "object",
+            "required": [
+                "answer_question",
+                "quiz_id"
+            ],
+            "properties": {
+                "answer_question": {
+                    "type": "string",
+                    "example": "{\"answer_question\":[{\"answer\":\"0\",\"time_spend\":5},{\"answer\":\"應,程,集\",\"time_spend\":9},{\"answer\":\"1\",\"time_spend\":5},{\"answer\":\"1\",\"time_spend\":6},{\"answer\":\"o,n,y\",\"time_spend\":8},{\"answer\":\"1867517564435828736\",\"time_spend\":10},{\"answer\":\"p,i,n\",\"time_spend\":10},{\"answer\":\"1\",\"time_spend\":6},{\"answer\":\"w,r\",\"time_spend\":6},{\"answer\":\"1864851018366324736\",\"time_spend\":9},{\"answer\":\"1867517653543817216\",\"time_spend\":10},{\"answer\":\"1867517499843547136\",\"time_spend\":5},{\"answer\":\"1867517724364640256\",\"time_spend\":5},{\"answer\":\"1\",\"time_spend\":8},{\"answer\":\"0\",\"time_spend\":10},{\"answer\":\"1867517421179375616\",\"time_spend\":3},{\"answer\":\"c,a,l\",\"time_spend\":10}]}"
+                },
+                "quiz_id": {
+                    "type": "string",
+                    "example": "1"
                 }
             }
         },

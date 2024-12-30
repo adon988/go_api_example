@@ -237,7 +237,7 @@ func (c QuizController) GetQuizsListWithAnswersByMember(ctx *gin.Context) {
 // @Param quiz_id path string true "Quiz ID"
 // @Success 200 {object} responses.QuizWithAnswer
 // @Failure 400 {string} string '{"code":620000,"data":{},"msg":"fail"}'
-// @Router /my/quiz/{quiz_id} [get]
+// @Router /my/quiz_answer_record [patch]
 func (c QuizController) GetQuizByMember(ctx *gin.Context) {
 	quizId := ctx.Param("quiz_id")
 	memberId := ctx.GetString("account")
@@ -251,15 +251,82 @@ func (c QuizController) GetQuizByMember(ctx *gin.Context) {
 	responses.OkWithData(quiz, ctx)
 }
 
+// @Summary Update Quiz Answer Record
+// @Description Update Quiz Answer Record
+// @Tags Quiz
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Param quiz_id path string true "Quiz ID"
+// @Param req body requests.QuizUpdateQuizAnswerRecordRequest true "Quiz object that needs to be updated"
+// @Success 200 {string} string "ok"
+// @Failure 400 {string} string '{"code":620003,"data":{},"msg":"fail"}'
+// @Router /my/quiz/{quiz_id} [patch]
 func (c QuizController) UpdateQuizAnswerRecord(ctx *gin.Context) {
 	var req requests.QuizUpdateQuizAnswerRecordRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		responses.FailWithMessage(err.Error(), ctx)
 		return
 	}
-	//memberId := ctx.GetString("account")
+	memberId := ctx.GetString("account")
+	quizId := req.QuizId
 
-	//get quiz
+	var answerQuestions models.AnswerQuestions
+	if err := json.Unmarshal([]byte(req.AnswerQuestion), &answerQuestions); err != nil {
+		responses.FailWithErrorCode(responses.INVALID_ANSWER_QUESTION_FORMAT, ctx)
+		return
+	}
+
+	Db, _ := c.InfoDb.InitDB()
+	quizService := services.NewQuizService(Db)
+
+	quiz, err := quizService.GetQuizByMember(quizId, memberId)
+	if err != nil {
+		responses.FailWithErrorCode(responses.QUIZ_NOT_FOUND, ctx)
+		return
+	}
+	ContentItems := &models.ContentItems{}
+	json.Unmarshal([]byte(quiz.Content), &ContentItems)
+
+	//簡單匹配 quiz content 和 answer question
+	if len(ContentItems.ContentItems) != len(answerQuestions.AnswerQuestion) {
+		responses.FailWithErrorCode(responses.INVALID_ANSWER_QUESTION, ctx)
+		return
+	}
+
+	// 紀錄錯題本
+	var FailLogs []models.FailedLog
+	for i, v := range answerQuestions.AnswerQuestion {
+		if v.Answer != ContentItems.ContentItems[i].Answer {
+			//FailLog include the anser and original quiz content
+			FailLog := models.FailedLog{
+				UserAnswer:  v.Answer,
+				ContentItem: ContentItems.ContentItems[i],
+			}
+			FailLogs = append(FailLogs, FailLog)
+		}
+	}
+
+	// update quiz answer record
+	FailedAnswerCount := int32(len(FailLogs))
+	TotalQuestionCount := int32(len(ContentItems.ContentItems))
+	Scope := int32((1 - (float32(FailedAnswerCount) / float32(TotalQuestionCount))) * 100)
+	AnswerQuestions := json.RawMessage(req.AnswerQuestion)
+
+	quizAnswerRecord := models.QuizAnswerRecord{
+		Id:                 quiz.QuizAnswerRecordId,
+		AnswerQuestion:     &AnswerQuestions,
+		Status:             int32(3), //finished
+		FailedAnswerCount:  &FailedAnswerCount,
+		TotalQuestionCount: &TotalQuestionCount,
+		FailedLogs:         utils.MarshalJSONToRaw(FailLogs),
+		Scope:              &Scope,
+	}
+	if err := quizService.UpdateQuizAnswerRecord(quizAnswerRecord); err != nil {
+		responses.FailWithErrorCode(responses.FAILED_TO_UPDATE_QUIZ_ANSWER, ctx)
+		return
+	}
+
 	responses.Ok(ctx)
 }
 

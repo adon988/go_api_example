@@ -167,5 +167,5 @@ type QuizListRequest struct {
 
 type QuizUpdateQuizAnswerRecordRequest struct {
 	QuizId         string `json:"quiz_id" binding:"required" example:"1"`
-	AnswerQuestion string `json:"answer_question" binding:"required" example:"{}"`
+	AnswerQuestion string `json:"answer_question" binding:"required" example:"{\"answer_question\":[{\"answer\":\"0\",\"time_spend\":5},{\"answer\":\"應,程,集\",\"time_spend\":9},{\"answer\":\"1\",\"time_spend\":5},{\"answer\":\"1\",\"time_spend\":6},{\"answer\":\"o,n,y\",\"time_spend\":8},{\"answer\":\"1867517564435828736\",\"time_spend\":10},{\"answer\":\"p,i,n\",\"time_spend\":10},{\"answer\":\"1\",\"time_spend\":6},{\"answer\":\"w,r\",\"time_spend\":6},{\"answer\":\"1864851018366324736\",\"time_spend\":9},{\"answer\":\"1867517653543817216\",\"time_spend\":10},{\"answer\":\"1867517499843547136\",\"time_spend\":5},{\"answer\":\"1867517724364640256\",\"time_spend\":5},{\"answer\":\"1\",\"time_spend\":8},{\"answer\":\"0\",\"time_spend\":10},{\"answer\":\"1867517421179375616\",\"time_spend\":3},{\"answer\":\"c,a,l\",\"time_spend\":10}]}"`
 }

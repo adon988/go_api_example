@@ -18,7 +18,7 @@ type QuizAnswerRecord struct {
 	TotalQuestionCount *int32           `gorm:"size:8;comment:'total answer count';default:0"`
 	FailedLogs         *json.RawMessage `gorm:"type:json;comment:'failed logs'"`
 	Scope              *int32           `gorm:"size:8;comment:'when finish quiz, caculate the persional scope';"`
-	CreatedAt          time.Time        // Automatically managed by GORM for creation time
-	UpdatedAt          time.Time        // Automatically managed by GORM for update time
+	CreatedAt          time.Time        `gorm:"autoCreateTime"`
+	UpdatedAt          time.Time        `gorm:"autoUpdateTime"`
 	DeletedAt          gorm.DeletedAt   `gorm:"index"`
 }

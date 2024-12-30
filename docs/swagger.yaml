@@ -236,6 +236,18 @@ definitions:
         example: 1
         type: integer
     type: object
+  requests.QuizUpdateQuizAnswerRecordRequest:
+    properties:
+      answer_question:
+        example: '{"answer_question":[{"answer":"0","time_spend":5},{"answer":"應,程,集","time_spend":9},{"answer":"1","time_spend":5},{"answer":"1","time_spend":6},{"answer":"o,n,y","time_spend":8},{"answer":"1867517564435828736","time_spend":10},{"answer":"p,i,n","time_spend":10},{"answer":"1","time_spend":6},{"answer":"w,r","time_spend":6},{"answer":"1864851018366324736","time_spend":9},{"answer":"1867517653543817216","time_spend":10},{"answer":"1867517499843547136","time_spend":5},{"answer":"1867517724364640256","time_spend":5},{"answer":"1","time_spend":8},{"answer":"0","time_spend":10},{"answer":"1867517421179375616","time_spend":3},{"answer":"c,a,l","time_spend":10}]}'
+        type: string
+      quiz_id:
+        example: "1"
+        type: string
+    required:
+    - answer_question
+    - quiz_id
+    type: object
   requests.UnitCreateRequest:
     properties:
       course_id:
@@ -1068,7 +1080,40 @@ paths:
       tags:
       - Quiz
   /my/quiz/{quiz_id}:
-    get:
+    patch:
+      consumes:
+      - application/json
+      description: Update Quiz Answer Record
+      parameters:
+      - description: Quiz ID
+        in: path
+        name: quiz_id
+        required: true
+        type: string
+      - description: Quiz object that needs to be updated
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/requests.QuizUpdateQuizAnswerRecordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update Quiz Answer Record
+      tags:
+      - Quiz
+  /my/quiz_answer_record:
+    patch:
       consumes:
       - application/json
       description: Get Quiz By Member
