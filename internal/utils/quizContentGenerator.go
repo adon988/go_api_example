@@ -41,6 +41,11 @@ func GetQuizContent(QuestionTypes []string, words []models.Word) (contentItems m
 		return contentItems, responses.NO_CONTENT_GENERATED
 	}
 
+	//shuffle contentItems.ContentItems (洗牌)
+	rand.Shuffle(len(contentItems.ContentItems), func(i, j int) {
+		contentItems.ContentItems[i], contentItems.ContentItems[j] = contentItems.ContentItems[j], contentItems.ContentItems[i]
+	})
+
 	return contentItems, responses.SUCCESS
 }
 
