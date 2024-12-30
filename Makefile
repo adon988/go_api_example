@@ -8,4 +8,7 @@ automigrate:
 	cd cmd/migrate/ && go run main.go -automigrate
 
 migrate:
-	cd cmd/migrate && go run main.go -migrate_table=$(table)
+	cd cmd/migrate && go run main.go -migrate_table=$(migrate_table)
+
+alert_table:
+	cd cmd/migrate && go run main.go -alert_table=$(table)

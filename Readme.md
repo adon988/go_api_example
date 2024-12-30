@@ -63,8 +63,16 @@ go run cmd/migrate/main.go -migrate_table=Organization
 ```
 make automigrate
 
-make migrate table={table_name}
-make migrate table=Organization
+make migrate migrate_table={table_name}
+make migrate migrate_table=Organization
+```
+
+alert_table_column:
+Create the alert file on ./internal/migrations/{ymd_alert_table}.go, and modify and add "alert_table_naming" to AlertTable fn on  ./internal/migrations/migration.go
+
+```
+make alert_table table="alert_table_naming"
+make alert_table table="rename_quiz_answer_records_column"
 ```
 
 ### Try APIs

@@ -756,7 +756,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.QuizWithAnswer"
+                            "$ref": "#/definitions/responses.QuizWithAnswer"
                         }
                     },
                     "400": {
@@ -1179,128 +1179,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "models.QuizWithAnswer": {
-            "type": "object",
-            "properties": {
-                "answer_question": {
-                    "type": "string",
-                    "example": "{}"
-                },
-                "content": {
-                    "type": "string",
-                    "example": "{}"
-                },
-                "correct_answer_count": {
-                    "type": "integer",
-                    "example": 10
-                },
-                "creater_id": {
-                    "type": "string",
-                    "example": "1"
-                },
-                "due_date": {
-                    "type": "string",
-                    "example": "2021-01-01 00:00:00"
-                },
-                "failed_logs": {
-                    "type": "string",
-                    "example": "{}"
-                },
-                "info": {
-                    "type": "string",
-                    "example": "{}"
-                },
-                "question_type": {
-                    "type": "string",
-                    "example": "mutiple_choice"
-                },
-                "quiz_answer_record_id": {
-                    "type": "string",
-                    "example": "1"
-                },
-                "quiz_id": {
-                    "type": "string",
-                    "example": "1"
-                },
-                "scope": {
-                    "type": "integer",
-                    "example": 50
-                },
-                "status": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "topic": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "total_question_count": {
-                    "type": "integer",
-                    "example": 20
-                },
-                "type": {
-                    "type": "integer",
-                    "example": 1
-                }
-            }
-        },
-        "models.QuizWithAnswers": {
-            "type": "object",
-            "properties": {
-                "correct_answer_count": {
-                    "type": "integer",
-                    "example": 10
-                },
-                "creater_id": {
-                    "type": "string",
-                    "example": "1"
-                },
-                "due_date": {
-                    "type": "string",
-                    "example": "2021-01-01 00:00:00"
-                },
-                "failed_logs": {
-                    "type": "string",
-                    "example": "{}"
-                },
-                "info": {
-                    "type": "string",
-                    "example": "{}"
-                },
-                "question_type": {
-                    "type": "string",
-                    "example": "mutiple_choice"
-                },
-                "quiz_answer_record_id": {
-                    "type": "string",
-                    "example": "1"
-                },
-                "quiz_id": {
-                    "type": "string",
-                    "example": "1"
-                },
-                "scope": {
-                    "type": "integer",
-                    "example": 50
-                },
-                "status": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "topic": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "total_question_count": {
-                    "type": "integer",
-                    "example": 20
-                },
-                "type": {
-                    "type": "integer",
-                    "example": 1
-                }
-            }
-        },
         "requests.AssignCourseRequest": {
             "type": "object",
             "required": [
@@ -1929,12 +1807,134 @@ const docTemplate = `{
                 "quizList": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.QuizWithAnswers"
+                        "$ref": "#/definitions/responses.QuizWithAnswers"
                     }
                 },
                 "total": {
                     "type": "integer",
                     "example": 100
+                }
+            }
+        },
+        "responses.QuizWithAnswer": {
+            "type": "object",
+            "properties": {
+                "answer_question": {
+                    "type": "string",
+                    "example": "{}"
+                },
+                "content": {
+                    "type": "string",
+                    "example": "{}"
+                },
+                "creater_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "due_date": {
+                    "type": "string",
+                    "example": "2021-01-01 00:00:00"
+                },
+                "failed_answer_count": {
+                    "type": "integer",
+                    "example": 10
+                },
+                "failed_logs": {
+                    "type": "string",
+                    "example": "{}"
+                },
+                "info": {
+                    "type": "string",
+                    "example": "{}"
+                },
+                "question_type": {
+                    "type": "string",
+                    "example": "mutiple_choice"
+                },
+                "quiz_answer_record_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "quiz_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "scope": {
+                    "type": "integer",
+                    "example": 50
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "topic": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "total_question_count": {
+                    "type": "integer",
+                    "example": 20
+                },
+                "type": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "responses.QuizWithAnswers": {
+            "type": "object",
+            "properties": {
+                "creater_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "due_date": {
+                    "type": "string",
+                    "example": "2021-01-01 00:00:00"
+                },
+                "failed_answer_count": {
+                    "type": "integer",
+                    "example": 10
+                },
+                "failed_logs": {
+                    "type": "string",
+                    "example": "{}"
+                },
+                "info": {
+                    "type": "string",
+                    "example": "{}"
+                },
+                "question_type": {
+                    "type": "string",
+                    "example": "mutiple_choice"
+                },
+                "quiz_answer_record_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "quiz_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "scope": {
+                    "type": "integer",
+                    "example": 50
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "topic": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "total_question_count": {
+                    "type": "integer",
+                    "example": 20
+                },
+                "type": {
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },

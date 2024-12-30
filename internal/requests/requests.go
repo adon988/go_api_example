@@ -164,3 +164,8 @@ type QuizChallengesRequest struct {
 type QuizListRequest struct {
 	Page int32 `json:"page" example:"1"`
 }
+
+type QuizUpdateQuizAnswerRecordRequest struct {
+	QuizId         string `json:"quiz_id" binding:"required" example:"1"`
+	AnswerQuestion string `json:"answer_question" binding:"required" example:"{}"`
+}

@@ -1300,7 +1300,7 @@
                         <mxRectangle width="30" height="30" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="525" value="due_date (挑戰題型，會有 due_date 來判斷)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;" parent="523" vertex="1">
+                <mxCell id="525" value="due_date (quiz.type=2挑戰題，會判斷 due_date )" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;" parent="523" vertex="1">
                     <mxGeometry x="30" width="300" height="30" as="geometry">
                         <mxRectangle width="300" height="30" as="alternateBounds"/>
                     </mxGeometry>
@@ -1313,7 +1313,7 @@
                         <mxRectangle width="30" height="30" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="531" value="correct_answer_count" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;" parent="529" vertex="1">
+                <mxCell id="531" value="failed_answer_count" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;" parent="529" vertex="1">
                     <mxGeometry x="30" width="300" height="30" as="geometry">
                         <mxRectangle width="300" height="30" as="alternateBounds"/>
                     </mxGeometry>
@@ -1339,7 +1339,7 @@
                         <mxRectangle width="30" height="30" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="483" value="failed_logs" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;" parent="481" vertex="1">
+                <mxCell id="483" value="failed_logs" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;strokeColor=#FFFFFF;" parent="481" vertex="1">
                     <mxGeometry x="30" width="300" height="30" as="geometry">
                         <mxRectangle width="300" height="30" as="alternateBounds"/>
                     </mxGeometry>
@@ -1398,9 +1398,6 @@
                 </mxCell>
                 <mxCell id="443" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=ERmany;endFill=0;" parent="1" source="276" target="440" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="444" value="question_type 如果是測驗，是 member 自己測試&lt;br&gt;如果是挑戰，則可能邀請多位 user 一起" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
-                    <mxGeometry x="780" y="1170" width="280" height="40" as="geometry"/>
                 </mxCell>
                 <mxCell id="445" value="Member_group" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;" parent="1" vertex="1">
                     <mxGeometry x="640" y="360" width="180" height="280" as="geometry"/>
@@ -1512,19 +1509,16 @@
                 <mxCell id="468" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=ERmany;endFill=0;" parent="1" source="455" target="xzGnBg25GaX2GaYVYBUX-44" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="532" value="百分比計算法： (答對題數/總答題次數)*100 %" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                <mxCell id="532" value="百分比計算法： (答錯題數/總答題次數)*100 %" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
                     <mxGeometry x="1160" y="880" width="270" height="30" as="geometry"/>
-                </mxCell>
-                <mxCell id="537" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.annotation_2;align=left;labelPosition=right;pointerEvents=1;rotation=-181;" parent="1" vertex="1">
-                    <mxGeometry x="1110" y="880" width="50" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="739" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="354" target="561" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="540" y="1080" as="targetPoint"/>
                         <Array as="points">
                             <mxPoint x="240" y="945"/>
-                            <mxPoint x="240" y="1090"/>
-                            <mxPoint x="430" y="1090"/>
+                            <mxPoint x="240" y="1100"/>
+                            <mxPoint x="430" y="1100"/>
                         </Array>
                     </mxGeometry>
                 </mxCell>
@@ -2032,6 +2026,95 @@
                 </mxCell>
                 <mxCell id="mxDVInGnNM_zTQySKCmu-750" value="&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;在一開始建立 Quiz&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;就會先建立一筆 Quiz answer, status 會定義為 1(unstart)&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;在後續取得考試紀錄，或是否有權限的狀態，會以 quiz answer 作為是否有權限的依據&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#B09500;fillColor=#e3c800;fontColor=#000000;" parent="1" vertex="1">
                     <mxGeometry x="780" y="1100" width="480" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="BHMidvPkvtHOKNZymCMR-750" value="answer_question" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fontStyle=1;align=center;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" vertex="1" parent="1">
+                    <mxGeometry x="1250" y="1470" width="380" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="BHMidvPkvtHOKNZymCMR-780" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="BHMidvPkvtHOKNZymCMR-750">
+                    <mxGeometry y="30" width="380" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="BHMidvPkvtHOKNZymCMR-781" value="user_answer" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="BHMidvPkvtHOKNZymCMR-780">
+                    <mxGeometry width="80" height="30" as="geometry">
+                        <mxRectangle width="80" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BHMidvPkvtHOKNZymCMR-782" value="string" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="BHMidvPkvtHOKNZymCMR-780">
+                    <mxGeometry x="80" width="80" height="30" as="geometry">
+                        <mxRectangle width="80" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BHMidvPkvtHOKNZymCMR-783" value="20" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="BHMidvPkvtHOKNZymCMR-780">
+                    <mxGeometry x="160" width="220" height="30" as="geometry">
+                        <mxRectangle width="220" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BHMidvPkvtHOKNZymCMR-788" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="425" target="BHMidvPkvtHOKNZymCMR-750">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1440" y="795"/>
+                            <mxPoint x="1440" y="1290"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BHMidvPkvtHOKNZymCMR-789" value="failed_logs" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fontStyle=1;align=center;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" vertex="1" parent="1">
+                    <mxGeometry x="850" y="1360" width="380" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="BHMidvPkvtHOKNZymCMR-790" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="BHMidvPkvtHOKNZymCMR-789">
+                    <mxGeometry y="30" width="380" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="BHMidvPkvtHOKNZymCMR-791" value="user_answer" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="BHMidvPkvtHOKNZymCMR-790">
+                    <mxGeometry width="80" height="30" as="geometry">
+                        <mxRectangle width="80" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BHMidvPkvtHOKNZymCMR-792" value="string" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="BHMidvPkvtHOKNZymCMR-790">
+                    <mxGeometry x="80" width="80" height="30" as="geometry">
+                        <mxRectangle width="80" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BHMidvPkvtHOKNZymCMR-793" value="20" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="BHMidvPkvtHOKNZymCMR-790">
+                    <mxGeometry x="160" width="220" height="30" as="geometry">
+                        <mxRectangle width="220" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BHMidvPkvtHOKNZymCMR-800" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="BHMidvPkvtHOKNZymCMR-789">
+                    <mxGeometry y="60" width="380" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="BHMidvPkvtHOKNZymCMR-801" value="correct_anwer" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="BHMidvPkvtHOKNZymCMR-800">
+                    <mxGeometry width="80" height="30" as="geometry">
+                        <mxRectangle width="80" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BHMidvPkvtHOKNZymCMR-802" value="string" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="BHMidvPkvtHOKNZymCMR-800">
+                    <mxGeometry x="80" width="80" height="30" as="geometry">
+                        <mxRectangle width="80" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BHMidvPkvtHOKNZymCMR-803" value="20" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;" vertex="1" parent="BHMidvPkvtHOKNZymCMR-800">
+                    <mxGeometry x="160" width="220" height="30" as="geometry">
+                        <mxRectangle width="220" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BHMidvPkvtHOKNZymCMR-804" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="481" target="BHMidvPkvtHOKNZymCMR-789">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1250" y="1290" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1310" y="945"/>
+                            <mxPoint x="1310" y="1383"/>
+                            <mxPoint x="1250" y="1383"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BHMidvPkvtHOKNZymCMR-805" style="edgeStyle=orthogonalEdgeStyle;html=1;fontColor=#FF00FF;" edge="1" parent="1" source="529" target="532">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="BHMidvPkvtHOKNZymCMR-806" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;fontColor=#FF00FF;entryX=0.006;entryY=0.453;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="534" target="532">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1160" y="900" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BHMidvPkvtHOKNZymCMR-808" value="&lt;div style=&quot;text-align: left;&quot;&gt;錯題本，可以 select ... where&amp;nbsp; failed_answer_count &amp;gt; 0&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#B09500;fillColor=#e3c800;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="780" y="1170" width="320" height="30" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

@@ -38,3 +38,16 @@ func (r NewMigration) MigrationTable(tableName string) bool {
 	}
 	return false
 }
+
+func (r NewMigration) AlertTable(alertName string) bool {
+	var err error
+	if alertName == "rename_quiz_answer_records_column" {
+		err = RenameCorrectAnswerCountToFailedAnswerCount(r.Db)
+	}
+
+	if err != nil {
+		return false
+	}
+
+	return true
+}

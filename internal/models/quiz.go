@@ -36,7 +36,7 @@ type QuizWithAnswer struct {
 	AnswerQuestion     string    `gorm:"column:answer_question"`
 	Status             int32     `gorm:"column:status"`
 	DueDate            time.Time `gorm:"column:due_date"`
-	CorrectAnswerCount int32     `gorm:"column:correct_answer_count"`
+	FailedAnswerCount  int32     `gorm:"column:failed_answer_count"`
 	TotalQuestionCount int32     `gorm:"column:total_question_count"`
 	FailedLogs         string    `gorm:"column:failed_logs"`
 	Scope              int32     `gorm:"column:scope"`
@@ -52,7 +52,7 @@ type QuizWithAnswers struct {
 	Info               string    `gorm:"column:info"`
 	Status             int32     `gorm:"column:status"`
 	DueDate            time.Time `gorm:"column:due_date"`
-	CorrectAnswerCount int32     `gorm:"column:correct_answer_count"`
+	FailedAnswerCount  int32     `gorm:"column:failed_answer_count"`
 	TotalQuestionCount int32     `gorm:"column:total_question_count"`
 	FailedLogs         string    `gorm:"column:failed_logs"`
 	Scope              int32     `gorm:"column:scope"`

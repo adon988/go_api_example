@@ -1,94 +1,4 @@
 definitions:
-  models.QuizWithAnswer:
-    properties:
-      answer_question:
-        example: '{}'
-        type: string
-      content:
-        example: '{}'
-        type: string
-      correct_answer_count:
-        example: 10
-        type: integer
-      creater_id:
-        example: "1"
-        type: string
-      due_date:
-        example: "2021-01-01 00:00:00"
-        type: string
-      failed_logs:
-        example: '{}'
-        type: string
-      info:
-        example: '{}'
-        type: string
-      question_type:
-        example: mutiple_choice
-        type: string
-      quiz_answer_record_id:
-        example: "1"
-        type: string
-      quiz_id:
-        example: "1"
-        type: string
-      scope:
-        example: 50
-        type: integer
-      status:
-        example: 1
-        type: integer
-      topic:
-        example: 1
-        type: integer
-      total_question_count:
-        example: 20
-        type: integer
-      type:
-        example: 1
-        type: integer
-    type: object
-  models.QuizWithAnswers:
-    properties:
-      correct_answer_count:
-        example: 10
-        type: integer
-      creater_id:
-        example: "1"
-        type: string
-      due_date:
-        example: "2021-01-01 00:00:00"
-        type: string
-      failed_logs:
-        example: '{}'
-        type: string
-      info:
-        example: '{}'
-        type: string
-      question_type:
-        example: mutiple_choice
-        type: string
-      quiz_answer_record_id:
-        example: "1"
-        type: string
-      quiz_id:
-        example: "1"
-        type: string
-      scope:
-        example: 50
-        type: integer
-      status:
-        example: 1
-        type: integer
-      topic:
-        example: 1
-        type: integer
-      total_question_count:
-        example: 20
-        type: integer
-      type:
-        example: 1
-        type: integer
-    type: object
   requests.AssignCourseRequest:
     properties:
       course_id:
@@ -540,10 +450,100 @@ definitions:
     properties:
       quizList:
         items:
-          $ref: '#/definitions/models.QuizWithAnswers'
+          $ref: '#/definitions/responses.QuizWithAnswers'
         type: array
       total:
         example: 100
+        type: integer
+    type: object
+  responses.QuizWithAnswer:
+    properties:
+      answer_question:
+        example: '{}'
+        type: string
+      content:
+        example: '{}'
+        type: string
+      creater_id:
+        example: "1"
+        type: string
+      due_date:
+        example: "2021-01-01 00:00:00"
+        type: string
+      failed_answer_count:
+        example: 10
+        type: integer
+      failed_logs:
+        example: '{}'
+        type: string
+      info:
+        example: '{}'
+        type: string
+      question_type:
+        example: mutiple_choice
+        type: string
+      quiz_answer_record_id:
+        example: "1"
+        type: string
+      quiz_id:
+        example: "1"
+        type: string
+      scope:
+        example: 50
+        type: integer
+      status:
+        example: 1
+        type: integer
+      topic:
+        example: 1
+        type: integer
+      total_question_count:
+        example: 20
+        type: integer
+      type:
+        example: 1
+        type: integer
+    type: object
+  responses.QuizWithAnswers:
+    properties:
+      creater_id:
+        example: "1"
+        type: string
+      due_date:
+        example: "2021-01-01 00:00:00"
+        type: string
+      failed_answer_count:
+        example: 10
+        type: integer
+      failed_logs:
+        example: '{}'
+        type: string
+      info:
+        example: '{}'
+        type: string
+      question_type:
+        example: mutiple_choice
+        type: string
+      quiz_answer_record_id:
+        example: "1"
+        type: string
+      quiz_id:
+        example: "1"
+        type: string
+      scope:
+        example: 50
+        type: integer
+      status:
+        example: 1
+        type: integer
+      topic:
+        example: 1
+        type: integer
+      total_question_count:
+        example: 20
+        type: integer
+      type:
+        example: 1
         type: integer
     type: object
   responses.ResponseFail:
@@ -1084,7 +1084,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.QuizWithAnswer'
+            $ref: '#/definitions/responses.QuizWithAnswer'
         "400":
           description: Bad Request
           schema:

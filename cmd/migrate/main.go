@@ -11,17 +11,19 @@ import (
 var runAutoMigrations bool
 var runMigrateTable string
 var InfoDb utils.InfoDb
+var runAlertTable string
 
 func init() {
 	flag.BoolVar(&runAutoMigrations, "automigrate", false, "run auto migrations")
-	flag.StringVar(&runMigrateTable, "migrate_table", "", "run migration table")
+	flag.StringVar(&runMigrateTable, "migrate_table", "", "run migrate table")
+	flag.StringVar(&runAlertTable, "alert_table", "", "run alert table")
 	flag.Parse()
 
 }
 func main() {
 
-	if !runAutoMigrations && runMigrateTable == "" {
-		fmt.Println("Please use -automigrate or -migrate_table=TableName")
+	if !runAutoMigrations && runMigrateTable == "" && runAlertTable == "" {
+		fmt.Println("Please use -automigrate or -migrate_table=TableName or -alert_table=AlertTableName")
 		return
 	}
 
@@ -43,5 +45,9 @@ func main() {
 	// Migrate single table (ex. go run cmd/migrate/main.go -migrate_table=Organization)
 	if res := Migration.MigrationTable(runMigrateTable); res {
 		fmt.Println("Migrate table " + runMigrateTable + " success")
+	}
+
+	if res := Migration.AlertTable(runAlertTable); res {
+		fmt.Println("Alert table " + runAlertTable + " success")
 	}
 }

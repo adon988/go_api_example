@@ -250,3 +250,19 @@ func (c QuizController) GetQuizByMember(ctx *gin.Context) {
 
 	responses.OkWithData(quiz, ctx)
 }
+
+func (c QuizController) UpdateQuizAnswerRecord(ctx *gin.Context) {
+	var req requests.QuizUpdateQuizAnswerRecordRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		responses.FailWithMessage(err.Error(), ctx)
+		return
+	}
+	//memberId := ctx.GetString("account")
+
+	//get quiz
+	responses.Ok(ctx)
+}
+
+func (c QuizController) GetQuizAnswerRecords(ctx *gin.Context) {
+	responses.Ok(ctx)
+}

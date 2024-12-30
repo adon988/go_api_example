@@ -91,7 +91,7 @@ type QuizWithAnswer struct {
 	AnswerQuestion     string    `json:"answer_question" example:"{}"`
 	Status             int32     `json:"status" example:"1"`
 	DueDate            time.Time `json:"due_date" example:"2021-01-01 00:00:00"`
-	CorrectAnswerCount int32     `json:"correct_answer_count" example:"10"`
+	FailedAnswerCount  int32     `json:"failed_answer_count" example:"10"`
 	TotalQuestionCount int32     `json:"total_question_count" example:"20"`
 	FailedLogs         string    `json:"failed_logs" example:"{}"`
 	Scope              int32     `json:"scope" example:"50"`
@@ -107,7 +107,7 @@ type QuizWithAnswers struct {
 	Info               string    `json:"info" example:"{}"`
 	Status             int32     `json:"status" example:"1"`
 	DueDate            time.Time `json:"due_date" example:"2021-01-01 00:00:00"`
-	CorrectAnswerCount int32     `json:"correct_answer_count" example:"10"`
+	FailedAnswerCount  int32     `json:"failed_answer_count" example:"10"`
 	TotalQuestionCount int32     `json:"total_question_count" example:"20"`
 	FailedLogs         string    `json:"failed_logs" example:"{}"`
 	Scope              int32     `json:"scope" example:"50"`
