@@ -34,7 +34,7 @@ func (r *quizRepositoryImpl) CheckQuizExist(quiz_id string) bool {
 func (r *quizRepositoryImpl) GetQuizByMember(quiz_id string, member_id string) (models.QuizWithAnswer, error) {
 	var quiz models.QuizWithAnswer
 	err := r.db.Table("quizzes").
-		Select("quizzes.id as quiz_id, quiz_answer_records.id as quiz_answer_record_id, quizzes.creater_id, quizzes.question_type, quizzes.topic, quizzes.type, quizzes.info, quizzes.content, quiz_answer_records.answer_question, quiz_answer_records.status, quiz_answer_records.due_date, quiz_answer_records.failed_answer_count, quiz_answer_records.total_question_count, quiz_answer_records.failed_logs, quiz_answer_records.scope").
+		Select("quizzes.id as quiz_id, quizzes.creater_id, quizzes.question_type, quizzes.topic, quizzes.type, quizzes.info, quiz_answer_records.id as quiz_answer_record_id, quizzes.content, quiz_answer_records.answer_question, quiz_answer_records.status, quiz_answer_records.due_date, quiz_answer_records.failed_answer_count, quiz_answer_records.total_question_count, quiz_answer_records.failed_logs, quiz_answer_records.scope, quiz_answer_records.updated_at as quiz_answer_record_updated_at").
 		Joins("left join quiz_answer_records on quizzes.id = quiz_answer_records.quiz_id").
 		Where(
 			"quizzes.id = ? AND quiz_answer_records.member_id = ?",

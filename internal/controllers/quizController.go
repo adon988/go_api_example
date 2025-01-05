@@ -329,7 +329,3 @@ func (c QuizController) UpdateQuizAnswerRecord(ctx *gin.Context) {
 
 	responses.Ok(ctx)
 }
-
-func (c QuizController) GetQuizAnswerRecords(ctx *gin.Context) {
-	responses.Ok(ctx)
-}

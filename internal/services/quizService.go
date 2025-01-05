@@ -88,21 +88,22 @@ func (service QuizService) GetQuizByMember(quiz_id string, member_id string) (re
 	}
 
 	data := responses.QuizWithAnswer{
-		QuizId:             quiz.QuizId,
-		QuizAnswerRecordId: quiz.QuizAnswerRecordId,
-		CreaterID:          quiz.CreaterID,
-		QuestionType:       quiz.QuestionType,
-		Topic:              quiz.Topic,
-		Type:               quiz.Type,
-		Info:               quiz.Info,
-		Content:            quiz.Content,
-		AnswerQuestion:     quiz.AnswerQuestion,
-		Status:             quiz.Status,
-		DueDate:            quiz.DueDate,
-		FailedAnswerCount:  quiz.FailedAnswerCount,
-		TotalQuestionCount: quiz.TotalQuestionCount,
-		FailedLogs:         quiz.FailedLogs,
-		Scope:              quiz.Scope,
+		QuizId:                    quiz.QuizId,
+		QuizAnswerRecordId:        quiz.QuizAnswerRecordId,
+		CreaterID:                 quiz.CreaterID,
+		QuestionType:              quiz.QuestionType,
+		Topic:                     quiz.Topic,
+		Type:                      quiz.Type,
+		Info:                      quiz.Info,
+		Content:                   quiz.Content,
+		AnswerQuestion:            quiz.AnswerQuestion,
+		Status:                    quiz.Status,
+		DueDate:                   quiz.DueDate,
+		FailedAnswerCount:         quiz.FailedAnswerCount,
+		TotalQuestionCount:        quiz.TotalQuestionCount,
+		FailedLogs:                quiz.FailedLogs,
+		Scope:                     quiz.Scope,
+		QuizAnswerRecordUpdatedAt: quiz.QuizAnswerRecordUpdatedAt,
 	}
 
 	return data, nil

@@ -25,21 +25,22 @@ type Quiz struct {
 
 // 自定義結構體，用於查詢帶有答案的問卷
 type QuizWithAnswer struct {
-	QuizId             string    `gorm:"column:quiz_id"`
-	QuizAnswerRecordId string    `gorm:"column:quiz_answer_record_id"`
-	CreaterID          string    `gorm:"column:creater_id"`
-	QuestionType       string    `gorm:"column:question_type"`
-	Topic              int32     `gorm:"column:topic"`
-	Type               int32     `gorm:"column:type"`
-	Info               string    `gorm:"column:info"`
-	Content            string    `gorm:"column:content"`
-	AnswerQuestion     string    `gorm:"column:answer_question"`
-	Status             int32     `gorm:"column:status"`
-	DueDate            time.Time `gorm:"column:due_date"`
-	FailedAnswerCount  int32     `gorm:"column:failed_answer_count"`
-	TotalQuestionCount int32     `gorm:"column:total_question_count"`
-	FailedLogs         string    `gorm:"column:failed_logs"`
-	Scope              int32     `gorm:"column:scope"`
+	QuizId                    string    `gorm:"column:quiz_id"`
+	QuizAnswerRecordId        string    `gorm:"column:quiz_answer_record_id"`
+	CreaterID                 string    `gorm:"column:creater_id"`
+	QuestionType              string    `gorm:"column:question_type"`
+	Topic                     int32     `gorm:"column:topic"`
+	Type                      int32     `gorm:"column:type"`
+	Info                      string    `gorm:"column:info"`
+	Content                   string    `gorm:"column:content"`
+	AnswerQuestion            string    `gorm:"column:answer_question"`
+	Status                    int32     `gorm:"column:status"`
+	DueDate                   time.Time `gorm:"column:due_date"`
+	FailedAnswerCount         int32     `gorm:"column:failed_answer_count"`
+	TotalQuestionCount        int32     `gorm:"column:total_question_count"`
+	FailedLogs                string    `gorm:"column:failed_logs"`
+	Scope                     int32     `gorm:"column:scope"`
+	QuizAnswerRecordUpdatedAt time.Time `gorm:"column:quiz_answer_record_updated_at"`
 }
 
 type QuizWithAnswers struct {
