@@ -1924,6 +1924,10 @@ const docTemplate = `{
                     "type": "string",
                     "example": "1"
                 },
+                "quiz_answer_record_updated_at": {
+                    "type": "string",
+                    "example": "2021-01-01 00:00:00"
+                },
                 "quiz_id": {
                     "type": "string",
                     "example": "1"
